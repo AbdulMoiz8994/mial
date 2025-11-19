@@ -14,7 +14,7 @@ export default function BusinessType() {
     
     if (selectedType) {
       console.log("Business type selected:", selectedType);
-      // TODO: Navigate to next page
+      setLocation("/goals");
     }
   };
 
