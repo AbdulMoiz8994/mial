@@ -86,7 +86,7 @@ export default function BrandColors() {
       logo: uploadedLogo?.name,
       color: selectedColor,
     });
-    // TODO: Navigate to next page
+    setLocation("/social-media-focus");
   };
 
   return (
