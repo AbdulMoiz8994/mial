@@ -10,6 +10,7 @@ import BusinessType from "@/pages/business-type";
 import Goals from "@/pages/goals";
 import BrandColors from "@/pages/brand-colors";
 import SocialMediaFocus from "@/pages/social-media-focus";
+import Pricing from "@/pages/pricing";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/goals" component={Goals} />
           <Route path="/brand-colors" component={BrandColors} />
           <Route path="/social-media-focus" component={SocialMediaFocus} />
+          <Route path="/pricing" component={Pricing} />
           <Route path="/" component={SignIn} />
           <Route component={NotFound} />
         </Switch>

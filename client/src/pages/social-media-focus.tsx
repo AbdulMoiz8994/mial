@@ -40,7 +40,7 @@ export default function SocialMediaFocus() {
   const handleGeneratePlan = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Selected social media platforms:", selectedPlatforms);
-    // TODO: Navigate to dashboard/content plan page
+    setLocation("/pricing");
   };
 
   return (

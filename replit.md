@@ -12,16 +12,19 @@ User explicitly requested: Use emojis (💇💅💈💆) for business type selec
 ## Recent Changes
 
 ### November 19, 2025 - Onboarding Flow Implementation
-- Built complete onboarding flow with 5 pages:
+- Built complete onboarding flow with 7 pages:
   1. **Sign Up** (`/sign-up`): User registration with email/password
   2. **Brand Profile** (`/brand-profile`): Business name, products/services, target customers, location
   3. **Business Type** (`/business-type`): Selection with emoji indicators (💇 Hair Salon, 💅 Nail Bar, 💈 Barber, 💆 Spa/Other)
   4. **Goals** (`/goals`): Multi-select checkboxes for business goals (Get more clients, Post consistently, Build brand awareness, Grow followers)
   5. **Brand Colors** (`/brand-colors`): Logo upload (drag-and-drop, max 5MB PNG/JPG) + brand color selection (7 options: #D91818, #53BF00, #4F5ADA, #C31297, #040404, #CEA54F, #720A94)
+  6. **Social Media Focus** (`/social-media-focus`): Multi-select platform checkboxes (Instagram, Facebook, LinkedIn, TikTok, YouTube, X/Twitter)
+  7. **Pricing** (`/pricing`): Two-tier pricing plans (Basic $10/month, Pro $49/month) with feature comparison
 - All pages use shared **AuthLayout** component with gradient left panel featuring "Hi, I'm MIA" intro
 - Implemented **FloatingLabelInput** component with Material UI-style animations
 - All forms include validation, accessibility features (ARIA labels, screen reader support), and comprehensive data-testid attributes
-- Navigation flow: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → (Next step TBD)
+- **Fully responsive**: Mobile (stacked layouts), Tablet, Desktop (side-by-side) - all touch targets meet 48px minimum
+- Navigation flow: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → Social Media Focus → Pricing → (Dashboard/Payment TBD)
 
 ## System Architecture
 
