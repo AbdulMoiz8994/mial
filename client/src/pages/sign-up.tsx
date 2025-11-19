@@ -282,7 +282,7 @@ export default function SignUp() {
             type="submit"
             className="w-full rounded text-white font-medium hover:opacity-90 transition-opacity"
             style={{
-              height: '38px',
+              height: '48px',
               borderRadius: '4px',
               backgroundColor: '#CEA54F',
               fontFamily: 'Inter, sans-serif',
