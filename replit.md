@@ -19,7 +19,10 @@ User explicitly requested: Use emojis (💇💅💈💆) for business type selec
   4. **Goals** (`/goals`): Multi-select checkboxes for business goals (Get more clients, Post consistently, Build brand awareness, Grow followers)
   5. **Brand Colors** (`/brand-colors`): Logo upload (drag-and-drop, max 5MB PNG/JPG) + brand color selection (7 options: #D91818, #53BF00, #4F5ADA, #C31297, #040404, #CEA54F, #720A94)
   6. **Social Media Focus** (`/social-media-focus`): Multi-select platform checkboxes (Instagram, Facebook, LinkedIn, TikTok, YouTube, X/Twitter)
-  7. **Pricing** (`/pricing`): Two-tier pricing plans (Basic $10/month, Pro $49/month) with feature comparison
+  7. **Pricing** (`/pricing`): Two-tier pricing comparison
+     - Basic Plan: Black card ($10/month) with gold outline badge, white text, gold checkmarks, full-width gold CTA button
+     - Pro Plan: Light gray container ($49/month) with gold filled badge, dark text, black checkmarks, full-width outline CTA button
+     - Responsive: Side-by-side on desktop (≥1024px), stacked vertically on mobile/tablet
 - All pages use shared **AuthLayout** component with gradient left panel featuring "Hi, I'm MIA" intro
 - Implemented **FloatingLabelInput** component with Material UI-style animations
 - All forms include validation, accessibility features (ARIA labels, screen reader support), and comprehensive data-testid attributes

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { AuthLayout } from "@/components/auth-layout";
 
 type PlanType = "basic" | "pro" | null;
@@ -21,7 +21,7 @@ export default function Pricing() {
 
   return (
     <AuthLayout>
-      <div className="flex flex-col w-full max-w-[1000px] px-5 py-6 sm:px-8 sm:py-8 md:px-12 md:py-12">
+      <div className="flex flex-col w-full max-w-[1000px] px-5 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10">
         {/* Back Button */}
         <button
           type="button"
@@ -46,9 +46,9 @@ export default function Pricing() {
           className="mb-2"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "28px",
+            fontSize: "26px",
             fontWeight: 700,
-            lineHeight: "36px",
+            lineHeight: "32px",
             color: "#202020",
           }}
           data-testid="text-heading"
@@ -58,43 +58,42 @@ export default function Pricing() {
 
         {/* Subheading - Left Aligned */}
         <p
-          className="mb-10"
+          className="mb-8"
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
             fontWeight: 400,
             lineHeight: "20px",
-            color: "#6B7280",
+            color: "#9CA3AF",
           }}
           data-testid="text-subheading"
         >
           Start your 7-day free trial. No credit card required.
         </p>
 
-        {/* Pricing Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-[400px_1fr] gap-8 items-start">
+        {/* Pricing Layout - Responsive: stacks on smaller screens */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
           {/* Basic Plan - BLACK CARD */}
           <div
-            className="rounded-xl flex flex-col"
+            className="w-full lg:w-[380px] flex-shrink-0 rounded-2xl"
             style={{
-              backgroundColor: "#060606",
+              backgroundColor: "#000000",
               borderRadius: "16px",
-              padding: "32px 28px",
+              padding: "24px",
             }}
             data-testid="card-plan-basic"
           >
             {/* Badge */}
             <div
-              className="inline-flex items-center justify-center self-start mb-5"
+              className="inline-flex items-center justify-center mb-4"
               style={{
-                backgroundColor: "transparent",
-                border: "1px solid rgba(206, 165, 79, 0.5)",
+                border: "1px solid rgba(206, 165, 79, 0.6)",
                 borderRadius: "4px",
-                padding: "4px 12px",
+                padding: "3px 10px",
                 fontFamily: "Inter, sans-serif",
-                fontSize: "11px",
+                fontSize: "10px",
                 fontWeight: 600,
-                letterSpacing: "0.08em",
+                letterSpacing: "0.05em",
                 textTransform: "uppercase",
                 color: "#CEA54F",
               }}
@@ -108,10 +107,10 @@ export default function Pricing() {
               <span
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "48px",
+                  fontSize: "40px",
                   fontWeight: 700,
                   color: "#FFFFFF",
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "-0.01em",
                 }}
                 data-testid="price-basic"
               >
@@ -120,9 +119,9 @@ export default function Pricing() {
               <span
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "14px",
                   fontWeight: 400,
-                  color: "#9CA3AF",
+                  color: "#94A3B8",
                 }}
               >
                 /month
@@ -131,13 +130,13 @@ export default function Pricing() {
 
             {/* Description */}
             <p
-              className="mb-6"
+              className="mb-5"
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
+                fontSize: "13px",
                 fontWeight: 400,
-                lineHeight: "20px",
-                color: "#9CA3AF",
+                lineHeight: "18px",
+                color: "#94A3B8",
               }}
               data-testid="description-basic"
             >
@@ -145,8 +144,8 @@ export default function Pricing() {
             </p>
 
             {/* Features List */}
-            <div className="flex-1 mb-6">
-              <ul className="space-y-3">
+            <div className="mb-6">
+              <ul className="space-y-2.5">
                 {[
                   "10+ AI Generations",
                   "AI caption generation",
@@ -156,33 +155,40 @@ export default function Pricing() {
                 ].map((feature, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-3"
+                    className="flex items-center gap-2.5"
                     data-testid={`feature-basic-${index}`}
                   >
                     <div
                       className="flex items-center justify-center flex-shrink-0"
                       style={{
-                        width: "20px",
-                        height: "20px",
+                        width: "18px",
+                        height: "18px",
                         borderRadius: "50%",
                         backgroundColor: "#CEA54F",
                       }}
                     >
-                      <Check
-                        style={{
-                          width: "12px",
-                          height: "12px",
-                          color: "#FFFFFF",
-                          strokeWidth: 3,
-                        }}
-                      />
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1 4L3.5 6.5L9 1"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </div>
                     <span
                       style={{
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
+                        fontSize: "13px",
                         fontWeight: 400,
-                        lineHeight: "20px",
+                        lineHeight: "18px",
                         color: "#FFFFFF",
                       }}
                     >
@@ -193,13 +199,13 @@ export default function Pricing() {
               </ul>
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button - Full Width */}
             <button
               type="button"
               onClick={() => handleSelectPlan("basic")}
-              className="w-full rounded font-medium transition-opacity hover:opacity-90"
+              className="w-full rounded-lg font-semibold transition-opacity hover:opacity-90"
               style={{
-                height: "48px",
+                height: "44px",
                 borderRadius: "8px",
                 backgroundColor: "#CEA54F",
                 fontFamily: "Inter, sans-serif",
@@ -213,138 +219,155 @@ export default function Pricing() {
             </button>
           </div>
 
-          {/* Pro Plan - NO CARD, just content */}
-          <div className="flex flex-col" data-testid="section-plan-pro">
-            {/* Badge */}
+          {/* Pro Plan - Light Container */}
+          <div
+            className="w-full lg:flex-1"
+            data-testid="section-plan-pro"
+          >
             <div
-              className="inline-flex items-center justify-center self-start mb-5"
+              className="rounded-2xl"
               style={{
-                backgroundColor: "#CEA54F",
-                borderRadius: "4px",
-                padding: "4px 12px",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "11px",
-                fontWeight: 600,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "#FFFFFF",
+                backgroundColor: "#FAFAFA",
+                borderRadius: "16px",
+                padding: "24px",
               }}
-              data-testid="badge-pro"
             >
-              PRO
-            </div>
-
-            {/* Price */}
-            <div className="mb-3">
-              <span
+              {/* Badge */}
+              <div
+                className="inline-flex items-center justify-center mb-4"
                 style={{
+                  backgroundColor: "#CEA54F",
+                  borderRadius: "4px",
+                  padding: "3px 10px",
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "48px",
-                  fontWeight: 700,
-                  color: "#202020",
-                  letterSpacing: "-0.02em",
+                  fontSize: "10px",
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  color: "#FFFFFF",
                 }}
-                data-testid="price-pro"
+                data-testid="badge-pro"
               >
-                $49
-              </span>
-              <span
+                PRO
+              </div>
+
+              {/* Price */}
+              <div className="mb-3">
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "40px",
+                    fontWeight: 700,
+                    color: "#202020",
+                    letterSpacing: "-0.01em",
+                  }}
+                  data-testid="price-pro"
+                >
+                  $49
+                </span>
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    color: "#64748B",
+                  }}
+                >
+                  /month
+                </span>
+              </div>
+
+              {/* Description */}
+              <p
+                className="mb-5"
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "13px",
                   fontWeight: 400,
-                  color: "#6B7280",
+                  lineHeight: "18px",
+                  color: "#64748B",
                 }}
+                data-testid="description-pro"
               >
-                /month
-              </span>
-            </div>
+                For growing salons and professionals
+              </p>
 
-            {/* Description */}
-            <p
-              className="mb-6"
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "20px",
-                color: "#6B7280",
-              }}
-              data-testid="description-pro"
-            >
-              For growing salons and professionals
-            </p>
-
-            {/* Features List */}
-            <div className="flex-1 mb-6">
-              <ul className="space-y-3">
-                {[
-                  "Unlimited posts",
-                  "Autopilot AI content ideas",
-                  "All social platforms",
-                  "Analytics & insights",
-                  "Priority support",
-                ].map((feature, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start gap-3"
-                    data-testid={`feature-pro-${index}`}
-                  >
-                    <div
-                      className="flex items-center justify-center flex-shrink-0"
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "50%",
-                        backgroundColor: "#202020",
-                      }}
+              {/* Features List */}
+              <div className="mb-6">
+                <ul className="space-y-2.5">
+                  {[
+                    "Unlimited posts",
+                    "Autopilot AI content ideas",
+                    "All social platforms",
+                    "Analytics & insights",
+                    "Priority support",
+                  ].map((feature, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center gap-2.5"
+                      data-testid={`feature-pro-${index}`}
                     >
-                      <Check
+                      <div
+                        className="flex items-center justify-center flex-shrink-0"
                         style={{
-                          width: "12px",
-                          height: "12px",
-                          color: "#FFFFFF",
-                          strokeWidth: 3,
+                          width: "18px",
+                          height: "18px",
+                          borderRadius: "50%",
+                          backgroundColor: "#202020",
                         }}
-                      />
-                    </div>
-                    <span
-                      style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "20px",
-                        color: "#202020",
-                      }}
-                    >
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                      >
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 4L3.5 6.5L9 1"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <span
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "13px",
+                          fontWeight: 400,
+                          lineHeight: "18px",
+                          color: "#202020",
+                        }}
+                      >
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            {/* CTA Button */}
-            <button
-              type="button"
-              onClick={() => handleSelectPlan("pro")}
-              className="w-full md:w-auto md:self-start rounded font-medium transition-all hover:bg-gray-50"
-              style={{
-                height: "48px",
-                borderRadius: "8px",
-                backgroundColor: "transparent",
-                border: "2px solid #202020",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 600,
-                color: "#202020",
-                paddingLeft: "32px",
-                paddingRight: "32px",
-              }}
-              data-testid="button-select-pro"
-            >
-              Choose Plan
-            </button>
+              {/* CTA Button - Full Width */}
+              <button
+                type="button"
+                onClick={() => handleSelectPlan("pro")}
+                className="w-full rounded-lg font-semibold transition-all hover:bg-gray-50"
+                style={{
+                  height: "44px",
+                  borderRadius: "8px",
+                  backgroundColor: "transparent",
+                  border: "2px solid #202020",
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#202020",
+                }}
+                data-testid="button-select-pro"
+              >
+                Choose Plan
+              </button>
+            </div>
           </div>
         </div>
       </div>
