@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
 import BrandProfile from "@/pages/brand-profile";
+import BusinessType from "@/pages/business-type";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/sign-in" component={SignIn} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/brand-profile" component={BrandProfile} />
+          <Route path="/business-type" component={BusinessType} />
           <Route path="/" component={SignIn} />
           <Route component={NotFound} />
         </Switch>

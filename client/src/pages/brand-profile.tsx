@@ -44,7 +44,8 @@ export default function BrandProfile() {
     if (validateForm()) {
       // Handle brand profile creation
       console.log("Brand profile:", { brandName, productsServices, customers, location });
-      // TODO: Navigate to next page or save profile
+      // Navigate to business type selection
+      setLocation("/business-type");
     }
   };
 
