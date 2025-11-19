@@ -18,7 +18,7 @@ interface PricingPlan {
   description: string;
   features: PlanFeature[];
   buttonText: string;
-  highlighted?: boolean;
+  isDark?: boolean;
 }
 
 export default function Pricing() {
@@ -40,6 +40,7 @@ export default function Pricing() {
         { text: "Email support", included: true },
       ],
       buttonText: "Start for free",
+      isDark: true,
     },
     {
       id: "pro",
@@ -55,7 +56,7 @@ export default function Pricing() {
         { text: "Priority support", included: true },
       ],
       buttonText: "Choose Plan",
-      highlighted: true,
+      isDark: false,
     },
   ];
 
@@ -72,11 +73,10 @@ export default function Pricing() {
   return (
     <AuthLayout>
       <div
-        className="bg-white rounded-lg border flex flex-col w-full max-w-[900px] px-5 py-6 sm:px-8 sm:py-8 md:px-12 md:py-12"
+        className="bg-[#FBFAF7] rounded-lg flex flex-col w-full max-w-[920px] px-5 py-8 sm:px-8 sm:py-12 md:px-16 md:py-16"
         style={{
-          borderRadius: "8px",
-          borderWidth: "1px",
-          borderColor: "#E8E8E8",
+          borderRadius: "12px",
+          boxShadow: "0 4px 24px rgba(0, 0, 0, 0.06)",
         }}
         data-testid="card-pricing"
       >
@@ -84,7 +84,7 @@ export default function Pricing() {
         <button
           type="button"
           onClick={handleBack}
-          className="flex items-center gap-2 mb-8 text-gray-600 hover:text-gray-800 transition-colors self-start"
+          className="flex items-center gap-2 mb-10 text-gray-600 hover:text-gray-800 transition-colors self-start"
           data-testid="button-back"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -101,13 +101,14 @@ export default function Pricing() {
 
         {/* Heading */}
         <h2
-          className="mb-2 text-center"
+          className="mb-3 text-center max-w-[520px] mx-auto"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "24px",
-            fontWeight: 600,
-            lineHeight: "34px",
+            fontSize: "32px",
+            fontWeight: 700,
+            lineHeight: "38px",
             color: "#202020",
+            letterSpacing: "-0.02em",
           }}
           data-testid="text-heading"
         >
@@ -116,12 +117,12 @@ export default function Pricing() {
 
         {/* Subheading */}
         <p
-          className="mb-10 text-center"
+          className="mb-12 text-center max-w-[520px] mx-auto"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "14px",
+            fontSize: "16px",
             fontWeight: 400,
-            lineHeight: "20px",
+            lineHeight: "24px",
             color: "#484848",
           }}
           data-testid="text-subheading"
@@ -130,27 +131,32 @@ export default function Pricing() {
         </p>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-lg border p-6 flex flex-col ${
-                plan.highlighted ? "bg-[#040404] border-[#040404]" : "bg-white border-[#E8E8E8]"
-              }`}
+              className="rounded-xl flex flex-col shadow-md"
               style={{
+                backgroundColor: plan.isDark ? "#060606" : "#FFFFFF",
                 borderRadius: "12px",
+                padding: "40px 32px",
+                boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
               }}
               data-testid={`card-plan-${plan.id}`}
             >
               {/* Badge */}
               <div
-                className="inline-flex items-center justify-center self-start mb-4 px-3 py-1 rounded-full"
+                className="inline-flex items-center justify-center self-start mb-6 px-4 py-1.5"
                 style={{
-                  backgroundColor: plan.highlighted ? "#CEA54F" : "#F5F5F5",
+                  backgroundColor: plan.id === "pro" ? "#CEA54F" : "transparent",
+                  border: plan.id === "basic" ? "1px solid rgba(206, 165, 79, 0.4)" : "none",
+                  borderRadius: "6px",
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  color: plan.highlighted ? "#FFFFFF" : "#202020",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  color: plan.id === "pro" ? "#FFFFFF" : "#CEA54F",
                 }}
                 data-testid={`badge-${plan.id}`}
               >
@@ -158,13 +164,14 @@ export default function Pricing() {
               </div>
 
               {/* Price */}
-              <div className="mb-2">
+              <div className="mb-3">
                 <span
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "36px",
+                    fontSize: "48px",
                     fontWeight: 700,
-                    color: plan.highlighted ? "#FFFFFF" : "#202020",
+                    color: plan.isDark ? "#FFFFFF" : "#202020",
+                    letterSpacing: "-0.02em",
                   }}
                   data-testid={`price-${plan.id}`}
                 >
@@ -173,9 +180,9 @@ export default function Pricing() {
                 <span
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "18px",
                     fontWeight: 400,
-                    color: plan.highlighted ? "#E8E8E8" : "#484848",
+                    color: plan.isDark ? "#A0A0A0" : "#484848",
                   }}
                 >
                   /month
@@ -184,13 +191,13 @@ export default function Pricing() {
 
               {/* Description */}
               <p
-                className="mb-6"
+                className="mb-8"
                 style={{
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "14px",
+                  fontSize: "15px",
                   fontWeight: 400,
-                  lineHeight: "20px",
-                  color: plan.highlighted ? "#E8E8E8" : "#484848",
+                  lineHeight: "22px",
+                  color: plan.isDark ? "#B8B8B8" : "#484848",
                 }}
                 data-testid={`description-${plan.id}`}
               >
@@ -198,8 +205,8 @@ export default function Pricing() {
               </p>
 
               {/* Features List */}
-              <div className="flex-1 mb-6">
-                <ul className="space-y-3">
+              <div className="flex-1 mb-8">
+                <ul className="space-y-4">
                   {plan.features.map((feature, index) => (
                     <li
                       key={index}
@@ -209,27 +216,28 @@ export default function Pricing() {
                       <div
                         className="flex items-center justify-center flex-shrink-0 mt-0.5"
                         style={{
-                          width: "16px",
-                          height: "16px",
+                          width: "24px",
+                          height: "24px",
                           borderRadius: "50%",
-                          backgroundColor: plan.highlighted ? "#CEA54F" : "#CEA54F",
+                          backgroundColor: "#CEA54F",
                         }}
                       >
                         <Check
                           style={{
-                            width: "10px",
-                            height: "10px",
+                            width: "14px",
+                            height: "14px",
                             color: "#FFFFFF",
+                            strokeWidth: 3,
                           }}
                         />
                       </div>
                       <span
                         style={{
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 400,
-                          lineHeight: "20px",
-                          color: plan.highlighted ? "#FFFFFF" : "#202020",
+                          lineHeight: "24px",
+                          color: plan.isDark ? "#FFFFFF" : "#202020",
                         }}
                       >
                         {feature.text}
@@ -243,15 +251,16 @@ export default function Pricing() {
               <button
                 type="button"
                 onClick={() => handleSelectPlan(plan.id as PlanType)}
-                className="w-full rounded font-medium transition-opacity hover:opacity-90"
+                className="w-full rounded font-medium transition-all"
                 style={{
-                  height: "48px",
+                  height: "52px",
                   borderRadius: "8px",
-                  backgroundColor: "#CEA54F",
+                  backgroundColor: plan.id === "basic" ? "#CEA54F" : "transparent",
+                  border: plan.id === "pro" ? "2px solid #202020" : "none",
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  color: "#FFFFFF",
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  color: plan.id === "basic" ? "#FFFFFF" : "#202020",
                 }}
                 data-testid={`button-select-${plan.id}`}
               >
