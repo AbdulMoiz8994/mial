@@ -8,6 +8,7 @@ import SignUp from "@/pages/sign-up";
 import BrandProfile from "@/pages/brand-profile";
 import BusinessType from "@/pages/business-type";
 import Goals from "@/pages/goals";
+import BrandColors from "@/pages/brand-colors";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/brand-profile" component={BrandProfile} />
           <Route path="/business-type" component={BusinessType} />
           <Route path="/goals" component={Goals} />
+          <Route path="/brand-colors" component={BrandColors} />
           <Route path="/" component={SignIn} />
           <Route component={NotFound} />
         </Switch>

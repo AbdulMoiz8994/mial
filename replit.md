@@ -7,6 +7,21 @@ MIA is an AI-powered content creation platform designed specifically for hair st
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+User explicitly requested: Use emojis (💇💅💈💆) for business type selection options.
+
+## Recent Changes
+
+### November 19, 2025 - Onboarding Flow Implementation
+- Built complete onboarding flow with 5 pages:
+  1. **Sign Up** (`/sign-up`): User registration with email/password
+  2. **Brand Profile** (`/brand-profile`): Business name, products/services, target customers, location
+  3. **Business Type** (`/business-type`): Selection with emoji indicators (💇 Hair Salon, 💅 Nail Bar, 💈 Barber, 💆 Spa/Other)
+  4. **Goals** (`/goals`): Multi-select checkboxes for business goals (Get more clients, Post consistently, Build brand awareness, Grow followers)
+  5. **Brand Colors** (`/brand-colors`): Logo upload (drag-and-drop, max 5MB PNG/JPG) + brand color selection (7 options: #D91818, #53BF00, #4F5ADA, #C31297, #040404, #CEA54F, #720A94)
+- All pages use shared **AuthLayout** component with gradient left panel featuring "Hi, I'm MIA" intro
+- Implemented **FloatingLabelInput** component with Material UI-style animations
+- All forms include validation, accessibility features (ARIA labels, screen reader support), and comprehensive data-testid attributes
+- Navigation flow: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → (Next step TBD)
 
 ## System Architecture
 

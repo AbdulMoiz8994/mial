@@ -36,7 +36,7 @@ export default function Goals() {
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Selected goals:", selectedGoals);
-    // TODO: Navigate to next page
+    setLocation("/brand-colors");
   };
 
   return (
