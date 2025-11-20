@@ -71,11 +71,11 @@ export default function Pricing() {
           Start your 7-day free trial. No credit card required.
         </p>
 
-        {/* Pricing Layout - Responsive: stacks on smaller screens */}
-        <div className="flex flex-col lg:flex-row gap-6 items-stretch w-full">
+        {/* Pricing Layout - Responsive: uses flex-wrap to auto-stack when needed */}
+        <div className="flex flex-wrap gap-6 items-stretch w-full">
           {/* Basic Plan - BLACK CARD with Two-Column Layout */}
           <div
-            className="w-full lg:flex-1"
+            className="flex-1 min-w-[320px]"
             style={{
               backgroundColor: "#000000",
               borderRadius: "16px",
@@ -237,7 +237,7 @@ export default function Pricing() {
 
           {/* Pro Plan - Light Container with Two-Column Layout */}
           <div
-            className="w-full lg:flex-1"
+            className="flex-1 min-w-[320px]"
             data-testid="section-plan-pro"
           >
             <div
