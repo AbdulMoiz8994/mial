@@ -79,13 +79,13 @@ export default function Pricing() {
             style={{
               backgroundColor: "#000000",
               borderRadius: "16px",
-              padding: "20px",
+              padding: "18px",
             }}
             data-testid="card-plan-basic"
           >
             {/* Badge */}
             <div
-              className="inline-flex items-center justify-center mb-4"
+              className="inline-flex items-center justify-center mb-3"
               style={{
                 border: "1px solid rgba(206, 165, 79, 0.6)",
                 borderRadius: "4px",
@@ -103,11 +103,11 @@ export default function Pricing() {
             </div>
 
             {/* Two-Column Layout: Left (Price/Description) | Border | Right (Features) */}
-            <div className="flex gap-4 mb-5">
+            <div className="flex gap-4 mb-4">
               {/* LEFT COLUMN: Price and Description */}
               <div className="flex-shrink-0" style={{ width: "140px" }}>
                 {/* Price */}
-                <div className="mb-3">
+                <div className="mb-2">
                   <div
                     style={{
                       fontFamily: "Inter, sans-serif",
@@ -140,7 +140,7 @@ export default function Pricing() {
                     fontFamily: "Inter, sans-serif",
                     fontSize: "11px",
                     fontWeight: 400,
-                    lineHeight: "16px",
+                    lineHeight: "15px",
                     color: "#94A3B8",
                   }}
                   data-testid="description-basic"
@@ -160,7 +160,7 @@ export default function Pricing() {
 
               {/* RIGHT COLUMN: Features List */}
               <div className="flex-1">
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   {[
                     "10+ AI Generations",
                     "AI caption generation",
@@ -244,12 +244,12 @@ export default function Pricing() {
               style={{
                 backgroundColor: "#FAFAFA",
                 borderRadius: "16px",
-                padding: "20px",
+                padding: "18px",
               }}
             >
               {/* Badge */}
               <div
-                className="inline-flex items-center justify-center mb-4"
+                className="inline-flex items-center justify-center mb-3"
                 style={{
                   backgroundColor: "#CEA54F",
                   borderRadius: "4px",
@@ -267,11 +267,11 @@ export default function Pricing() {
               </div>
 
               {/* Two-Column Layout: Left (Price/Description) | Border | Right (Features) */}
-              <div className="flex gap-4 mb-5">
+              <div className="flex gap-4 mb-4">
                 {/* LEFT COLUMN: Price and Description */}
                 <div className="flex-shrink-0" style={{ width: "140px" }}>
                   {/* Price */}
-                  <div className="mb-3">
+                  <div className="mb-2">
                     <div
                       style={{
                         fontFamily: "Inter, sans-serif",
@@ -304,7 +304,7 @@ export default function Pricing() {
                       fontFamily: "Inter, sans-serif",
                       fontSize: "11px",
                       fontWeight: 400,
-                      lineHeight: "16px",
+                      lineHeight: "15px",
                       color: "#64748B",
                     }}
                     data-testid="description-pro"
@@ -324,7 +324,7 @@ export default function Pricing() {
 
                 {/* RIGHT COLUMN: Features List */}
                 <div className="flex-1">
-                  <ul className="space-y-2">
+                  <ul className="space-y-1.5">
                     {[
                       "Unlimited posts",
                       "Autopilot AI content ideas",
