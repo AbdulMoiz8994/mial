@@ -21,7 +21,7 @@ export default function Pricing() {
 
   return (
     <AuthLayout>
-      <div className="flex flex-col w-full max-w-[1000px] px-5 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10">
+      <div className="flex flex-col w-full max-w-[1200px] px-5 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10">
         {/* Back Button */}
         <button
           type="button"
@@ -72,10 +72,10 @@ export default function Pricing() {
         </p>
 
         {/* Pricing Layout - Responsive: stacks on smaller screens */}
-        <div className="flex flex-col xl:flex-row gap-6 items-stretch">
+        <div className="flex flex-col lg:flex-row gap-6 items-stretch w-full">
           {/* Basic Plan - BLACK CARD with Two-Column Layout */}
           <div
-            className="w-full xl:w-1/2 xl:max-w-[500px]"
+            className="w-full lg:flex-1"
             style={{
               backgroundColor: "#000000",
               borderRadius: "16px",
@@ -237,7 +237,7 @@ export default function Pricing() {
 
           {/* Pro Plan - Light Container with Two-Column Layout */}
           <div
-            className="w-full xl:w-1/2 xl:max-w-[500px]"
+            className="w-full lg:flex-1"
             data-testid="section-plan-pro"
           >
             <div
