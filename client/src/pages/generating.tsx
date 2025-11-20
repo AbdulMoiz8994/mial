@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { AuthLayout } from "@/components/auth-layout";
-import { Sparkles } from "lucide-react";
+import starsIcon from "@assets/stars_1763667710762.png";
 
 export default function Generating() {
   const [, setLocation] = useLocation();
@@ -50,12 +50,15 @@ export default function Generating() {
                   backgroundColor: "#CEA54F",
                 }}
               >
-                <Sparkles
-                  className="text-white animate-pulse"
+                <img
+                  src={starsIcon}
+                  alt="Loading"
+                  className="animate-pulse"
                   style={{
                     width: "28px",
                     height: "28px",
                   }}
+                  data-testid="img-stars-icon"
                 />
               </div>
             </div>
