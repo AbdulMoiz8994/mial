@@ -72,10 +72,10 @@ export default function Pricing() {
         </p>
 
         {/* Pricing Layout - Responsive: stacks on smaller screens */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+        <div className="flex flex-col xl:flex-row gap-6 items-stretch">
           {/* Basic Plan - BLACK CARD with Two-Column Layout */}
           <div
-            className="w-full lg:w-[400px] flex-shrink-0"
+            className="w-full xl:w-1/2 xl:max-w-[500px]"
             style={{
               backgroundColor: "#000000",
               borderRadius: "16px",
@@ -237,10 +237,11 @@ export default function Pricing() {
 
           {/* Pro Plan - Light Container with Two-Column Layout */}
           <div
-            className="w-full lg:flex-1"
+            className="w-full xl:w-1/2 xl:max-w-[500px]"
             data-testid="section-plan-pro"
           >
             <div
+              className="h-full"
               style={{
                 backgroundColor: "#FAFAFA",
                 borderRadius: "16px",
