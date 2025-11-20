@@ -127,7 +127,7 @@ export default function Pricing() {
                       fontSize: "12px",
                       fontWeight: 400,
                       color: "#94A3B8",
-                      marginTop: "2px",
+                      marginTop: "4px",
                     }}
                   >
                     /month
@@ -160,7 +160,7 @@ export default function Pricing() {
 
               {/* RIGHT COLUMN: Features List */}
               <div className="flex-1">
-                <ul className="space-y-1.5">
+                <ul className="space-y-2.5">
                   {[
                     "10+ AI Generations",
                     "AI caption generation",
@@ -201,7 +201,7 @@ export default function Pricing() {
                       <span
                         style={{
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "12px",
+                          fontSize: "13px",
                           fontWeight: 400,
                           lineHeight: "16px",
                           color: "#FFFFFF",
@@ -291,7 +291,7 @@ export default function Pricing() {
                         fontSize: "12px",
                         fontWeight: 400,
                         color: "#64748B",
-                        marginTop: "2px",
+                        marginTop: "4px",
                       }}
                     >
                       /month
@@ -324,7 +324,7 @@ export default function Pricing() {
 
                 {/* RIGHT COLUMN: Features List */}
                 <div className="flex-1">
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-2.5">
                     {[
                       "Unlimited posts",
                       "Autopilot AI content ideas",
@@ -365,7 +365,7 @@ export default function Pricing() {
                         <span
                           style={{
                             fontFamily: "Inter, sans-serif",
-                            fontSize: "12px",
+                            fontSize: "13px",
                             fontWeight: 400,
                             lineHeight: "16px",
                             color: "#202020",
