@@ -80,6 +80,7 @@ export default function Pricing() {
               backgroundColor: "#000000",
               borderRadius: "16px",
               padding: "24px",
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)",
             }}
             data-testid="card-plan-basic"
           >
@@ -246,6 +247,7 @@ export default function Pricing() {
                 backgroundColor: "#FAFAFA",
                 borderRadius: "16px",
                 padding: "24px",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
               }}
             >
               {/* Badge */}
