@@ -1,0 +1,45 @@
+PROJECT: MIA - AI Content Creator for Beauty Industry
+What We're Building:
+
+AI-powered content creation app for hair stylists, beauty professionals, and barbers
+Generates social media content (Instagram, TikTok, Facebook, etc.)
+7-page onboarding flow currently in development
+CRITICAL RULES - MUST FOLLOW:
+
+✅ Ask before making ANY changes - user requires confirmation before implementing
+✅ Build UI from exact Figma screenshots - NOT from written guidelines or interpretation
+✅ User provides Figma screenshots - implement pixel-perfect matches to those images
+✅ Use emojis for business type options ONLY - 💇 Hair Salon, 💅 Nail Bar, 💈 Barber, 💆 Spa/Other (this is an exception to the general no-emoji rule)
+Current Status - Completed Pages:
+
+✅ Sign Up (/sign-up)
+✅ Sign In (/sign-in)
+✅ Brand Profile (/brand-profile)
+✅ Business Type (/business-type) - with emoji selectors
+✅ Goals (/goals)
+✅ Brand Colors (/brand-colors)
+✅ Social Media Focus (/social-media-focus)
+🔄 Pricing (/pricing) - Currently being refined iteratively
+Pricing Page - Current Design (from Figma):
+
+Two-column card layout: Left (price + description) | Vertical border | Right (feature checkmarks)
+Basic Plan: Black card (#000000), gold outline badge, gold checkmarks, full-width gold button
+Pro Plan: Light gray container (#FAFAFA), gold filled badge, black checkmarks, outline button
+Responsive: Side-by-side ≥1024px, stacked vertically on mobile
+Compact spacing: 18px padding, tight margins between elements
+Latest adjustments: 10px spacing between checkmarks, 4px gap between price and "/month", 13px feature font
+Design System:
+
+AuthLayout component with gradient left panel ("Hi, I'm MIA")
+FloatingLabelInput with Material UI animations
+Inter font (primary), Playfair Display (accent)
+Gold accent color: #CEA54F
+All pages fully responsive with data-testid attributes
+Tech Stack:
+
+React + TypeScript + Vite
+Wouter for routing
+shadcn/ui + Tailwind CSS
+In-memory storage (MemStorage)
+User Workflow:
+User provides Figma screenshots → Agent asks for confirmation → Implements exact design → User checks → Iterative refinements if needed
