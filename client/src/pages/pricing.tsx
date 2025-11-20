@@ -16,7 +16,7 @@ export default function Pricing() {
   const handleSelectPlan = (planId: PlanType) => {
     setSelectedPlan(planId);
     console.log("Selected plan:", planId);
-    // TODO: Navigate to payment/dashboard
+    setLocation("/generating");
   };
 
   return (

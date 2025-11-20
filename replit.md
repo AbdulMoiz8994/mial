@@ -11,6 +11,30 @@ User explicitly requested: Use emojis (💇💅💈💆) for business type selec
 
 ## Recent Changes
 
+### November 20, 2025 - Pricing Page Refinements & Generating Page
+- **Pricing Page Improvements** (`/pricing`):
+  - Enhanced to match Figma design with pixel-perfect accuracy
+  - Inline price layout ($10/month instead of stacked)
+  - Increased font sizes: price 40px, features 14px
+  - Better vertical spacing with increased padding (24px)
+  - Dashed vertical separator between columns
+  - Badge updates: White outline for Basic, gold filled for Pro
+  - Larger checkmark circles (18px) with refined styling
+  - Subtle box shadows for depth and elevation
+  - Flex-wrap responsive layout - cards automatically wrap when space is limited
+- **Generating Page** (`/generating`):
+  - Animated loading page shown after plan selection
+  - Features spinning gold loader with sparkles icon
+  - Displays for 6 seconds then auto-redirects to home page
+  - Uses AuthLayout with MIA branding
+  - Smooth animations using Tailwind and Lucide icons
+- **Home Page** (`/home`):
+  - Simple placeholder dashboard
+  - Feature cards highlighting AI content, business growth, time-saving
+  - Welcome message for completed onboarding
+  - Clean gradient background with MIA branding
+- **Updated Navigation Flow**: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → Social Media Focus → Pricing → Generating (6s animation) → Home
+
 ### November 19, 2025 - Onboarding Flow Implementation
 - Built complete onboarding flow with 7 pages:
   1. **Sign Up** (`/sign-up`): User registration with email/password
@@ -19,15 +43,11 @@ User explicitly requested: Use emojis (💇💅💈💆) for business type selec
   4. **Goals** (`/goals`): Multi-select checkboxes for business goals (Get more clients, Post consistently, Build brand awareness, Grow followers)
   5. **Brand Colors** (`/brand-colors`): Logo upload (drag-and-drop, max 5MB PNG/JPG) + brand color selection (7 options: #D91818, #53BF00, #4F5ADA, #C31297, #040404, #CEA54F, #720A94)
   6. **Social Media Focus** (`/social-media-focus`): Multi-select platform checkboxes (Instagram, Facebook, LinkedIn, TikTok, YouTube, X/Twitter)
-  7. **Pricing** (`/pricing`): Two-tier pricing comparison
-     - Basic Plan: Black card ($10/month) with gold outline badge, white text, gold checkmarks, full-width gold CTA button
-     - Pro Plan: Light gray container ($49/month) with gold filled badge, dark text, black checkmarks, full-width outline CTA button
-     - Responsive: Side-by-side on desktop (≥1024px), stacked vertically on mobile/tablet
+  7. **Pricing** (`/pricing`): Two-tier pricing comparison with responsive flex-wrap layout
 - All pages use shared **AuthLayout** component with gradient left panel featuring "Hi, I'm MIA" intro
 - Implemented **FloatingLabelInput** component with Material UI-style animations
 - All forms include validation, accessibility features (ARIA labels, screen reader support), and comprehensive data-testid attributes
 - **Fully responsive**: Mobile (stacked layouts), Tablet, Desktop (side-by-side) - all touch targets meet 48px minimum
-- Navigation flow: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → Social Media Focus → Pricing → (Dashboard/Payment TBD)
 
 ## System Architecture
 
