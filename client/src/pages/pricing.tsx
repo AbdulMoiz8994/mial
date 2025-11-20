@@ -79,68 +79,67 @@ export default function Pricing() {
             style={{
               backgroundColor: "#000000",
               borderRadius: "16px",
-              padding: "18px",
+              padding: "24px",
             }}
             data-testid="card-plan-basic"
           >
             {/* Badge */}
             <div
-              className="inline-flex items-center justify-center mb-3"
+              className="inline-flex items-center justify-center mb-5"
               style={{
-                border: "1px solid rgba(206, 165, 79, 0.6)",
+                border: "1px solid rgba(255, 255, 255, 0.4)",
                 borderRadius: "4px",
-                padding: "3px 10px",
+                padding: "4px 12px",
                 fontFamily: "Inter, sans-serif",
-                fontSize: "10px",
+                fontSize: "11px",
                 fontWeight: 600,
                 letterSpacing: "0.05em",
-                textTransform: "uppercase",
-                color: "#CEA54F",
+                textTransform: "capitalize",
+                color: "#FFFFFF",
               }}
               data-testid="badge-basic"
             >
-              BASIC
+              Basic
             </div>
 
             {/* Two-Column Layout: Left (Price/Description) | Border | Right (Features) */}
-            <div className="flex gap-4 mb-4">
+            <div className="flex gap-6 mb-6">
               {/* LEFT COLUMN: Price and Description */}
               <div className="flex-shrink-0" style={{ width: "140px" }}>
                 {/* Price */}
-                <div className="mb-2">
-                  <div
+                <div className="flex items-baseline gap-1 mb-4">
+                  <span
                     style={{
                       fontFamily: "Inter, sans-serif",
-                      fontSize: "32px",
+                      fontSize: "40px",
                       fontWeight: 700,
                       color: "#FFFFFF",
-                      letterSpacing: "-0.01em",
+                      letterSpacing: "-0.02em",
                       lineHeight: "1",
                     }}
                     data-testid="price-basic"
                   >
                     $10
-                  </div>
-                  <div
+                  </span>
+                  <span
                     style={{
                       fontFamily: "Inter, sans-serif",
-                      fontSize: "12px",
+                      fontSize: "14px",
                       fontWeight: 400,
                       color: "#94A3B8",
-                      marginTop: "4px",
                     }}
                   >
                     /month
-                  </div>
+                  </span>
                 </div>
 
                 {/* Description */}
                 <p
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "11px",
+                    fontSize: "12px",
                     fontWeight: 400,
-                    lineHeight: "15px",
+                    lineHeight: "17px",
                     color: "#94A3B8",
                   }}
                   data-testid="description-basic"
@@ -149,20 +148,20 @@ export default function Pricing() {
                 </p>
               </div>
 
-              {/* VERTICAL BORDER */}
+              {/* VERTICAL DASHED BORDER */}
               <div
                 style={{
                   width: "1px",
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  backgroundImage: "repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0px, rgba(255, 255, 255, 0.2) 4px, transparent 4px, transparent 8px)",
                   flexShrink: 0,
                 }}
               />
 
               {/* RIGHT COLUMN: Features List */}
               <div className="flex-1">
-                <ul className="space-y-2.5">
+                <ul className="space-y-3">
                   {[
-                    "10+ AI Generations",
+                    "10+ AI Generators",
                     "AI caption generation",
                     "Basic templates library",
                     "Instagram & Facebook",
@@ -170,21 +169,22 @@ export default function Pricing() {
                   ].map((feature, index) => (
                     <li
                       key={index}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2.5"
                       data-testid={`feature-basic-${index}`}
                     >
                       <div
                         className="flex items-center justify-center flex-shrink-0"
                         style={{
-                          width: "16px",
-                          height: "16px",
+                          width: "18px",
+                          height: "18px",
                           borderRadius: "50%",
-                          backgroundColor: "#CEA54F",
+                          backgroundColor: "transparent",
+                          border: "1.5px solid rgba(255, 255, 255, 0.3)",
                         }}
                       >
                         <svg
-                          width="9"
-                          height="7"
+                          width="10"
+                          height="8"
                           viewBox="0 0 10 8"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -192,7 +192,7 @@ export default function Pricing() {
                           <path
                             d="M1 4L3.5 6.5L9 1"
                             stroke="white"
-                            strokeWidth="2"
+                            strokeWidth="1.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           />
@@ -201,10 +201,10 @@ export default function Pricing() {
                       <span
                         style={{
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "13px",
+                          fontSize: "14px",
                           fontWeight: 400,
-                          lineHeight: "16px",
-                          color: "#FFFFFF",
+                          lineHeight: "18px",
+                          color: "#E5E7EB",
                         }}
                       >
                         {feature}
@@ -221,11 +221,11 @@ export default function Pricing() {
               onClick={() => handleSelectPlan("basic")}
               className="w-full rounded-lg font-semibold transition-opacity hover:opacity-90"
               style={{
-                height: "40px",
+                height: "44px",
                 borderRadius: "8px",
                 backgroundColor: "#CEA54F",
                 fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
+                fontSize: "15px",
                 fontWeight: 600,
                 color: "#FFFFFF",
               }}
@@ -244,67 +244,66 @@ export default function Pricing() {
               style={{
                 backgroundColor: "#FAFAFA",
                 borderRadius: "16px",
-                padding: "18px",
+                padding: "24px",
               }}
             >
               {/* Badge */}
               <div
-                className="inline-flex items-center justify-center mb-3"
+                className="inline-flex items-center justify-center mb-5"
                 style={{
                   backgroundColor: "#CEA54F",
                   borderRadius: "4px",
-                  padding: "3px 10px",
+                  padding: "4px 12px",
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   fontWeight: 600,
                   letterSpacing: "0.05em",
-                  textTransform: "uppercase",
+                  textTransform: "capitalize",
                   color: "#FFFFFF",
                 }}
                 data-testid="badge-pro"
               >
-                PRO
+                Pro
               </div>
 
               {/* Two-Column Layout: Left (Price/Description) | Border | Right (Features) */}
-              <div className="flex gap-4 mb-4">
+              <div className="flex gap-6 mb-6">
                 {/* LEFT COLUMN: Price and Description */}
                 <div className="flex-shrink-0" style={{ width: "140px" }}>
                   {/* Price */}
-                  <div className="mb-2">
-                    <div
+                  <div className="flex items-baseline gap-1 mb-4">
+                    <span
                       style={{
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "32px",
+                        fontSize: "40px",
                         fontWeight: 700,
                         color: "#202020",
-                        letterSpacing: "-0.01em",
+                        letterSpacing: "-0.02em",
                         lineHeight: "1",
                       }}
                       data-testid="price-pro"
                     >
                       $49
-                    </div>
-                    <div
+                    </span>
+                    <span
                       style={{
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "12px",
+                        fontSize: "14px",
                         fontWeight: 400,
                         color: "#64748B",
-                        marginTop: "4px",
                       }}
                     >
                       /month
-                    </div>
+                    </span>
                   </div>
 
                   {/* Description */}
                   <p
                     style={{
                       fontFamily: "Inter, sans-serif",
-                      fontSize: "11px",
+                      fontSize: "12px",
                       fontWeight: 400,
-                      lineHeight: "15px",
+                      lineHeight: "17px",
                       color: "#64748B",
                     }}
                     data-testid="description-pro"
@@ -313,18 +312,18 @@ export default function Pricing() {
                   </p>
                 </div>
 
-                {/* VERTICAL BORDER */}
+                {/* VERTICAL DASHED BORDER */}
                 <div
                   style={{
                     width: "1px",
-                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    backgroundImage: "repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0px, rgba(0, 0, 0, 0.15) 4px, transparent 4px, transparent 8px)",
                     flexShrink: 0,
                   }}
                 />
 
                 {/* RIGHT COLUMN: Features List */}
                 <div className="flex-1">
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-3">
                     {[
                       "Unlimited posts",
                       "Autopilot AI content ideas",
@@ -334,21 +333,21 @@ export default function Pricing() {
                     ].map((feature, index) => (
                       <li
                         key={index}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2.5"
                         data-testid={`feature-pro-${index}`}
                       >
                         <div
                           className="flex items-center justify-center flex-shrink-0"
                           style={{
-                            width: "16px",
-                            height: "16px",
+                            width: "18px",
+                            height: "18px",
                             borderRadius: "50%",
                             backgroundColor: "#202020",
                           }}
                         >
                           <svg
-                            width="9"
-                            height="7"
+                            width="10"
+                            height="8"
                             viewBox="0 0 10 8"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -356,7 +355,7 @@ export default function Pricing() {
                             <path
                               d="M1 4L3.5 6.5L9 1"
                               stroke="white"
-                              strokeWidth="2"
+                              strokeWidth="1.5"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                             />
@@ -365,9 +364,9 @@ export default function Pricing() {
                         <span
                           style={{
                             fontFamily: "Inter, sans-serif",
-                            fontSize: "13px",
+                            fontSize: "14px",
                             fontWeight: 400,
-                            lineHeight: "16px",
+                            lineHeight: "18px",
                             color: "#202020",
                           }}
                         >
@@ -385,12 +384,12 @@ export default function Pricing() {
                 onClick={() => handleSelectPlan("pro")}
                 className="w-full rounded-lg font-semibold transition-all hover:bg-gray-50"
                 style={{
-                  height: "40px",
+                  height: "44px",
                   borderRadius: "8px",
                   backgroundColor: "transparent",
                   border: "2px solid #202020",
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "14px",
+                  fontSize: "15px",
                   fontWeight: 600,
                   color: "#202020",
                 }}
