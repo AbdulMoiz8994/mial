@@ -73,13 +73,13 @@ export default function Pricing() {
 
         {/* Pricing Layout - Responsive: stacks on smaller screens */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-          {/* Basic Plan - BLACK CARD */}
+          {/* Basic Plan - BLACK CARD with Two-Column Layout */}
           <div
-            className="w-full lg:w-[380px] flex-shrink-0 rounded-2xl"
+            className="w-full lg:w-[400px] flex-shrink-0"
             style={{
               backgroundColor: "#000000",
               borderRadius: "16px",
-              padding: "24px",
+              padding: "20px",
             }}
             data-testid="card-plan-basic"
           >
@@ -99,104 +99,120 @@ export default function Pricing() {
               }}
               data-testid="badge-basic"
             >
-              Basic
+              BASIC
             </div>
 
-            {/* Price */}
-            <div className="mb-3">
-              <span
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "40px",
-                  fontWeight: 700,
-                  color: "#FFFFFF",
-                  letterSpacing: "-0.01em",
-                }}
-                data-testid="price-basic"
-              >
-                $10
-              </span>
-              <span
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  color: "#94A3B8",
-                }}
-              >
-                /month
-              </span>
-            </div>
-
-            {/* Description */}
-            <p
-              className="mb-5"
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "13px",
-                fontWeight: 400,
-                lineHeight: "18px",
-                color: "#94A3B8",
-              }}
-              data-testid="description-basic"
-            >
-              Perfect for solo beauty professionals
-            </p>
-
-            {/* Features List */}
-            <div className="mb-6">
-              <ul className="space-y-2.5">
-                {[
-                  "10+ AI Generations",
-                  "AI caption generation",
-                  "Basic templates library",
-                  "Instagram & Facebook",
-                  "Email support",
-                ].map((feature, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-2.5"
-                    data-testid={`feature-basic-${index}`}
+            {/* Two-Column Layout: Left (Price/Description) | Border | Right (Features) */}
+            <div className="flex gap-4 mb-5">
+              {/* LEFT COLUMN: Price and Description */}
+              <div className="flex-shrink-0" style={{ width: "140px" }}>
+                {/* Price */}
+                <div className="mb-3">
+                  <div
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "32px",
+                      fontWeight: 700,
+                      color: "#FFFFFF",
+                      letterSpacing: "-0.01em",
+                      lineHeight: "1",
+                    }}
+                    data-testid="price-basic"
                   >
-                    <div
-                      className="flex items-center justify-center flex-shrink-0"
-                      style={{
-                        width: "18px",
-                        height: "18px",
-                        borderRadius: "50%",
-                        backgroundColor: "#CEA54F",
-                      }}
+                    $10
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 400,
+                      color: "#94A3B8",
+                      marginTop: "2px",
+                    }}
+                  >
+                    /month
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "11px",
+                    fontWeight: 400,
+                    lineHeight: "16px",
+                    color: "#94A3B8",
+                  }}
+                  data-testid="description-basic"
+                >
+                  Perfect for solo beauty professionals
+                </p>
+              </div>
+
+              {/* VERTICAL BORDER */}
+              <div
+                style={{
+                  width: "1px",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  flexShrink: 0,
+                }}
+              />
+
+              {/* RIGHT COLUMN: Features List */}
+              <div className="flex-1">
+                <ul className="space-y-2">
+                  {[
+                    "10+ AI Generations",
+                    "AI caption generation",
+                    "Basic templates library",
+                    "Instagram & Facebook",
+                    "Email support",
+                  ].map((feature, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center gap-2"
+                      data-testid={`feature-basic-${index}`}
                     >
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <div
+                        className="flex items-center justify-center flex-shrink-0"
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          borderRadius: "50%",
+                          backgroundColor: "#CEA54F",
+                        }}
                       >
-                        <path
-                          d="M1 4L3.5 6.5L9 1"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-                    <span
-                      style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "13px",
-                        fontWeight: 400,
-                        lineHeight: "18px",
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                        <svg
+                          width="9"
+                          height="7"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 4L3.5 6.5L9 1"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <span
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 400,
+                          lineHeight: "16px",
+                          color: "#FFFFFF",
+                        }}
+                      >
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             {/* CTA Button - Full Width */}
@@ -205,7 +221,7 @@ export default function Pricing() {
               onClick={() => handleSelectPlan("basic")}
               className="w-full rounded-lg font-semibold transition-opacity hover:opacity-90"
               style={{
-                height: "44px",
+                height: "40px",
                 borderRadius: "8px",
                 backgroundColor: "#CEA54F",
                 fontFamily: "Inter, sans-serif",
@@ -219,17 +235,16 @@ export default function Pricing() {
             </button>
           </div>
 
-          {/* Pro Plan - Light Container */}
+          {/* Pro Plan - Light Container with Two-Column Layout */}
           <div
             className="w-full lg:flex-1"
             data-testid="section-plan-pro"
           >
             <div
-              className="rounded-2xl"
               style={{
                 backgroundColor: "#FAFAFA",
                 borderRadius: "16px",
-                padding: "24px",
+                padding: "20px",
               }}
             >
               {/* Badge */}
@@ -251,101 +266,117 @@ export default function Pricing() {
                 PRO
               </div>
 
-              {/* Price */}
-              <div className="mb-3">
-                <span
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "40px",
-                    fontWeight: 700,
-                    color: "#202020",
-                    letterSpacing: "-0.01em",
-                  }}
-                  data-testid="price-pro"
-                >
-                  $49
-                </span>
-                <span
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    color: "#64748B",
-                  }}
-                >
-                  /month
-                </span>
-              </div>
-
-              {/* Description */}
-              <p
-                className="mb-5"
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "13px",
-                  fontWeight: 400,
-                  lineHeight: "18px",
-                  color: "#64748B",
-                }}
-                data-testid="description-pro"
-              >
-                For growing salons and professionals
-              </p>
-
-              {/* Features List */}
-              <div className="mb-6">
-                <ul className="space-y-2.5">
-                  {[
-                    "Unlimited posts",
-                    "Autopilot AI content ideas",
-                    "All social platforms",
-                    "Analytics & insights",
-                    "Priority support",
-                  ].map((feature, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-2.5"
-                      data-testid={`feature-pro-${index}`}
+              {/* Two-Column Layout: Left (Price/Description) | Border | Right (Features) */}
+              <div className="flex gap-4 mb-5">
+                {/* LEFT COLUMN: Price and Description */}
+                <div className="flex-shrink-0" style={{ width: "140px" }}>
+                  {/* Price */}
+                  <div className="mb-3">
+                    <div
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "32px",
+                        fontWeight: 700,
+                        color: "#202020",
+                        letterSpacing: "-0.01em",
+                        lineHeight: "1",
+                      }}
+                      data-testid="price-pro"
                     >
-                      <div
-                        className="flex items-center justify-center flex-shrink-0"
-                        style={{
-                          width: "18px",
-                          height: "18px",
-                          borderRadius: "50%",
-                          backgroundColor: "#202020",
-                        }}
+                      $49
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "12px",
+                        fontWeight: 400,
+                        color: "#64748B",
+                        marginTop: "2px",
+                      }}
+                    >
+                      /month
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 400,
+                      lineHeight: "16px",
+                      color: "#64748B",
+                    }}
+                    data-testid="description-pro"
+                  >
+                    For growing salons and professionals
+                  </p>
+                </div>
+
+                {/* VERTICAL BORDER */}
+                <div
+                  style={{
+                    width: "1px",
+                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    flexShrink: 0,
+                  }}
+                />
+
+                {/* RIGHT COLUMN: Features List */}
+                <div className="flex-1">
+                  <ul className="space-y-2">
+                    {[
+                      "Unlimited posts",
+                      "Autopilot AI content ideas",
+                      "All social platforms",
+                      "Analytics & insights",
+                      "Priority support",
+                    ].map((feature, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2"
+                        data-testid={`feature-pro-${index}`}
                       >
-                        <svg
-                          width="10"
-                          height="8"
-                          viewBox="0 0 10 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                        <div
+                          className="flex items-center justify-center flex-shrink-0"
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            borderRadius: "50%",
+                            backgroundColor: "#202020",
+                          }}
                         >
-                          <path
-                            d="M1 4L3.5 6.5L9 1"
-                            stroke="white"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <span
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "13px",
-                          fontWeight: 400,
-                          lineHeight: "18px",
-                          color: "#202020",
-                        }}
-                      >
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                          <svg
+                            width="9"
+                            height="7"
+                            viewBox="0 0 10 8"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M1 4L3.5 6.5L9 1"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                        <span
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "12px",
+                            fontWeight: 400,
+                            lineHeight: "16px",
+                            color: "#202020",
+                          }}
+                        >
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               {/* CTA Button - Full Width */}
@@ -354,7 +385,7 @@ export default function Pricing() {
                 onClick={() => handleSelectPlan("pro")}
                 className="w-full rounded-lg font-semibold transition-all hover:bg-gray-50"
                 style={{
-                  height: "44px",
+                  height: "40px",
                   borderRadius: "8px",
                   backgroundColor: "transparent",
                   border: "2px solid #202020",
