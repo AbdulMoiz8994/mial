@@ -52,7 +52,7 @@ export default function DashboardHome() {
         </div>
 
         {/* Performance Cards */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {/* Posts Published */}
           <div
             className="bg-white rounded-xl p-5"
@@ -231,7 +231,7 @@ export default function DashboardHome() {
                     color: "#EF4444",
                   }}
                 >
-                  6%
+                  0%
                 </span>
               </div>
             </div>
@@ -344,7 +344,7 @@ export default function DashboardHome() {
                     color: "#10B981",
                   }}
                 >
-                  13%
+                  1.7%
                 </span>
               </div>
             </div>
@@ -352,79 +352,112 @@ export default function DashboardHome() {
 
           {/* Next Scheduled Post Card */}
           <div
-            className="bg-white rounded-xl p-5"
+            className="bg-white rounded-xl p-4"
             style={{
               border: "1px solid #E5E7EB",
             }}
             data-testid="card-next-scheduled"
           >
-            <div className="flex items-center justify-between mb-3">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full"
-                style={{
-                  backgroundColor: "#F3F4F6",
-                }}
-              >
-                <div
-                  className="rounded-full"
-                  style={{
-                    width: "6px",
-                    height: "6px",
-                    backgroundColor: "#CEA54F",
-                  }}
-                />
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center gap-1">
                 <span
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    color: "#6B7280",
+                    fontSize: "20px",
+                    fontWeight: 700,
+                    color: "#202020",
                   }}
                 >
                   8
                 </span>
               </div>
 
-              <div>
-                <p
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    color: "#6B7280",
-                    textAlign: "right",
-                  }}
-                >
-                  Actions
-                </p>
-                <p
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    color: "#202020",
-                    textAlign: "right",
-                  }}
-                  data-testid="text-next-scheduled-post"
-                >
-                  Next Scheduled Post
-                </p>
-              </div>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="3"
+                  y="8"
+                  width="4"
+                  height="9"
+                  rx="1"
+                  stroke="#6B7280"
+                  strokeWidth="1.5"
+                />
+                <rect
+                  x="8"
+                  y="5"
+                  width="4"
+                  height="12"
+                  rx="1"
+                  stroke="#6B7280"
+                  strokeWidth="1.5"
+                />
+                <rect
+                  x="13"
+                  y="3"
+                  width="4"
+                  height="14"
+                  rx="1"
+                  stroke="#6B7280"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </div>
+
+            <div className="mb-3">
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  color: "#6B7280",
+                  marginBottom: "2px",
+                }}
+              >
+                Actions
+              </p>
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  color: "#202020",
+                  marginBottom: "4px",
+                }}
+                data-testid="text-next-scheduled-post"
+              >
+                Next Scheduled Post
+              </p>
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "11px",
+                  fontWeight: 400,
+                  color: "#9CA3AF",
+                }}
+              >
+                Receive update
+              </p>
             </div>
 
             <button
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all"
               style={{
-                height: "36px",
+                height: "32px",
                 background: "linear-gradient(135deg, #CEA54F 0%, #D4AF6A 100%)",
                 fontFamily: "Inter, sans-serif",
-                fontSize: "13px",
+                fontSize: "12px",
                 fontWeight: 500,
                 color: "#FFFFFF",
               }}
               data-testid="button-create-post-small"
             >
-              <PenSquare size={14} />
+              <PenSquare size={12} />
               Create Post
             </button>
           </div>
