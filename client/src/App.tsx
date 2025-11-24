@@ -12,7 +12,7 @@ import BrandColors from "@/pages/brand-colors";
 import SocialMediaFocus from "@/pages/social-media-focus";
 import Pricing from "@/pages/pricing";
 import Generating from "@/pages/generating";
-import Home from "@/pages/home";
+import DashboardHome from "@/pages/dashboard-home";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
           <Route path="/social-media-focus" component={SocialMediaFocus} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/generating" component={Generating} />
-          <Route path="/home" component={Home} />
+          <Route path="/home" component={DashboardHome} />
           <Route path="/" component={SignIn} />
           <Route component={NotFound} />
         </Switch>
