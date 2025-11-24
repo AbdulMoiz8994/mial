@@ -24,9 +24,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [location] = useLocation();
 
   const menuItems = [
-    { path: "/home", label: "Home", icon: homeIconSvg },
+    { path: "/home", label: "Home", icon: editorsIconSvg },
     { path: "/ai-studio", label: "AI Studio", icon: aiStudioIconSvg },
-    { path: "/editors", label: "Editors", icon: editorsIconSvg },
+    { path: "/editors", label: "Editors", icon: homeIconSvg },
     { path: "/calendars", label: "Calendars", icon: calendarsIconSvg },
     { path: "/analytics", label: "Analytics", icon: analyticsIcon },
   ];
