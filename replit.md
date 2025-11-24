@@ -11,6 +11,20 @@ User explicitly requested: Use emojis (💇💅💈💆) for business type selec
 
 ## Recent Changes
 
+### November 24, 2025 - Dashboard Layout & Home Page Implementation
+- **Dashboard Layout Component** (`/components/dashboard-layout.tsx`):
+  - Reusable wrapper for all dashboard pages
+  - Dark sidebar (280px width, #1A1A1A background)
+  - Sidebar includes: MIA logo, navigation menu (Home, AI Studio, Editors, Calendars, Analytics), Settings in Preference section
+  - Header with greeting, search bar, notification/settings icons, profile avatar
+  - Fixed logo visibility by importing with `?raw` suffix
+  - Replaced problematic Calendars SVG icon with Lucide Calendar component
+- **Dashboard Home Page** (`/pages/dashboard-home.tsx`):
+  - Content Performance section: 3 metric cards (Posts Published, Engagement Rate, Best Performing Channel) + Next Scheduled Post card
+  - Next Post Scheduled section with post preview
+  - Engagement Over Time section with time period toggles and chart placeholder
+- **Updated Navigation Flow**: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → Social Media Focus → Pricing → Generating (6s animation) → **Dashboard Home**
+
 ### November 20, 2025 - Pricing Page Refinements & Generating Page
 - **Pricing Page Improvements** (`/pricing`):
   - Enhanced to match Figma design with pixel-perfect accuracy
