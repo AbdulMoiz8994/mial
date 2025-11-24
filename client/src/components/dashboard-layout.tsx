@@ -1,5 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Search, Bell, Settings } from "lucide-react";
+import { useUser } from "@/contexts/UserContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logoSvg from "@assets/Pasted--svg-width-92-height-52-viewBox-0-0-92-52-fill-none-xmlns-http-www-w3-org-2000-svg-xmlns-1763982229563_1763982229565.txt?raw";
 import homeIconSvg from "@assets/Pasted--svg-width-19-height-19-viewBox-0-0-19-19-fill-none-xmlns-http-www-w3-org-2000-svg-pat-1763982268297_1763982268297.txt?raw";
 import aiStudioIconSvg from "@assets/Pasted--svg-width-19-height-19-viewBox-0-0-19-19-fill-none-xmlns-http-www-w3-org-2000-svg-pat-1763982245282_1763982245282.txt?raw";
@@ -19,8 +21,26 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+function getInitials(name: string | null | undefined): string {
+  if (!name) return "U";
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [location] = useLocation();
+  const { user } = useUser();
 
   const menuItems = [
     { path: "/home", label: "Home", icon: editorsIconSvg },
@@ -215,8 +235,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 fontWeight: 600,
                 color: "#1A1A1A",
               }}
+              data-testid="text-greeting"
             >
-              Good afternoon, Maya 👋
+              {getGreeting()}, {user?.name || "User"} 👋
             </h1>
             <p
               style={{
@@ -314,24 +335,22 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </button>
 
             {/* Avatar */}
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "50%",
-                backgroundColor: "#CEA54F",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 600,
-                color: "white",
-              }}
-              data-testid="avatar-user"
-            >
-              M
-            </div>
+            <Avatar className="w-9 h-9" data-testid="avatar-user">
+              {user?.profilePicture && (
+                <AvatarImage src={user.profilePicture} alt={user.name || "User"} />
+              )}
+              <AvatarFallback 
+                style={{
+                  backgroundColor: "#CEA54F",
+                  color: "white",
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                }}
+              >
+                {getInitials(user?.name)}
+              </AvatarFallback>
+            </Avatar>
           </div>
         </div>
 

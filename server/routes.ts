@@ -1,13 +1,68 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContentSchema, insertTemplateSchema } from "@shared/schema";
+import { insertContentSchema, insertTemplateSchema, updateUserProfileSchema } from "@shared/schema";
 import OpenAI from "openai";
 import { z } from "zod";
 
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  
+  // User routes
+  // For now, we'll use a mock user ID since there's no authentication yet
+  const MOCK_USER_ID = "mock-user-id";
+  
+  // Initialize a default user if it doesn't exist
+  (async () => {
+    const existingUser = await storage.getUser(MOCK_USER_ID);
+    if (!existingUser) {
+      await storage.createUser({ 
+        username: "default-user", 
+        password: "mock-password" 
+      });
+      // Update with mock user ID and profile data
+      const users = (storage as any).users as Map<string, any>;
+      const createdUser = Array.from(users.values())[0];
+      if (createdUser) {
+        users.delete(createdUser.id);
+        users.set(MOCK_USER_ID, { 
+          ...createdUser, 
+          id: MOCK_USER_ID,
+          name: "Maya Johnson",
+          email: "maya@example.com",
+          profilePicture: null
+        });
+      }
+    }
+  })();
+  
+  app.get("/api/user", async (req, res) => {
+    const user = await storage.getUser(MOCK_USER_ID);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    // Don't send password to client
+    const { password, ...userWithoutPassword } = user;
+    res.json(userWithoutPassword);
+  });
+
+  app.patch("/api/user", async (req, res) => {
+    try {
+      const validated = updateUserProfileSchema.parse(req.body);
+      const updated = await storage.updateUser(MOCK_USER_ID, validated);
+      if (!updated) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const { password, ...userWithoutPassword } = updated;
+      res.json(userWithoutPassword);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid update data", details: error.errors });
+      }
+      res.status(400).json({ error: "Invalid update data" });
+    }
+  });
   
   // Content routes
   app.get("/api/content", async (req, res) => {

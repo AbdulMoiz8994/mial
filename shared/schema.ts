@@ -7,6 +7,9 @@ export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  name: text("name"),
+  email: text("email"),
+  profilePicture: text("profile_picture"),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -14,7 +17,14 @@ export const insertUserSchema = createInsertSchema(users).pick({
   password: true,
 });
 
+export const updateUserProfileSchema = createInsertSchema(users).pick({
+  name: true,
+  email: true,
+  profilePicture: true,
+}).partial();
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
+export type UpdateUserProfile = z.infer<typeof updateUserProfileSchema>;
 export type User = typeof users.$inferSelect;
 
 export const contentTypes = ["instagram", "tiktok", "reels", "script"] as const;

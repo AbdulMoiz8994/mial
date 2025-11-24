@@ -1,10 +1,11 @@
-import { type User, type InsertUser, type Content, type InsertContent, type Template, type InsertTemplate } from "@shared/schema";
+import { type User, type InsertUser, type UpdateUserProfile, type Content, type InsertContent, type Template, type InsertTemplate } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: string, updates: UpdateUserProfile): Promise<User | undefined>;
   
   getAllContent(): Promise<Content[]>;
   getContent(id: string): Promise<Content | undefined>;
@@ -42,9 +43,24 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
+    const user: User = { 
+      ...insertUser, 
+      id,
+      name: null,
+      email: null,
+      profilePicture: null
+    };
     this.users.set(id, user);
     return user;
+  }
+
+  async updateUser(id: string, updates: UpdateUserProfile): Promise<User | undefined> {
+    const existing = this.users.get(id);
+    if (!existing) return undefined;
+    
+    const updated = { ...existing, ...updates };
+    this.users.set(id, updated);
+    return updated;
   }
 
   async getAllContent(): Promise<Content[]> {
