@@ -18,7 +18,7 @@ User explicitly requested: Use emojis (💇💅💈💆) for business type selec
   - Sidebar includes: MIA logo, navigation menu (Home, AI Studio, Editors, Calendars, Analytics), Settings in Preference section
   - Header with greeting, search bar, notification/settings icons, profile avatar
   - Fixed logo visibility by importing with `?raw` suffix
-  - Replaced problematic Calendars SVG icon with Lucide Calendar component
+  - All sidebar icons (Home, AI Studio, Editors, Calendars, Analytics, Settings) now use user-provided custom SVG files imported from attached_assets folder
   - Added vertical spacing between menu items (space-y-3) for better visual separation
   - Implemented hover effects on all sidebar items with subtle white overlay (rgba(255, 255, 255, 0.05))
   - Smooth transitions on all interactive elements
