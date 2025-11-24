@@ -5,57 +5,50 @@ export default function DashboardHome() {
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6">
-        {/* Content Performance Header Card */}
-        <div
-          className="bg-white rounded-xl p-5"
-          style={{
-            border: "1px solid #E5E7EB",
-          }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <h2
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "20px",
-                  fontWeight: 600,
-                  color: "#202020",
-                  marginBottom: "2px",
-                }}
-                data-testid="text-content-performance"
-              >
-                Content Performance
-              </h2>
-              <p
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "13px",
-                  fontWeight: 400,
-                  color: "#9CA3AF",
-                }}
-                data-testid="text-performance-subtitle"
-              >
-                Displaying the data from June 2025
-              </p>
-            </div>
-
-            <button
-              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all"
+        {/* Content Performance Header - On Gray Background */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2
               style={{
-                height: "40px",
-                background: "linear-gradient(135deg, #CEA54F 0%, #D4AF6A 100%)",
                 fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "#FFFFFF",
-                boxShadow: "0 2px 8px rgba(206, 165, 79, 0.25)",
+                fontSize: "20px",
+                fontWeight: 600,
+                color: "#202020",
+                marginBottom: "2px",
               }}
-              data-testid="button-start-new-post"
+              data-testid="text-content-performance"
             >
-              <Plus size={18} />
-              Start New Post
-            </button>
+              Content Performance
+            </h2>
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "13px",
+                fontWeight: 400,
+                color: "#9CA3AF",
+              }}
+              data-testid="text-performance-subtitle"
+            >
+              Displaying the data from June 2025
+            </p>
           </div>
+
+          <button
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all"
+            style={{
+              height: "40px",
+              background: "linear-gradient(135deg, #CEA54F 0%, #D4AF6A 100%)",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "#FFFFFF",
+              boxShadow: "0 2px 8px rgba(206, 165, 79, 0.25)",
+            }}
+            data-testid="button-start-new-post"
+          >
+            <Plus size={18} />
+            Start New Post
+          </button>
         </div>
 
         {/* Performance Cards */}
