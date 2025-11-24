@@ -24,36 +24,36 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [location] = useLocation();
 
   const menuItems = [
-    { path: "/home", label: "Home", icon: homeIconSvg, type: "svg" },
-    { path: "/ai-studio", label: "AI Studio", icon: aiStudioIconSvg, type: "svg" },
-    { path: "/editors", label: "Editors", icon: editorsIconSvg, type: "svg" },
-    { path: "/calendars", label: "Calendars", icon: calendarsIconSvg, type: "svg" },
-    { path: "/analytics", label: "Analytics", icon: analyticsIcon, type: "svg" },
+    { path: "/home", label: "Home", icon: homeIconSvg },
+    { path: "/ai-studio", label: "AI Studio", icon: aiStudioIconSvg },
+    { path: "/editors", label: "Editors", icon: editorsIconSvg },
+    { path: "/calendars", label: "Calendars", icon: calendarsIconSvg },
+    { path: "/analytics", label: "Analytics", icon: analyticsIcon },
   ];
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
+      {/* Sidebar - Exact Figma Design */}
       <div
         className="flex flex-col"
         style={{
-          width: "280px",
+          width: "240px",
           backgroundColor: "#1A1A1A",
-          padding: "32px 24px",
+          padding: "24px 20px",
         }}
         data-testid="sidebar"
       >
         {/* Logo */}
-        <div className="mb-10" data-testid="logo-container">
+        <div className="mb-8" data-testid="logo-container">
           <div
             dangerouslySetInnerHTML={{ __html: logoSvg }}
             className="w-full"
-            style={{ height: "32px" }}
+            style={{ height: "28px" }}
             data-testid="img-logo"
           />
         </div>
 
-        {/* Menu Items */}
+        {/* Main Menu Section */}
         <div className="flex-1">
           <div
             style={{
@@ -61,7 +61,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               fontSize: "10px",
               fontWeight: 500,
               color: "rgba(255, 255, 255, 0.4)",
-              marginBottom: "12px",
+              marginBottom: "16px",
               letterSpacing: "0.5px",
               textTransform: "uppercase",
             }}
@@ -69,7 +69,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             Main Menu
           </div>
 
-          <nav className="space-y-3">
+          <nav className="space-y-1">
             {menuItems.map((item) => {
               const isActive = location === item.path;
               return (
@@ -79,24 +79,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   <div
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all group"
+                    className="flex items-center gap-2 px-2 py-2 cursor-pointer"
                     style={{
-                      backgroundColor: isActive
-                        ? "rgba(206, 165, 79, 0.15)"
-                        : "transparent",
-                      borderLeft: isActive
-                        ? "3px solid #CEA54F"
-                        : "3px solid transparent",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                      }
+                      backgroundColor: "transparent",
                     }}
                   >
                     <div
@@ -104,15 +89,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                       style={{
                         width: item.icon.includes('width="19"') ? "19px" : "17px",
                         height: item.icon.includes('height="19"') ? "19px" : "17px",
-                        opacity: isActive ? 1 : 0.6,
+                        opacity: 0.5,
+                        flexShrink: 0,
                       }}
                     />
                     <span
                       style={{
                         fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
-                        fontWeight: isActive ? 500 : 400,
-                        color: isActive ? "#FFFFFF" : "rgba(255, 255, 255, 0.7)",
+                        fontWeight: 400,
+                        color: "rgba(255, 255, 255, 0.6)",
                       }}
                     >
                       {item.label}
@@ -125,14 +111,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Preference Section */}
-        <div className="mt-auto pt-6 border-t border-white/10">
+        <div className="mt-auto pt-6 border-t" style={{ borderColor: "rgba(255, 255, 255, 0.08)" }}>
           <div
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "10px",
               fontWeight: 500,
               color: "rgba(255, 255, 255, 0.4)",
-              marginBottom: "12px",
+              marginBottom: "16px",
               letterSpacing: "0.5px",
               textTransform: "uppercase",
             }}
@@ -141,21 +127,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
 
           <div
-            className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all"
+            className="flex items-center gap-2 px-2 py-2 cursor-pointer"
             data-testid="link-settings"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-            }}
           >
             <div
               dangerouslySetInnerHTML={{ __html: settingsIcon }}
               style={{
                 width: "17px",
                 height: "17px",
-                opacity: 0.6,
+                opacity: 0.5,
+                flexShrink: 0,
               }}
             />
             <span
@@ -163,7 +144,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "13px",
                 fontWeight: 400,
-                color: "rgba(255, 255, 255, 0.7)",
+                color: "rgba(255, 255, 255, 0.6)",
               }}
             >
               Settings
