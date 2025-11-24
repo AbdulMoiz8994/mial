@@ -94,6 +94,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                         e.currentTarget.style.paddingLeft = "12px";
                         e.currentTarget.style.paddingRight = "12px";
                       }
+                      const icon = e.currentTarget.querySelector('[data-icon]') as HTMLElement;
+                      const text = e.currentTarget.querySelector('[data-text]') as HTMLElement;
+                      if (icon) icon.style.opacity = "1";
+                      if (text) text.style.color = "rgba(255, 255, 255, 1)";
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
@@ -101,23 +105,33 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                         e.currentTarget.style.paddingLeft = "0";
                         e.currentTarget.style.paddingRight = "0";
                       }
+                      if (!isActive) {
+                        const icon = e.currentTarget.querySelector('[data-icon]') as HTMLElement;
+                        const text = e.currentTarget.querySelector('[data-text]') as HTMLElement;
+                        if (icon) icon.style.opacity = "0.5";
+                        if (text) text.style.color = "rgba(255, 255, 255, 0.6)";
+                      }
                     }}
                   >
                     <div
+                      data-icon
                       dangerouslySetInnerHTML={{ __html: item.icon }}
                       style={{
                         width: item.icon.includes('width="19"') ? "19px" : "17px",
                         height: item.icon.includes('height="19"') ? "19px" : "17px",
-                        opacity: 0.5,
+                        opacity: isActive ? 1 : 0.5,
                         flexShrink: 0,
+                        transition: "opacity 0.2s",
                       }}
                     />
                     <span
+                      data-text
                       style={{
                         fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
                         fontWeight: 400,
-                        color: "rgba(255, 255, 255, 0.6)",
+                        color: isActive ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.6)",
+                        transition: "color 0.2s",
                       }}
                     >
                       {item.label}
