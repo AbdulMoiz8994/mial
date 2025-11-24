@@ -79,9 +79,19 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   <div
-                    className="flex items-center gap-2 px-2 py-2 cursor-pointer"
+                    className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
                     style={{
-                      backgroundColor: "transparent",
+                      backgroundColor: isActive ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                      }
                     }}
                   >
                     <div
@@ -127,8 +137,17 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
 
           <div
-            className="flex items-center gap-2 px-2 py-2 cursor-pointer"
+            className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
             data-testid="link-settings"
+            style={{
+              backgroundColor: "transparent",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
           >
             <div
               dangerouslySetInnerHTML={{ __html: settingsIcon }}
