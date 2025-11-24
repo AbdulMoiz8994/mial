@@ -69,7 +69,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             Main Menu
           </div>
 
-          <nav className="space-y-6">
+          <nav className="space-y-4">
             {menuItems.map((item) => {
               const isActive = location === item.path;
               return (
