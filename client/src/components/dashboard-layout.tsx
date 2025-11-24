@@ -220,10 +220,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div 
+        className="flex-1 flex flex-col overflow-hidden"
+        style={{
+          backgroundColor: "#F5F5F5",
+        }}
+      >
         {/* Header */}
         <div
-          className="flex items-center justify-between px-8 py-4 bg-white border-b"
+          className="flex items-center justify-between px-8 py-4"
           data-testid="header"
         >
           {/* Left Side: Greeting */}
@@ -355,12 +360,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Page Content */}
-        <div 
-          className="flex-1 overflow-auto"
-          style={{
-            backgroundColor: "#F5F5F5",
-          }}
-        >
+        <div className="flex-1 overflow-auto">
           {children}
         </div>
       </div>
