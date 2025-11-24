@@ -76,6 +76,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Link
                   key={item.path}
                   href={item.path}
+                  className="block"
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   <div
