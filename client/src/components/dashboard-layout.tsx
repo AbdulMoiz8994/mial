@@ -44,7 +44,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         data-testid="sidebar"
       >
         {/* Logo */}
-        <div className="mb-8" data-testid="logo-container">
+        <div className="mb-12" data-testid="logo-container">
           <div
             dangerouslySetInnerHTML={{ __html: logoSvg }}
             className="w-full"
