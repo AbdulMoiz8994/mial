@@ -51,7 +51,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen">
       {/* Sidebar - Exact Figma Design */}
       <div
         className="flex flex-col"
@@ -355,7 +355,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div 
+          className="flex-1 overflow-auto"
+          style={{
+            backgroundColor: "#F5F5F5",
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
