@@ -62,8 +62,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               fontWeight: 500,
               color: "rgba(255, 255, 255, 0.4)",
               marginBottom: "16px",
+              paddingBottom: "12px",
               letterSpacing: "0.5px",
               textTransform: "uppercase",
+              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
             }}
           >
             Main Menu
@@ -80,18 +82,24 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   <div
-                    className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
+                    className="flex items-center gap-2 py-3 cursor-pointer rounded transition-all"
                     style={{
                       backgroundColor: isActive ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                      paddingLeft: isActive ? "12px" : "0",
+                      paddingRight: isActive ? "12px" : "0",
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {
                         e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                        e.currentTarget.style.paddingLeft = "12px";
+                        e.currentTarget.style.paddingRight = "12px";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
                         e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.paddingLeft = "0";
+                        e.currentTarget.style.paddingRight = "0";
                       }
                     }}
                   >
