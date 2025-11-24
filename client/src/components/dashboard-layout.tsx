@@ -143,7 +143,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Preference Section */}
-        <div className="mt-auto pt-6 border-t" style={{ borderColor: "rgba(255, 255, 255, 0.08)" }}>
+        <div className="mt-auto">
           <div
             style={{
               fontFamily: "Inter, sans-serif",
@@ -158,7 +158,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             Preference
           </div>
 
-          <div
+          <div 
+            className="pt-4 border-t" 
+            style={{ borderColor: "rgba(255, 255, 255, 0.08)" }}
+          >
+            <div
             className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
             data-testid="link-settings"
             style={{
@@ -190,6 +194,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             >
               Settings
             </span>
+          </div>
           </div>
         </div>
       </div>
