@@ -87,7 +87,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             Main Menu
           </div>
 
-          <nav className="space-y-2">
+          <nav className="space-y-3">
             {menuItems.map((item) => {
               const isActive = location === item.path;
               return (
@@ -97,7 +97,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   <div
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all group"
                     style={{
                       backgroundColor: isActive
                         ? "rgba(206, 165, 79, 0.15)"
@@ -105,6 +105,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                       borderLeft: isActive
                         ? "3px solid #CEA54F"
                         : "3px solid transparent",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                      }
                     }}
                   >
                     {item.type === "lucide" ? (
@@ -159,8 +169,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
 
           <div
-            className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all"
             data-testid="link-settings"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
           >
             <div
               dangerouslySetInnerHTML={{ __html: settingsIcon }}
