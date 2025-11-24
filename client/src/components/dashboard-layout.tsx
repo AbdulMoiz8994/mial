@@ -76,6 +76,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             dangerouslySetInnerHTML={{ __html: logoSvg }}
             className="w-full"
             style={{ height: "32px" }}
+            data-testid="img-logo"
           />
         </div>
 
