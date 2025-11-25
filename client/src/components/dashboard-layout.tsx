@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Bell, Settings } from "lucide-react";
+import { Search, Bell, Settings, Menu, X } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logoSvg from "@assets/Pasted--svg-width-92-height-52-viewBox-0-0-92-52-fill-none-xmlns-http-www-w3-org-2000-svg-xmlns-1763982229563_1763982229565.txt?raw";
@@ -41,6 +42,7 @@ function getInitials(name: string | null | undefined): string {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [location] = useLocation();
   const { user } = useUser();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { path: "/home", label: "Home", icon: editorsIconSvg },
@@ -52,9 +54,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex h-screen">
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+          data-testid="mobile-overlay"
+        />
+      )}
+
       {/* Sidebar - Exact Figma Design */}
       <div
-        className="flex flex-col"
+        className={`flex flex-col fixed lg:relative z-50 h-full transition-transform duration-300 ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
         style={{
           width: "240px",
           backgroundColor: "#1A1A1A",
@@ -62,6 +75,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         }}
         data-testid="sidebar"
       >
+        {/* Mobile Close Button */}
+        <button
+          className="lg:hidden absolute top-4 right-4 p-2 text-white/60 hover:text-white"
+          onClick={() => setIsMobileMenuOpen(false)}
+          data-testid="button-close-mobile-menu"
+        >
+          <X size={20} />
+        </button>
         {/* Logo */}
         <div className="mb-16" data-testid="logo-container">
           <div
@@ -221,77 +242,82 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main Content Area */}
       <div 
-        className="flex-1 flex flex-col overflow-hidden"
+        className="flex-1 flex flex-col overflow-hidden lg:ml-0"
         style={{
           backgroundColor: "#F5F5F5",
         }}
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between px-8 py-4"
+          className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-4 gap-3 flex-wrap"
           data-testid="header"
         >
-          {/* Left Side: Greeting */}
-          <div>
-            <h1
+          {/* Left Side: Mobile Menu + Greeting */}
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden flex items-center justify-center p-2 rounded-lg border"
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "18px",
-                fontWeight: 600,
-                color: "#1A1A1A",
+                borderColor: "rgba(26, 26, 26, 0.1)",
+                backgroundColor: "white",
               }}
-              data-testid="text-greeting"
+              onClick={() => setIsMobileMenuOpen(true)}
+              data-testid="button-mobile-menu"
             >
-              {getGreeting()}, {user?.name || "User"} 👋
-            </h1>
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "13px",
-                color: "rgba(26, 26, 26, 0.6)",
-                marginTop: "2px",
-              }}
-            >
-              Here's what is happening with your content today
-            </p>
+              <Menu size={20} style={{ color: "#1A1A1A" }} />
+            </button>
+
+            <div className="hidden sm:block">
+              <h1
+                className="text-base md:text-lg"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  color: "#1A1A1A",
+                }}
+                data-testid="text-greeting"
+              >
+                {getGreeting()}, {user?.name || "User"} 👋
+              </h1>
+              <p
+                className="text-xs md:text-sm hidden md:block"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  color: "rgba(26, 26, 26, 0.6)",
+                  marginTop: "2px",
+                }}
+              >
+                Here's what is happening with your content today
+              </p>
+            </div>
           </div>
 
           {/* Right Side: Search + Icons + Avatar */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4 flex-1 sm:flex-none justify-end">
             {/* Search Bar */}
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <Search
                 size={16}
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "rgba(26, 26, 26, 0.4)",
-                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2"
+                style={{ color: "rgba(26, 26, 26, 0.4)" }}
               />
               <input
                 type="text"
                 placeholder="Search or ask with AI"
+                className="w-full sm:w-48 md:w-64 lg:w-72 h-9 pl-10 pr-10 rounded-lg text-sm"
                 style={{
-                  width: "280px",
-                  height: "36px",
-                  paddingLeft: "40px",
-                  paddingRight: "12px",
                   border: "1px solid rgba(26, 26, 26, 0.1)",
-                  borderRadius: "8px",
                   fontFamily: "Inter, sans-serif",
-                  fontSize: "13px",
                   outline: "none",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
                 }}
                 data-testid="input-search"
               />
               <span
+                className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:block"
                 style={{
-                  position: "absolute",
-                  right: "12px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
                   fontFamily: "Inter, sans-serif",
                   fontSize: "11px",
                   color: "rgba(26, 26, 26, 0.4)",
@@ -306,41 +332,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
             {/* Action Icons */}
             <button
-              style={{
-                width: "36px",
-                height: "36px",
-                border: "1px solid rgba(26, 26, 26, 0.1)",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "white",
-                cursor: "pointer",
-              }}
+              className="hidden sm:flex w-9 h-9 items-center justify-center rounded-lg border bg-white cursor-pointer shrink-0"
+              style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
               data-testid="button-notifications"
             >
               <Bell size={18} style={{ color: "rgba(26, 26, 26, 0.6)" }} />
             </button>
 
             <button
-              style={{
-                width: "36px",
-                height: "36px",
-                border: "1px solid rgba(26, 26, 26, 0.1)",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "white",
-                cursor: "pointer",
-              }}
+              className="hidden sm:flex w-9 h-9 items-center justify-center rounded-lg border bg-white cursor-pointer shrink-0"
+              style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
               data-testid="button-settings"
             >
               <Settings size={18} style={{ color: "rgba(26, 26, 26, 0.6)" }} />
             </button>
 
             {/* Avatar */}
-            <Avatar className="w-9 h-9" data-testid="avatar-user">
+            <Avatar className="w-9 h-9 shrink-0" data-testid="avatar-user">
               {user?.profilePicture && (
                 <AvatarImage src={user.profilePicture} alt={user.name || "User"} />
               )}

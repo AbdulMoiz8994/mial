@@ -1,0 +1,120 @@
+📲 2. End-to-End User Journey Flow
+Here’s the high-level UX flow with screen progression 👇
+1️⃣ Welcome / Sign Up  →  2️⃣ Onboarding Questions (Business Type + Goals)  →  3️⃣ AI Generates Content Plan  →  4️⃣ Dashboard: Plan Overview  →  5️⃣ Post Editor / Customisation (AI Captions + Brand Styling)  →  6️⃣ Scheduling & Publishing Calendar  →  7️⃣ Analytics & Recommendations  →  8️⃣ Upgrade / Subscription Screen
+
+
+🧩 3. Screen-by-Screen UI Breakdown
+🟪 1. Welcome / Sign-Up
+Goal: Quick entry, personality, excitement.
+UI Layout:
+Animated splash (“Hi, I’m MIA 💬 – your intelligent content agent.”)
+Buttons:
+Continue with Google
+Continue with Email
+Small note: “7-day free trial. No credit card required.”
+Light gradient background (lavender, blush, or gold tones).
+Minimal AI-inspired line pattern / flowing gradients for energy.
+Microinteraction: Button press → “👋 Let’s get you started” animation.
+🟣 2. Onboarding – Personalisation
+Goal: Capture context for AI engine.
+Screen 1:
+“What type of business are you?”
+Buttons: 💇 Hair Salon / 💅 Nail Bar / 💈 Barber / 💆 Spa / Other.
+Continue →
+Screen 2:
+“What are your goals?” (multi-select chips)
+“Get more clients”
+“Post consistently”
+“Build brand awareness”
+“Grow followers”
+Screen 3:
+“Upload your logo + choose your brand colours.”
+Upload Logo (with preview)
+Color picker or pre-generated palettes.
+Optional font style preview (Serif / Sans / Handwritten).
+CTA → “Generate My Content Plan” (AI loads).
+
+🟩 3. AI Content Plan Screen
+Goal: WOW moment — instant value.
+Layout:
+Header: “✨ Your 7-Day Smart Plan is Ready!”
+Card grid (each day = 1 content idea):
+Day 1: “Before & After Transformation” → auto-caption + image suggestion.
+Day 2: “Client Testimonial Post.”
+Day 3: “Hair Care Tip Carousel.”
+Bottom CTA:
+Customize Plan
+Approve & Continue
+Microinteraction: AI typing animation (“Generating post ideas…”).
+🟦 4. Dashboard / Home
+Goal: Control center for ongoing content.
+Sections:
+Header: Greeting (“Good afternoon, Maya 👋”)
+Next Post Scheduled: Large card with thumbnail, time, edit button.
+Quick Actions Row:
+➕ New Post
+✨ AI Idea
+📅 Calendar
+📊 Insights
+Content Performance Summary:
+Engagement overview bar (likes/comments/reach)
+AI Tip: “Your clients loved the hair care videos last week — post more of that!”
+Sidebar (mobile collapsible): Home, Calendar, Library, Analytics, Settings.
+🟧 5. Post Editor / Customisation
+Goal: Personalize, polish, brandify.
+Layout:
+Top Bar: Back | Save Draft | Publish.
+Main Canvas (Canva-style):
+Center: Post preview (image/video).
+Left Panel: Layers (Text, Image, Shape).
+Right Panel:
+AI Caption field (editable).
+Hashtag generator.
+Brand colors & logo (auto-applied).
+Button: Regenerate Caption | Suggest Hashtags.
+Bottom Toolbar: Upload media, add text overlay, templates library.
+Pre-Designed Template Categories:
+“Before & After”
+“Promotional Offer”
+“Quote of the Day”
+“Client Testimonial”
+“Hair Tip Carousel”
+Microinteraction: Drag-and-drop stickers, smooth snapping grid, undo/redo.
+🟨 6. Scheduling & Publishing
+Goal: Plan + automate content effortlessly.
+UI Layout:
+Top Tabs: Calendar | Queue | Drafts.
+Calendar View:
+Color-coded posts per platform (IG purple, FB blue, TikTok black).
+Tap → open detail drawer (caption, image, edit, reschedule).
+Add New Post: Floating button bottom-right.
+Manual Posting Option:
+Toggle: “Auto-post” / “Remind Me to Post.”
+Push notification reminder setup.
+Micro UX: Drag post card → drop on calendar date → auto-schedules.
+🟫 7. Analytics & Insights
+Goal: Empower salon owners to understand what works.
+Layout:
+Header: “This Week’s Highlights ✨”
+Metrics Row:
+Total Posts
+Avg Engagement
+Follower Growth
+Top Performing Post (thumbnail + stats).
+Charts:
+Engagement Over Time (line chart)
+Platform Breakdown (donut chart)
+AI Insight Cards:
+“Post more blonding reels on Thursdays 🌞”
+“Your testimonial posts perform 2× better than others.”
+Microinteraction: Hover → metric details tooltip (“Reach: 2.1k | +15% WoW”).
+🟪 8. Subscription / Billing
+Goal: Upsell naturally.
+Layout:
+Trial Countdown Banner: “Your free trial ends in 3 days – unlock unlimited posts.”
+Pricing Cards:
+Basic – 20 posts/month + AI captions.
+Pro – Unlimited posts + analytics.
+Salon Team – Multi-location, staff logins, shared templates.
+Highlight “Pro” as recommended (gradient border + crown icon 👑).
+Integrated Stripe/PayPal pop-up.

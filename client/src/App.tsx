@@ -14,6 +14,7 @@ import SocialMediaFocus from "@/pages/social-media-focus";
 import Pricing from "@/pages/pricing";
 import Generating from "@/pages/generating";
 import DashboardHome from "@/pages/dashboard-home";
+import AIStudio from "@/pages/ai-studio";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/pricing" component={Pricing} />
             <Route path="/generating" component={Generating} />
             <Route path="/home" component={DashboardHome} />
+            <Route path="/ai-studio" component={AIStudio} />
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>

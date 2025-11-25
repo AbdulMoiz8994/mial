@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { AuthLayout } from "@/components/auth-layout";
 import { Eye, EyeOff } from "lucide-react";
+import { useUser } from "@/contexts/UserContext";
 import googleIcon from "@assets/google_1763490580644.png";
 import facebookIcon from "@assets/facebook_1763490580645.png";
 
 export default function SignUp() {
   const [, setLocation] = useLocation();
+  const { createUserFromSignUp } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -61,8 +63,8 @@ export default function SignUp() {
     e.preventDefault();
     
     if (validateForm()) {
-      // Handle sign up logic
-      console.log("Sign up:", { email, firstName, lastName, password, agreedToTerms });
+      // Save user data to context (including password for sign-in validation)
+      createUserFromSignUp({ firstName, lastName, email, password });
       // Navigate to brand profile page
       setLocation("/brand-profile");
     }

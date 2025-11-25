@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { AuthLayout } from "@/components/auth-layout";
 import { Eye, EyeOff } from "lucide-react";
+import { useUser } from "@/contexts/UserContext";
 import googleIcon from "@assets/google_1763490580644.png";
 import facebookIcon from "@assets/facebook_1763490580645.png";
 
 export default function SignIn() {
   const [, setLocation] = useLocation();
+  const { signInUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -37,9 +39,16 @@ export default function SignIn() {
     e.preventDefault();
     
     if (validateForm()) {
-      // Handle sign in logic
-      console.log("Sign in:", { email, password });
-      // TODO: Implement actual sign-in logic
+      // Try to sign in with credentials
+      const result = signInUser(email, password);
+      
+      if (result.success) {
+        // Navigate to dashboard after successful sign-in
+        setLocation("/home");
+      } else {
+        // Show error message
+        setErrors({ ...errors, general: result.error });
+      }
     }
   };
 
@@ -215,6 +224,30 @@ export default function SignIn() {
                 Forgot password?
               </button>
             </div>
+
+            {/* General Error Message */}
+            {errors.general && (
+              <div
+                className="mb-4 p-3 rounded"
+                style={{
+                  backgroundColor: '#FEF2F2',
+                  border: '1px solid #FECACA',
+                }}
+                data-testid="error-general"
+              >
+                <p
+                  style={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    color: '#DC2626',
+                    textAlign: 'center'
+                  }}
+                >
+                  {errors.general}
+                </p>
+              </div>
+            )}
 
             {/* Sign In Button */}
             <button

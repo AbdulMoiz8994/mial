@@ -1,0 +1,44 @@
+MIA - AI Content Creator for Hair, Beauty & Barbering Industry
+Project Overview
+Building an AI-powered content creation platform for hair stylists, beauty professionals, and barbers. The app helps generate social media content for Instagram, TikTok, and Reels using AI-driven templates.
+
+Design System (MUST FOLLOW)
+Gold accent color: #CEA54F
+Gray background: #F5F5F5
+Dark sidebar: #1A1A1A
+Font: Inter (primary), Playfair Display (accent)
+NO emojis in UI - use Lucide icons instead (Exception: Business type selection page uses emojis 💇💅💈💆 as user requested)
+Technical Stack
+Frontend: React + TypeScript, Vite, Wouter (routing), TanStack Query, Tailwind CSS, shadcn/ui components
+Backend: Express.js, in-memory storage
+State Management: React Context (UserContext for user data)
+Responsive Design: Mobile-first with Tailwind breakpoints (sm, md, lg)
+Current App Flow
+Sign Up → Brand Profile → Business Type → Goals → Brand Colors → Social Media Focus → Pricing → Generating (6s animation) → Dashboard Home
+Sign In → validates credentials → Dashboard Home
+Authentication (localStorage-based for demo)
+Sign-up saves user to mia_registered_users in localStorage
+Sign-in validates against stored users via signInUser()
+Current user stored in mia_current_user
+Dashboard displays actual signed-up user's name
+Completed Pages
+Sign In/Sign Up (with auth flow)
+Onboarding flow (7 pages)
+Dashboard Home (with metrics, chart, scheduled post)
+AI Studio (tabs, content generation, platform selection, content cards grid)
+Dashboard Layout (sidebar with custom SVG icons, responsive mobile menu)
+User Preferences
+ALWAYS ask for confirmation before making ANY changes
+Build UI from exact Figma screenshots ONLY - pixel-perfect implementation
+Use React Context for state management
+Use recharts library for chart visualizations
+Key Files
+client/src/contexts/UserContext.tsx - user state management
+client/src/components/dashboard-layout.tsx - reusable dashboard wrapper
+client/src/pages/ - all page components
+replit.md - project documentation (keep updated)
+Missing Screens (not yet built)
+7-Day Content Plan display
+Post Editor (Canva-style)
+Scheduling Calendar
+Analytics & Insights page

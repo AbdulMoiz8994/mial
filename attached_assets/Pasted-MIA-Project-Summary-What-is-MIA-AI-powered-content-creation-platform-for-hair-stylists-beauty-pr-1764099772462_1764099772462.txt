@@ -1,0 +1,39 @@
+MIA Project Summary
+What is MIA?
+AI-powered content creation platform for hair stylists, beauty professionals, and barbers. Generates social media content for Instagram, TikTok, and Reels.
+
+Important User Preferences
+ALWAYS ask for confirmation before making ANY changes
+Build UI from exact Figma screenshots ONLY - not from written descriptions
+Pixel-perfect implementation - match Figma designs exactly, don't add your own changes
+Use React Context for state management (not Redux)
+Use emojis (💇💅💈💆) for business type selection
+Design System
+Gold accent color: #CEA54F
+Gray background (main content area): #F5F5F5
+Dark sidebar: #1A1A1A (240px width)
+White cards with #E5E7EB borders for data sections
+Header: Transparent, blends with gray background (no white background, no border)
+Fonts: Inter (primary), Playfair Display (accent)
+Current App Structure
+7-page onboarding flow: Sign Up → Brand Profile → Business Type → Goals → Brand Colors → Social Media Focus → Pricing → Generating (6s animation) → Dashboard Home
+Dashboard Layout: Dark sidebar with custom SVG icons (from attached_assets folder), gray main content area
+UserContext: Global user state with GET/PATCH API endpoints, mock user (Maya Johnson)
+Dashboard Home Layout (Current State)
+Header with dynamic greeting, search bar, notification icons, avatar with initials on gold background
+Content Performance section:
+Heading + subheading + "Start New Post" button on GRAY background (NOT in white card)
+4 white metric cards in horizontal row below (grid-cols-4)
+Next Post Scheduled section
+Engagement Over Time section with chart placeholder
+Key Files
+client/src/contexts/UserContext.tsx - User state management
+client/src/components/dashboard-layout.tsx - Main layout with sidebar
+client/src/pages/dashboard-home.tsx - Dashboard home page
+shared/schema.ts - Data models
+server/routes.ts - API endpoints
+Critical Notes
+Sidebar icons are custom SVGs imported from attached_assets/ folder
+Avatar shows user initials with gold background when no profile picture
+Mock user created for development: Maya Johnson (maya@example.com)
+All changes should be tested before delivery
