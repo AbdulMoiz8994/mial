@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
-import { Plus } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import contentImage1 from "@assets/stock_images/woman_with_beautiful_9897c48b.jpg";
 import contentImage2 from "@assets/stock_images/woman_with_beautiful_067e63a9.jpg";
@@ -12,7 +12,7 @@ type TabType =
   | "caption-hashtags"
   | "graphics-template"
   | "script-generator";
-type PlatformType = "linkedin" | "instagram" | "facebook" | "youtube";
+type PlatformType = "linkedin" | "instagram" | "facebook" | "twitter" | "tiktok";
 
 interface ContentCard {
   id: string;
@@ -55,7 +55,8 @@ export default function AIStudio() {
     { id: "linkedin" as const, color: "#0A66C2" },
     { id: "instagram" as const, color: "#E4405F" },
     { id: "facebook" as const, color: "#1877F2" },
-    { id: "youtube" as const, color: "#FF0000" },
+    { id: "twitter" as const, color: "#000000" },
+    { id: "tiktok" as const, color: "#000000" },
   ];
 
   const contentCards: ContentCard[] = [
@@ -166,11 +167,19 @@ export default function AIStudio() {
             </svg>
           </div>
         );
-      case "youtube":
+      case "twitter":
         return (
           <div style={iconStyle}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+          </div>
+        );
+      case "tiktok":
+        return (
+          <div style={iconStyle}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
             </svg>
           </div>
         );
@@ -191,8 +200,8 @@ export default function AIStudio() {
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: "16px",
-            padding: "28px",
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.04)",
+            padding: "32px",
+            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
           }}
         >
           {/* Page Header */}
@@ -214,7 +223,7 @@ export default function AIStudio() {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "14px",
                 fontWeight: 400,
-                color: "#202020",
+                color: "#6B7280",
               }}
               data-testid="text-ai-studio-subtitle"
             >
@@ -244,7 +253,7 @@ export default function AIStudio() {
                 }}
                 data-testid="text-post-question"
               >
-                What do you want to post about?
+                {activeTab === "caption-hashtags" ? "Describe your next post" : "What do you want to post about?"}
               </h2>
 
               {/* Tabs */}
@@ -278,28 +287,31 @@ export default function AIStudio() {
               </div>
             </div>
 
-            {/* Textarea */}
-            <textarea
-              value={postIdea}
-              onChange={(e) => setPostIdea(e.target.value)}
-              placeholder="Describe your post idea..."
-              className="w-full focus:outline-none focus:border-[#CEA54F] transition-colors"
-              style={{
-                minHeight: "100px",
-                padding: "16px",
-                border: "1px solid #E5E7EB",
-                borderRadius: "12px",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "14px",
-                color: "#202020",
-                resize: "none",
-                backgroundColor: "#F9FAFB",
-              }}
-              data-testid="textarea-post-idea"
-            />
+            {/* Content based on active tab */}
+            {activeTab === "ai-ideas" && (
+              <>
+                {/* Textarea */}
+                <textarea
+                  value={postIdea}
+                  onChange={(e) => setPostIdea(e.target.value)}
+                  placeholder="Describe your post idea..."
+                  className="w-full focus:outline-none focus:border-[#CEA54F] transition-colors"
+                  style={{
+                    minHeight: "100px",
+                    padding: "16px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "14px",
+                    color: "#202020",
+                    resize: "none",
+                    backgroundColor: "#F9FAFB",
+                  }}
+                  data-testid="textarea-post-idea"
+                />
 
-            {/* Quick Suggestions and Platform Selection Row */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mt-5">
+                {/* Quick Suggestions and Platform Selection Row */}
+                <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-4 mt-5">
               {/* Quick Suggestions */}
               <div className="flex flex-wrap gap-2">
                 {quickSuggestions.map((suggestion) => {
@@ -336,7 +348,7 @@ export default function AIStudio() {
               {/* Platform Selection and Generate Button */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 {/* Select Platform */}
-                <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-3">
                   <span
                     style={{
                       fontFamily: "Inter, sans-serif",
@@ -378,52 +390,305 @@ export default function AIStudio() {
                   onClick={handleGenerateIdea}
                   className="flex items-center gap-2 transition-all hover:opacity-90"
                   style={{
-                    padding: "12px 24px",
+                    padding: "10px 20px",
                     borderRadius: "24px",
-                    backgroundColor: "#CEA54F",
+                    background: "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
                     fontFamily: "Inter, sans-serif",
                     fontSize: "14px",
-                    fontWeight: 500,
+                    fontWeight: 600,
                     color: "#FFFFFF",
                     border: "none",
                     cursor: "pointer",
                     whiteSpace: "nowrap",
-                    boxShadow: "0 8px 24px rgba(206, 165, 79, 0.45)",
+                    boxShadow: "0 4px 12px rgba(206, 165, 79, 0.4)",
                   }}
                   data-testid="button-generate-idea"
                 >
-                  <Plus size={16} />
-                  Generate Idea
+                  <Sparkles size={16} />
+                  <span>Generate Idea</span>
                 </button>
               </div>
             </div>
+              </>
+            )}
+
+            {/* Caption & Hashtags Tab */}
+            {activeTab === "caption-hashtags" && (
+              <>
+                {/* Textarea */}
+                <textarea
+                  placeholder="Describe your post idea..."
+                  className="w-full focus:outline-none focus:border-[#CEA54F] transition-colors"
+                  style={{
+                    minHeight: "140px",
+                    padding: "16px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "14px",
+                    color: "#202020",
+                    resize: "none",
+                    backgroundColor: "#FAFBFC",
+                    marginBottom: "24px",
+                    lineHeight: "1.6",
+                  }}
+                />
+
+                {/* Select Tone and Platform Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                  {/* Select Tone */}
+                  <div>
+                    <label
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "#374151",
+                        marginBottom: "10px",
+                        display: "block",
+                      }}
+                    >
+                      Select Tone
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="w-full focus:outline-none focus:border-[#CEA54F] transition-all"
+                        style={{
+                          padding: "13px 16px",
+                          paddingRight: "44px",
+                          border: "1px solid #E5E7EB",
+                          borderRadius: "10px",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "#1F2937",
+                          backgroundColor: "#F9FAFB",
+                          cursor: "pointer",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                        }}
+                      >
+                        <option>Playful</option>
+                        <option>Professional</option>
+                        <option>Casual</option>
+                        <option>Inspirational</option>
+                      </select>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "16px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          pointerEvents: "none",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
+                          <path d="M1 1.5L7 7.5L13 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Platform */}
+                  <div>
+                    <label
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "#374151",
+                        marginBottom: "10px",
+                        display: "block",
+                      }}
+                    >
+                      Platform
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="w-full focus:outline-none focus:border-[#CEA54F] transition-all"
+                        style={{
+                          padding: "13px 16px",
+                          paddingRight: "44px",
+                          border: "1px solid #E5E7EB",
+                          borderRadius: "10px",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "#1F2937",
+                          backgroundColor: "#F9FAFB",
+                          cursor: "pointer",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                        }}
+                      >
+                        <option>Instagram</option>
+                        <option>Facebook</option>
+                        <option>LinkedIn</option>
+                        <option>TikTok</option>
+                        <option>Twitter</option>
+                      </select>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "16px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          pointerEvents: "none",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
+                          <path d="M1 1.5L7 7.5L13 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Generate Idea Button */}
+                <div className="mb-8">
+                  <button
+                    className="flex items-center gap-2 transition-all hover:opacity-90"
+                    style={{
+                      padding: "12px 24px",
+                      borderRadius: "24px",
+                      background: "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "#FFFFFF",
+                      border: "none",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      boxShadow: "0 4px 12px rgba(206, 165, 79, 0.4)",
+                    }}
+                  >
+                    <Sparkles size={16} />
+                    <span>+ Generate Idea</span>
+                  </button>
+                </div>
+
+                {/* Suggested Hashtags */}
+                <div
+                  style={{
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    padding: "24px",
+                    backgroundColor: "#FFFFFF",
+                    marginBottom: "28px",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#111827",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Suggested Hashtags
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 400,
+                      color: "#9CA3AF",
+                      marginBottom: "18px",
+                    }}
+                  >
+                    Click to copy
+                  </p>
+
+                  {/* Hashtags Grid */}
+                  <div className="flex flex-wrap gap-2.5">
+                    {[
+                      "#hairstyle",
+                      "#Salon",
+                      "#Haircare",
+                      "#Beauty",
+                      "#Hairstyle",
+                      "#hairstyle",
+                      "#Salon",
+                      "#Haircare",
+                      "#Beauty",
+                      "#Hairstyle",
+                    ].map((hashtag, index) => (
+                      <button
+                        key={index}
+                        className="transition-all hover:bg-[#D1D5DB] hover:scale-105"
+                        style={{
+                          padding: "10px 18px",
+                          borderRadius: "20px",
+                          backgroundColor: "#F3F4F6",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "#4B5563",
+                          border: "1px solid #E5E7EB",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => navigator.clipboard.writeText(hashtag)}
+                      >
+                        {hashtag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Select Date & Time */}
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#202020",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    Select Date & Time
+                  </h3>
+                  {/* Date and time inputs would go here */}
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Content Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+          {/* Content Cards Grid - Only show for AI Ideas tab */}
+          {activeTab === "ai-ideas" && (
+          <div
+            className="mt-8"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "20px",
+            }}
+          >
             {contentCards.map((card) => (
               <div
                 key={card.id}
                 className="overflow-hidden"
                 style={{
-                  backgroundColor: "#F2F2F2",
-                  borderRadius: "16px",
-                  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06)",
-                  border: "1px solid #E5E7EB",
+                  backgroundColor: "#F5F3F0",
+                  borderRadius: "12px",
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                  border: "1px solid #E8E5E0",
                 }}
                 data-testid={`card-content-${card.id}`}
               >
                 {/* Card Image - With padding */}
-                <div
-                  style={{
-                    padding: "12px 12px 0 12px",
-                  }}
-                >
+                <div style={{ padding: "12px 12px 0 12px" }}>
                   <div
                     className="w-full overflow-hidden"
                     style={{
                       aspectRatio: "4/3",
-                      borderRadius: "12px",
+                      borderRadius: "8px",
                     }}
                   >
                     <img
@@ -436,13 +701,13 @@ export default function AIStudio() {
                 </div>
 
                 {/* Card Content */}
-                <div style={{ padding: "16px 16px 20px" }}>
+                <div style={{ padding: "16px" }}>
                   {/* Title */}
                   <h3
                     className="line-clamp-2"
                     style={{
                       fontFamily: "Inter, sans-serif",
-                      fontSize: "16px",
+                      fontSize: "15px",
                       fontWeight: 600,
                       color: "#1F2937",
                       lineHeight: "1.4",
@@ -462,7 +727,7 @@ export default function AIStudio() {
                       fontWeight: 400,
                       color: "#6B7280",
                       lineHeight: "1.5",
-                      marginBottom: "14px",
+                      marginBottom: "12px",
                     }}
                     data-testid={`text-description-${card.id}`}
                   >
@@ -471,22 +736,20 @@ export default function AIStudio() {
 
                   {/* Hashtags */}
                   <div
-                    className="flex flex-wrap gap-3"
+                    className="flex flex-wrap gap-2"
                     style={{ marginBottom: "14px" }}
                   >
                     {card.hashtags.map((hashtag, index) => (
                       <span
                         key={index}
                         style={{
-                          padding: "6px 18px",
-                          borderRadius: "18px",
-                          backgroundColor: "#F8F5EF",
-                          border: "1px solid #E8DED1",
+                          padding: "5px 12px",
+                          borderRadius: "16px",
+                          backgroundColor: "#E8E5E0",
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "13px",
+                          fontSize: "12px",
                           fontWeight: 500,
-                          color: "#665C52",
-                          boxShadow: "0 2px 6px rgba(209, 184, 146, 0.28)",
+                          color: "#6B7280",
                         }}
                         data-testid={`tag-${card.id}-${index}`}
                       >
@@ -496,21 +759,21 @@ export default function AIStudio() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     <button
                       className="flex-1 transition-all hover:opacity-90"
                       style={{
-                        padding: "14px 16px",
-                        borderRadius: "16px",
-                        backgroundColor: "#C9952C",
+                        padding: "11px 16px",
+                        borderRadius: "24px",
+                        backgroundColor: "#CEA54F",
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
+                        fontSize: "13px",
                         fontWeight: 600,
                         color: "#FFFFFF",
                         border: "none",
                         cursor: "pointer",
-                        boxShadow: "0 10px 18px rgba(193, 141, 33, 0.45)",
-                        lineHeight: "1.3",
+                        boxShadow: "0 2px 8px rgba(206, 165, 79, 0.4)",
+                        whiteSpace: "nowrap",
                       }}
                       data-testid={`button-generate-caption-${card.id}`}
                     >
@@ -519,17 +782,17 @@ export default function AIStudio() {
                     <button
                       className="flex-1 transition-all hover:opacity-90"
                       style={{
-                        padding: "14px 16px",
-                        borderRadius: "16px",
-                        backgroundColor: "#E9D9BD",
+                        padding: "11px 16px",
+                        borderRadius: "24px",
+                        backgroundColor: "#E8DCC8",
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "14px",
+                        fontSize: "13px",
                         fontWeight: 600,
-                        color: "#6F5531",
+                        color: "#6B5A3D",
                         border: "none",
                         cursor: "pointer",
-                        boxShadow: "0 6px 14px rgba(191, 164, 120, 0.32)",
-                        lineHeight: "1.3",
+                        boxShadow: "0 2px 6px rgba(232, 220, 200, 0.5)",
+                        whiteSpace: "nowrap",
                       }}
                       data-testid={`button-open-editor-${card.id}`}
                     >
@@ -540,6 +803,7 @@ export default function AIStudio() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
     </DashboardLayout>
