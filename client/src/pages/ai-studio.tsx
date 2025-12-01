@@ -244,20 +244,31 @@ export default function AIStudio() {
           <div data-testid="card-content-creation">
             {/* Header with Title and Tabs */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
-              <h2
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  color: "#202020",
-                }}
-                data-testid="text-post-question"
-              >
-                {activeTab === "caption-hashtags" ? "Describe your next post" : "What do you want to post about?"}
-              </h2>
+              {activeTab !== "graphics-template" && (
+                <h2
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    color: "#202020",
+                  }}
+                  data-testid="text-post-question"
+                >
+                  {activeTab === "caption-hashtags"
+                    ? "Describe your next post"
+                    : "What do you want to post about?"}
+                </h2>
+              )}
 
               {/* Tabs */}
-              <div className="flex items-center gap-1.5">
+              <div
+                className="flex items-center gap-1.5"
+                style={
+                  activeTab === "graphics-template"
+                    ? { marginLeft: "auto" }
+                    : {}
+                }
+              >
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -312,103 +323,347 @@ export default function AIStudio() {
 
                 {/* Quick Suggestions and Platform Selection Row */}
                 <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-4 mt-5">
-              {/* Quick Suggestions */}
-              <div className="flex flex-wrap gap-2">
-                {quickSuggestions.map((suggestion) => {
-                  const isSelected = selectedSuggestion === suggestion.id;
-                  return (
+                  {/* Quick Suggestions */}
+                  <div className="flex flex-wrap gap-2">
+                    {quickSuggestions.map((suggestion) => {
+                      const isSelected = selectedSuggestion === suggestion.id;
+                      return (
+                        <button
+                          key={suggestion.id}
+                          onClick={() => handleQuickSuggestion(suggestion.id)}
+                          className="flex items-center gap-1.5 transition-all hover:opacity-90"
+                          style={{
+                            padding: "8px 14px",
+                            borderRadius: "20px",
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            backgroundColor: isSelected ? "#CEA54F" : "#FFFFFF",
+                            color: isSelected ? "#FFFFFF" : "#6B7280",
+                            border: isSelected ? "none" : "1px solid #E5E7EB",
+                            cursor: "pointer",
+                            whiteSpace: "nowrap",
+                            boxShadow: isSelected
+                              ? "0 2px 8px rgba(206, 165, 79, 0.35)"
+                              : "0 1px 4px rgba(0, 0, 0, 0.06)",
+                          }}
+                          data-testid={`button-suggestion-${suggestion.id}`}
+                        >
+                          <span>{suggestion.icon}</span>
+                          <span>{suggestion.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Platform Selection and Generate Button */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    {/* Select Platform */}
+                    <div className="flex items-center gap-3">
+                      <span
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "#6B7280",
+                          whiteSpace: "nowrap",
+                        }}
+                        data-testid="text-select-platform"
+                      >
+                        Select Platform
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {platforms.map((platform) => (
+                          <button
+                            key={platform.id}
+                            onClick={() => togglePlatform(platform.id)}
+                            className="transition-transform hover:scale-105"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                            }}
+                            data-testid={`button-platform-${platform.id}`}
+                          >
+                            {getPlatformIcon(
+                              platform.id,
+                              selectedPlatforms.includes(platform.id),
+                              platform.color
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Generate Idea Button */}
                     <button
-                      key={suggestion.id}
-                      onClick={() => handleQuickSuggestion(suggestion.id)}
-                      className="flex items-center gap-1.5 transition-all hover:opacity-90"
+                      onClick={handleGenerateIdea}
+                      className="flex items-center gap-2 transition-all hover:opacity-90"
                       style={{
-                        padding: "8px 14px",
-                        borderRadius: "20px",
+                        padding: "10px 20px",
+                        borderRadius: "24px",
+                        background:
+                          "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
                         fontFamily: "Inter, sans-serif",
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        backgroundColor: isSelected ? "#CEA54F" : "#FFFFFF",
-                        color: isSelected ? "#FFFFFF" : "#6B7280",
-                        border: isSelected ? "none" : "1px solid #E5E7EB",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: "#FFFFFF",
+                        border: "none",
                         cursor: "pointer",
                         whiteSpace: "nowrap",
-                        boxShadow: isSelected
-                          ? "0 2px 8px rgba(206, 165, 79, 0.35)"
-                          : "0 1px 4px rgba(0, 0, 0, 0.06)",
+                        boxShadow: "0 4px 12px rgba(206, 165, 79, 0.4)",
                       }}
-                      data-testid={`button-suggestion-${suggestion.id}`}
+                      data-testid="button-generate-idea"
                     >
-                      <span>{suggestion.icon}</span>
-                      <span>{suggestion.label}</span>
+                      <Sparkles size={16} />
+                      <span>Generate Idea</span>
                     </button>
-                  );
-                })}
-              </div>
+                  </div>
+                </div>
+              </>
+            )}
 
-              {/* Platform Selection and Generate Button */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                {/* Select Platform */}
-                <div className="flex items-center gap-3">
-                  <span
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "13px",
-                      fontWeight: 500,
-                      color: "#6B7280",
-                      whiteSpace: "nowrap",
-                    }}
-                    data-testid="text-select-platform"
-                  >
-                    Select Platform
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {platforms.map((platform) => (
-                      <button
-                        key={platform.id}
-                        onClick={() => togglePlatform(platform.id)}
-                        className="transition-transform hover:scale-105"
+            {/* Graphics / Template Tab */}
+            {activeTab === "graphics-template" && (
+              <>
+                {/* Filters Section - Type and Style */}
+                <div
+                  className="flex flex-col sm:flex-row gap-4 mb-10"
+                  style={{
+                    padding: "20px",
+                    backgroundColor: "#F9FAFB",
+                    borderRadius: "12px",
+                    border: "1px solid #E5E7EB",
+                  }}
+                >
+                  {/* Type Dropdown */}
+                  <div className="flex-1">
+                    <label
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        color: "#111827",
+                        marginBottom: "8px",
+                        display: "block",
+                      }}
+                    >
+                      Type
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="w-full focus:outline-none focus:border-[#CEA54F] transition-all"
                         style={{
-                          background: "none",
-                          border: "none",
-                          padding: 0,
+                          padding: "11px 16px",
+                          paddingRight: "40px",
+                          border: "1px solid #D1D5DB",
+                          borderRadius: "8px",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "#6B7280",
+                          backgroundColor: "#FFFFFF",
                           cursor: "pointer",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
                         }}
-                        data-testid={`button-platform-${platform.id}`}
                       >
-                        {getPlatformIcon(
-                          platform.id,
-                          selectedPlatforms.includes(platform.id),
-                          platform.color,
-                        )}
-                      </button>
-                    ))}
+                        <option>All Type</option>
+                        <option>Social Media Post</option>
+                        <option>Story</option>
+                        <option>Banner</option>
+                      </select>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "14px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          pointerEvents: "none",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <svg
+                          width="12"
+                          height="8"
+                          viewBox="0 0 12 8"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1L6 6L11 1"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Style Dropdown */}
+                  <div className="flex-1">
+                    <label
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        color: "#111827",
+                        marginBottom: "8px",
+                        display: "block",
+                      }}
+                    >
+                      Style
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="w-full focus:outline-none focus:border-[#CEA54F] transition-all"
+                        style={{
+                          padding: "11px 16px",
+                          paddingRight: "40px",
+                          border: "1px solid #D1D5DB",
+                          borderRadius: "8px",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "#6B7280",
+                          backgroundColor: "#FFFFFF",
+                          cursor: "pointer",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                        }}
+                      >
+                        <option>All Style</option>
+                        <option>Minimal</option>
+                        <option>Elegant</option>
+                        <option>Bold</option>
+                      </select>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "14px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          pointerEvents: "none",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <svg
+                          width="12"
+                          height="8"
+                          viewBox="0 0 12 8"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1L6 6L11 1"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Generate Idea Button */}
-                <button
-                  onClick={handleGenerateIdea}
-                  className="flex items-center gap-2 transition-all hover:opacity-90"
+                {/* Template Cards Grid */}
+                <div
                   style={{
-                    padding: "10px 20px",
-                    borderRadius: "24px",
-                    background: "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: "#FFFFFF",
-                    border: "none",
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                    boxShadow: "0 4px 12px rgba(206, 165, 79, 0.4)",
+                    display: "grid",
+                    gridTemplateColumns:
+                      "repeat(auto-fill, minmax(270px, 1fr))",
+                    gap: "15px",
                   }}
-                  data-testid="button-generate-idea"
                 >
-                  <Sparkles size={16} />
-                  <span>Generate Idea</span>
-                </button>
-              </div>
-            </div>
+                  {contentCards.map((card) => (
+                    <div
+                      key={card.id}
+                      className="transition-all hover:shadow-md"
+                      style={{
+                        backgroundColor: "#F2F2F2",
+                        borderRadius: "16px",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                        border: "1px solid #DADADA",
+                        padding: "13px",
+                      }}
+                    >
+                      {/* Card Image */}
+                      <div
+                        style={{
+                          width: "100%",
+                          overflow: "hidden",
+                          borderRadius: "12px",
+                          marginBottom: "16px",
+                        }}
+                      >
+                        <img
+                          src={card.image}
+                          alt={card.title}
+                          style={{
+                            width: "100%",
+                            height: "200px",
+                            objectFit: "cover",
+                            display: "block",
+                          }}
+                        />
+                      </div>
+
+                      {/* Card Content */}
+                      <div style={{ padding: "0 4px" }}>
+                        {/* Title */}
+                        <h3
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "16px",
+                            fontWeight: 600,
+                            color: "#1F2937",
+                            lineHeight: "1.5",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          {card.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p
+                          className="line-clamp-2"
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            color: "#9CA3AF",
+                            lineHeight: "1.6",
+                            marginBottom: "16px",
+                          }}
+                        >
+                          {card.description}
+                        </p>
+
+                        {/* Hashtags */}
+                        <div className="flex flex-wrap gap-2">
+                          {card.hashtags.map((hashtag, index) => (
+                            <span
+                              key={index}
+                              style={{
+                                padding: "8px 16px",
+                                borderRadius: "20px",
+                                backgroundColor: "#D9D9D9",
+                                fontFamily: "Inter, sans-serif",
+                                fontSize: "13px",
+                                fontWeight: 500,
+                                color: "#3F3F3F",
+                              }}
+                            >
+                              {hashtag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </>
             )}
 
@@ -484,8 +739,19 @@ export default function AIStudio() {
                           color: "#9CA3AF",
                         }}
                       >
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
-                          <path d="M1 1.5L7 7.5L13 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <svg
+                          width="14"
+                          height="9"
+                          viewBox="0 0 14 9"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1.5L7 7.5L13 1.5"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </div>
                     </div>
@@ -540,8 +806,19 @@ export default function AIStudio() {
                           color: "#9CA3AF",
                         }}
                       >
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
-                          <path d="M1 1.5L7 7.5L13 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <svg
+                          width="14"
+                          height="9"
+                          viewBox="0 0 14 9"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1.5L7 7.5L13 1.5"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </div>
                     </div>
@@ -555,7 +832,8 @@ export default function AIStudio() {
                     style={{
                       padding: "12px 24px",
                       borderRadius: "24px",
-                      background: "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
+                      background:
+                        "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
                       fontFamily: "Inter, sans-serif",
                       fontSize: "14px",
                       fontWeight: 600,
@@ -662,147 +940,147 @@ export default function AIStudio() {
 
           {/* Content Cards Grid - Only show for AI Ideas tab */}
           {activeTab === "ai-ideas" && (
-          <div
-            className="mt-8"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "20px",
-            }}
-          >
-            {contentCards.map((card) => (
-              <div
-                key={card.id}
-                className="overflow-hidden"
-                style={{
-                  backgroundColor: "#F5F3F0",
-                  borderRadius: "12px",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                  border: "1px solid #E8E5E0",
-                }}
-                data-testid={`card-content-${card.id}`}
-              >
-                {/* Card Image - With padding */}
-                <div style={{ padding: "12px 12px 0 12px" }}>
-                  <div
-                    className="w-full overflow-hidden"
-                    style={{
-                      aspectRatio: "4/3",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <img
-                      src={card.image}
-                      alt={card.title}
-                      className="w-full h-full object-cover"
-                      data-testid={`img-content-${card.id}`}
-                    />
+            <div
+              className="mt-8"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: "20px",
+              }}
+            >
+              {contentCards.map((card) => (
+                <div
+                  key={card.id}
+                  className="overflow-hidden"
+                  style={{
+                    backgroundColor: "#F5F3F0",
+                    borderRadius: "12px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                    border: "1px solid #E8E5E0",
+                  }}
+                  data-testid={`card-content-${card.id}`}
+                >
+                  {/* Card Image - With padding */}
+                  <div style={{ padding: "12px 12px 0 12px" }}>
+                    <div
+                      className="w-full overflow-hidden"
+                      style={{
+                        aspectRatio: "4/3",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <img
+                        src={card.image}
+                        alt={card.title}
+                        className="w-full h-full object-cover"
+                        data-testid={`img-content-${card.id}`}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Card Content */}
-                <div style={{ padding: "16px" }}>
-                  {/* Title */}
-                  <h3
-                    className="line-clamp-2"
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "15px",
-                      fontWeight: 600,
-                      color: "#1F2937",
-                      lineHeight: "1.4",
-                      marginBottom: "8px",
-                    }}
-                    data-testid={`text-title-${card.id}`}
-                  >
-                    {card.title}
-                  </h3>
+                  {/* Card Content */}
+                  <div style={{ padding: "16px" }}>
+                    {/* Title */}
+                    <h3
+                      className="line-clamp-2"
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "#1F2937",
+                        lineHeight: "1.4",
+                        marginBottom: "8px",
+                      }}
+                      data-testid={`text-title-${card.id}`}
+                    >
+                      {card.title}
+                    </h3>
 
-                  {/* Description */}
-                  <p
-                    className="line-clamp-2"
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "13px",
-                      fontWeight: 400,
-                      color: "#6B7280",
-                      lineHeight: "1.5",
-                      marginBottom: "12px",
-                    }}
-                    data-testid={`text-description-${card.id}`}
-                  >
-                    {card.description}
-                  </p>
+                    {/* Description */}
+                    <p
+                      className="line-clamp-2"
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "13px",
+                        fontWeight: 400,
+                        color: "#6B7280",
+                        lineHeight: "1.5",
+                        marginBottom: "12px",
+                      }}
+                      data-testid={`text-description-${card.id}`}
+                    >
+                      {card.description}
+                    </p>
 
-                  {/* Hashtags */}
-                  <div
-                    className="flex flex-wrap gap-2"
-                    style={{ marginBottom: "14px" }}
-                  >
-                    {card.hashtags.map((hashtag, index) => (
-                      <span
-                        key={index}
+                    {/* Hashtags */}
+                    <div
+                      className="flex flex-wrap gap-2"
+                      style={{ marginBottom: "14px" }}
+                    >
+                      {card.hashtags.map((hashtag, index) => (
+                        <span
+                          key={index}
+                          style={{
+                            padding: "5px 12px",
+                            borderRadius: "16px",
+                            backgroundColor: "#E8E5E0",
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "12px",
+                            fontWeight: 500,
+                            color: "#6B7280",
+                          }}
+                          data-testid={`tag-${card.id}-${index}`}
+                        >
+                          {hashtag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <button
+                        className="flex-1 transition-all hover:opacity-90"
                         style={{
-                          padding: "5px 12px",
-                          borderRadius: "16px",
-                          backgroundColor: "#E8E5E0",
+                          padding: "11px 16px",
+                          borderRadius: "24px",
+                          backgroundColor: "#CEA54F",
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "12px",
-                          fontWeight: 500,
-                          color: "#6B7280",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          color: "#FFFFFF",
+                          border: "none",
+                          cursor: "pointer",
+                          boxShadow: "0 2px 8px rgba(206, 165, 79, 0.4)",
+                          whiteSpace: "nowrap",
                         }}
-                        data-testid={`tag-${card.id}-${index}`}
+                        data-testid={`button-generate-caption-${card.id}`}
                       >
-                        {hashtag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <button
-                      className="flex-1 transition-all hover:opacity-90"
-                      style={{
-                        padding: "11px 16px",
-                        borderRadius: "24px",
-                        backgroundColor: "#CEA54F",
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "13px",
-                        fontWeight: 600,
-                        color: "#FFFFFF",
-                        border: "none",
-                        cursor: "pointer",
-                        boxShadow: "0 2px 8px rgba(206, 165, 79, 0.4)",
-                        whiteSpace: "nowrap",
-                      }}
-                      data-testid={`button-generate-caption-${card.id}`}
-                    >
-                      Generate Caption
-                    </button>
-                    <button
-                      className="flex-1 transition-all hover:opacity-90"
-                      style={{
-                        padding: "11px 16px",
-                        borderRadius: "24px",
-                        backgroundColor: "#E8DCC8",
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "13px",
-                        fontWeight: 600,
-                        color: "#6B5A3D",
-                        border: "none",
-                        cursor: "pointer",
-                        boxShadow: "0 2px 6px rgba(232, 220, 200, 0.5)",
-                        whiteSpace: "nowrap",
-                      }}
-                      data-testid={`button-open-editor-${card.id}`}
-                    >
-                      Open Editor
-                    </button>
+                        Generate Caption
+                      </button>
+                      <button
+                        className="flex-1 transition-all hover:opacity-90"
+                        style={{
+                          padding: "11px 16px",
+                          borderRadius: "24px",
+                          backgroundColor: "#E8DCC8",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          color: "#6B5A3D",
+                          border: "none",
+                          cursor: "pointer",
+                          boxShadow: "0 2px 6px rgba(232, 220, 200, 0.5)",
+                          whiteSpace: "nowrap",
+                        }}
+                        data-testid={`button-open-editor-${card.id}`}
+                      >
+                        Open Editor
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           )}
         </div>
       </div>
