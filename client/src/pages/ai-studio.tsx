@@ -244,27 +244,29 @@ export default function AIStudio() {
           <div data-testid="card-content-creation">
             {/* Header with Title and Tabs */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
-              {activeTab !== "graphics-template" && (
-                <h2
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    color: "#202020",
-                  }}
-                  data-testid="text-post-question"
-                >
-                  {activeTab === "caption-hashtags"
-                    ? "Describe your next post"
-                    : "What do you want to post about?"}
-                </h2>
-              )}
+              {activeTab !== "graphics-template" &&
+                activeTab !== "script-generator" && (
+                  <h2
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#202020",
+                    }}
+                    data-testid="text-post-question"
+                  >
+                    {activeTab === "caption-hashtags"
+                      ? "Describe your next post"
+                      : "What do you want to post about?"}
+                  </h2>
+                )}
 
               {/* Tabs */}
               <div
                 className="flex items-center gap-1.5"
                 style={
-                  activeTab === "graphics-template"
+                  activeTab === "graphics-template" ||
+                  activeTab === "script-generator"
                     ? { marginLeft: "auto" }
                     : {}
                 }
@@ -667,6 +669,452 @@ export default function AIStudio() {
               </>
             )}
 
+            {/* Script Generator Tab */}
+            {activeTab === "script-generator" && (
+              <>
+                {/* What your video about */}
+                <div className="mb-6">
+                  <label
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "15px",
+                      fontWeight: 600,
+                      color: "#111827",
+                      marginBottom: "10px",
+                      display: "block",
+                    }}
+                  >
+                    What your video about
+                  </label>
+                  <textarea
+                    placeholder="Showcase a haircut transformation"
+                    className="w-full focus:outline-none focus:border-[#CEA54F] transition-colors placeholder:text-[#9CA3AF]"
+                    style={{
+                      minHeight: "100px",
+                      padding: "18px 20px",
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "12px",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "14px",
+                      color: "#1F2937",
+                      resize: "none",
+                      backgroundColor: "#F5F5F5",
+                      lineHeight: "1.5",
+                    }}
+                  />
+                </div>
+
+                {/* Duration and Format Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                  {/* Duration */}
+                  <div>
+                    <label
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "#111827",
+                        marginBottom: "10px",
+                        display: "block",
+                      }}
+                    >
+                      Duration
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="w-full focus:outline-none focus:border-[#CEA54F] transition-all"
+                        style={{
+                          padding: "14px 18px",
+                          paddingRight: "44px",
+                          border: "1px solid #E5E7EB",
+                          borderRadius: "12px",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "#1F2937",
+                          backgroundColor: "#F5F5F5",
+                          cursor: "pointer",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                        }}
+                      >
+                        <option>30</option>
+                        <option>60</option>
+                        <option>90</option>
+                        <option>120</option>
+                      </select>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "18px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          pointerEvents: "none",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <svg
+                          width="12"
+                          height="8"
+                          viewBox="0 0 12 8"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1L6 6L11 1"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Format */}
+                  <div>
+                    <label
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "#111827",
+                        marginBottom: "10px",
+                        display: "block",
+                      }}
+                    >
+                      Format
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="w-full focus:outline-none focus:border-[#CEA54F] transition-all"
+                        style={{
+                          padding: "14px 18px",
+                          paddingRight: "44px",
+                          border: "1px solid #E5E7EB",
+                          borderRadius: "12px",
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "#1F2937",
+                          backgroundColor: "#F5F5F5",
+                          cursor: "pointer",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                        }}
+                      >
+                        <option>Reel</option>
+                        <option>Story</option>
+                        <option>Post</option>
+                        <option>TikTok</option>
+                      </select>
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "18px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          pointerEvents: "none",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <svg
+                          width="12"
+                          height="8"
+                          viewBox="0 0 12 8"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1L6 6L11 1"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Generate Script Button */}
+                <div className="mb-8">
+                  <button
+                    className="flex items-center gap-1.5 transition-all hover:opacity-90"
+                    style={{
+                      padding: "10px 20px",
+                      borderRadius: "20px",
+                      background:
+                        "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "#FFFFFF",
+                      border: "none",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      boxShadow: "0 3px 10px rgba(206, 165, 79, 0.35)",
+                    }}
+                  >
+                    <span>+ Generate Script</span>
+                  </button>
+                </div>
+
+                {/* Your Video Script Section */}
+                <div style={{ marginBottom: "24px" }}>
+                  <div style={{ marginBottom: "12px" }}>
+                    <h3
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "#1F1F1F",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      Your Video Script
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "11px",
+                        fontWeight: 400,
+                        color: "#8A8A8A",
+                      }}
+                    >
+                      30-second transformation reel
+                    </p>
+                  </div>
+
+                  {/* Scene Cards */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                    }}
+                  >
+                    {/* Scene 1 */}
+                    <div
+                      style={{
+                        backgroundColor: "#F5F5F5",
+                        borderRadius: "16px",
+                        padding: "16px 18px",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "14px",
+                        border: "1px solid #E0E0E0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "44px",
+                          height: "44px",
+                          borderRadius: "10px",
+                          backgroundColor: "#D4D4D4",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="#707070"
+                          strokeWidth="2"
+                        >
+                          <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          minHeight: "44px",
+                        }}
+                      >
+                        <div
+                          className="flex items-center justify-between"
+                          style={{ marginBottom: "2px" }}
+                        >
+                          <h4
+                            style={{
+                              fontFamily: "Inter, sans-serif",
+                              fontSize: "14px",
+                              fontWeight: 600,
+                              color: "#2B2B2B",
+                              lineHeight: "1.2",
+                            }}
+                          >
+                            Scene 1
+                          </h4>
+                          <span
+                            style={{
+                              fontFamily: "Inter, sans-serif",
+                              fontSize: "12px",
+                              fontWeight: 500,
+                              color: "#6B6B6B",
+                              backgroundColor: "#DADADA",
+                              padding: "4px 10px",
+                              borderRadius: "8px",
+                              lineHeight: "1",
+                            }}
+                          >
+                            0-5s
+                          </span>
+                        </div>
+                        <p
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "13px",
+                            fontWeight: 400,
+                            color: "#4A4A4A",
+                            lineHeight: "1.3",
+                          }}
+                        >
+                          Show the client before haircut – add upbeat music 🎵
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Scene 2 */}
+                    <div
+                      style={{
+                        backgroundColor: "#F5F5F5",
+                        borderRadius: "16px",
+                        padding: "16px 18px",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "14px",
+                        border: "1px solid #E0E0E0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "44px",
+                          height: "44px",
+                          borderRadius: "10px",
+                          backgroundColor: "#D4D4D4",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="#707070"
+                          strokeWidth="2"
+                        >
+                          <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          minHeight: "44px",
+                        }}
+                      >
+                        <div
+                          className="flex items-center justify-between"
+                          style={{ marginBottom: "2px" }}
+                        >
+                          <h4
+                            style={{
+                              fontFamily: "Inter, sans-serif",
+                              fontSize: "14px",
+                              fontWeight: 600,
+                              color: "#2B2B2B",
+                              lineHeight: "1.2",
+                            }}
+                          >
+                            Scene 1
+                          </h4>
+                          <span
+                            style={{
+                              fontFamily: "Inter, sans-serif",
+                              fontSize: "12px",
+                              fontWeight: 500,
+                              color: "#6B6B6B",
+                              backgroundColor: "#DADADA",
+                              padding: "4px 10px",
+                              borderRadius: "8px",
+                              lineHeight: "1",
+                            }}
+                          >
+                            0-5s
+                          </span>
+                        </div>
+                        <p
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "13px",
+                            fontWeight: 400,
+                            color: "#4A4A4A",
+                            lineHeight: "1.3",
+                          }}
+                        >
+                          Show the client before haircut – add upbeat music 🎵
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 justify-end">
+                  <button
+                    className="transition-all hover:opacity-90"
+                    style={{
+                      padding: "10px 45px",
+                      borderRadius: "20px",
+                      backgroundColor: "#1A1A1A",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "#FFFFFF",
+                      border: "none",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.25)",
+                    }}
+                  >
+                    Export Script
+                  </button>
+                  <button
+                    className="transition-all hover:opacity-90"
+                    style={{
+                      padding: "10px 30px",
+                      borderRadius: "20px",
+                      background:
+                        "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "#FFFFFF",
+                      border: "none",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      boxShadow: "0 4px 10px rgba(206, 165, 79, 0.4)",
+                    }}
+                  >
+                    + Generate Caption
+                  </button>
+                </div>
+              </>
+            )}
+
             {/* Caption & Hashtags Tab */}
             {activeTab === "caption-hashtags" && (
               <>
@@ -828,9 +1276,9 @@ export default function AIStudio() {
                 {/* Generate Idea Button */}
                 <div className="mb-8">
                   <button
-                    className="flex items-center gap-2 transition-all hover:opacity-90"
+                    className="transition-all hover:opacity-90"
                     style={{
-                      padding: "12px 24px",
+                      padding: "10px 24px",
                       borderRadius: "24px",
                       background:
                         "linear-gradient(135deg, #D4A855 0%, #CEA54F 100%)",
@@ -844,7 +1292,6 @@ export default function AIStudio() {
                       boxShadow: "0 4px 12px rgba(206, 165, 79, 0.4)",
                     }}
                   >
-                    <Sparkles size={16} />
                     <span>+ Generate Idea</span>
                   </button>
                 </div>
@@ -1015,7 +1462,7 @@ export default function AIStudio() {
                     {/* Hashtags */}
                     <div
                       className="flex flex-wrap gap-2"
-                      style={{ marginBottom: "14px" }}
+                      style={{ marginBottom: "30px" }}
                     >
                       {card.hashtags.map((hashtag, index) => (
                         <span
@@ -1037,20 +1484,20 @@ export default function AIStudio() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mb-2">
                       <button
                         className="flex-1 transition-all hover:opacity-90"
                         style={{
-                          padding: "11px 16px",
-                          borderRadius: "24px",
+                          padding: "9px 14px",
+                          borderRadius: "20px",
                           backgroundColor: "#CEA54F",
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "13px",
+                          fontSize: "12px",
                           fontWeight: 600,
                           color: "#FFFFFF",
                           border: "none",
                           cursor: "pointer",
-                          boxShadow: "0 2px 8px rgba(206, 165, 79, 0.4)",
+                          boxShadow: "0 2px 6px rgba(206, 165, 79, 0.3)",
                           whiteSpace: "nowrap",
                         }}
                         data-testid={`button-generate-caption-${card.id}`}
@@ -1060,16 +1507,16 @@ export default function AIStudio() {
                       <button
                         className="flex-1 transition-all hover:opacity-90"
                         style={{
-                          padding: "11px 16px",
-                          borderRadius: "24px",
+                          padding: "9px 14px",
+                          borderRadius: "20px",
                           backgroundColor: "#E8DCC8",
                           fontFamily: "Inter, sans-serif",
-                          fontSize: "13px",
+                          fontSize: "12px",
                           fontWeight: 600,
                           color: "#6B5A3D",
                           border: "none",
                           cursor: "pointer",
-                          boxShadow: "0 2px 6px rgba(232, 220, 200, 0.5)",
+                          boxShadow: "0 2px 4px rgba(232, 220, 200, 0.4)",
                           whiteSpace: "nowrap",
                         }}
                         data-testid={`button-open-editor-${card.id}`}
