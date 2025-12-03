@@ -192,20 +192,21 @@ export default function AIStudio() {
     <DashboardLayout>
       {/* Page with light gray background */}
       <div
-        className="p-6 lg:p-8 min-h-full"
+        className="p-4 md:p-6 space-y-4 md:space-y-5 min-h-full"
         style={{ backgroundColor: "#F5F5F5" }}
       >
         {/* Main White Card Container */}
         <div
           style={{
             backgroundColor: "#FFFFFF",
-            borderRadius: "16px",
-            padding: "32px",
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+            paddingTop: "24px",
+            border: "1px solid #E5E7EB",
+            // boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
           }}
         >
           {/* Page Header */}
-          <div className="mb-6">
+          <div className="mx-6 mb-6">
             <h1
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -243,7 +244,7 @@ export default function AIStudio() {
           {/* Content Creation Section */}
           <div data-testid="card-content-creation">
             {/* Header with Title and Tabs */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 m-6">
               {activeTab !== "graphics-template" &&
                 activeTab !== "script-generator" && (
                   <h2
@@ -308,7 +309,7 @@ export default function AIStudio() {
                   value={postIdea}
                   onChange={(e) => setPostIdea(e.target.value)}
                   placeholder="Describe your post idea..."
-                  className="w-full focus:outline-none focus:border-[#CEA54F] transition-colors"
+                  className="w-[calc(100%-48px)] focus:outline-none focus:border-[#CEA54F] transition-colors mx-6"
                   style={{
                     minHeight: "100px",
                     padding: "16px",
@@ -324,7 +325,7 @@ export default function AIStudio() {
                 />
 
                 {/* Quick Suggestions and Platform Selection Row */}
-                <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-4 mt-5">
+                <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-4 mt-5 mx-6">
                   {/* Quick Suggestions */}
                   <div className="flex flex-wrap gap-2">
                     {quickSuggestions.map((suggestion) => {
@@ -431,7 +432,7 @@ export default function AIStudio() {
               <>
                 {/* Filters Section - Type and Style */}
                 <div
-                  className="flex flex-col sm:flex-row gap-4 mb-10"
+                  className="flex flex-col sm:flex-row gap-4 mb-10 mx-6"
                   style={{
                     padding: "20px",
                     backgroundColor: "#F9FAFB",
@@ -577,6 +578,7 @@ export default function AIStudio() {
                     gridTemplateColumns:
                       "repeat(auto-fill, minmax(270px, 1fr))",
                     gap: "15px",
+                    margin: '0 24px 30px 24px'
                   }}
                 >
                   {contentCards.map((card) => (
@@ -673,7 +675,7 @@ export default function AIStudio() {
             {activeTab === "script-generator" && (
               <>
                 {/* What your video about */}
-                <div className="mb-6">
+                <div className="mb-6 mx-6">
                   <label
                     style={{
                       fontFamily: "Inter, sans-serif",
@@ -705,7 +707,7 @@ export default function AIStudio() {
                 </div>
 
                 {/* Duration and Format Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 mx-6">
                   {/* Duration */}
                   <div>
                     <label
@@ -838,7 +840,7 @@ export default function AIStudio() {
                 </div>
 
                 {/* Generate Script Button */}
-                <div className="mb-8">
+                <div className="mb-8 mx-6">
                   <button
                     className="flex items-center gap-1.5 transition-all hover:opacity-90"
                     style={{
@@ -861,7 +863,7 @@ export default function AIStudio() {
                 </div>
 
                 {/* Your Video Script Section */}
-                <div style={{ marginBottom: "24px" }}>
+                <div style={{ marginBottom: "24px", marginLeft: "24px", marginRight: "24px" }}>
                   <div style={{ marginBottom: "12px" }}>
                     <h3
                       style={{
@@ -1073,7 +1075,7 @@ export default function AIStudio() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3 justify-end">
+                <div className="flex gap-3 justify-end mx-6 mb-7">
                   <button
                     className="transition-all hover:opacity-90"
                     style={{
@@ -1121,7 +1123,7 @@ export default function AIStudio() {
                 {/* Textarea */}
                 <textarea
                   placeholder="Describe your post idea..."
-                  className="w-full focus:outline-none focus:border-[#CEA54F] transition-colors"
+                  className="w-[calc(100%-48px)] focus:outline-none focus:border-[#CEA54F] transition-colors mx-6"
                   style={{
                     minHeight: "140px",
                     padding: "16px",
@@ -1138,7 +1140,7 @@ export default function AIStudio() {
                 />
 
                 {/* Select Tone and Platform Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 mx-6">
                   {/* Select Tone */}
                   <div>
                     <label
@@ -1274,7 +1276,7 @@ export default function AIStudio() {
                 </div>
 
                 {/* Generate Idea Button */}
-                <div className="mb-8">
+                <div className="mb-8 mx-6">
                   <button
                     className="transition-all hover:opacity-90"
                     style={{
@@ -1304,6 +1306,8 @@ export default function AIStudio() {
                     padding: "24px",
                     backgroundColor: "#FFFFFF",
                     marginBottom: "28px",
+                    marginLeft: "24px",
+                    marginRight: "24px",
                     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
                   }}
                 >
@@ -1367,7 +1371,7 @@ export default function AIStudio() {
                 </div>
 
                 {/* Select Date & Time */}
-                <div>
+                <div className="mx-6 mb-8">
                   <h3
                     style={{
                       fontFamily: "Inter, sans-serif",
@@ -1388,7 +1392,7 @@ export default function AIStudio() {
           {/* Content Cards Grid - Only show for AI Ideas tab */}
           {activeTab === "ai-ideas" && (
             <div
-              className="mt-8"
+              className="my-8 mx-6"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
