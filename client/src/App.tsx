@@ -17,6 +17,8 @@ import DashboardHome from "@/pages/dashboard-home";
 import AIStudio from "@/pages/ai-studio";
 import Editors from "@/pages/editors";
 import Analytics from "@/pages/analytics";
+import Settings from "@/pages/settings";
+import AccountSettings from "@/pages/account-settings";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
             <Route path="/ai-studio" component={AIStudio} />
             <Route path="/editors" component={Editors} />
             <Route path="/analytics" component={Analytics} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/settings/accounts" component={AccountSettings} />
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>

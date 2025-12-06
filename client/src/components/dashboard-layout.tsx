@@ -199,43 +199,52 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             Preference
           </div>
 
-          <div 
-            className="pt-4 border-t" 
+          <div
+            className="pt-4 border-t"
             style={{ borderColor: "rgba(255, 255, 255, 0.08)" }}
           >
-            <div
-            className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
-            data-testid="link-settings"
-            style={{
-              backgroundColor: "transparent",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-            }}
-          >
-            <div
-              dangerouslySetInnerHTML={{ __html: settingsIcon }}
-              style={{
-                width: "17px",
-                height: "17px",
-                opacity: 0.5,
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "13px",
-                fontWeight: 400,
-                color: "rgba(255, 255, 255, 0.6)",
-              }}
+            <Link
+              href="/settings"
+              className="block"
+              data-testid="link-settings"
             >
-              Settings
-            </span>
-          </div>
+              <div
+                className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
+                style={{
+                  backgroundColor: location === "/settings" ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  if (location !== "/settings") {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (location !== "/settings") {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }
+                }}
+              >
+                <div
+                  dangerouslySetInnerHTML={{ __html: settingsIcon }}
+                  style={{
+                    width: "17px",
+                    height: "17px",
+                    opacity: location === "/settings" ? 1 : 0.5,
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "13px",
+                    fontWeight: 400,
+                    color: location === "/settings" ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.6)",
+                  }}
+                >
+                  Settings
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
