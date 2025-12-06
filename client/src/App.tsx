@@ -16,6 +16,7 @@ import Generating from "@/pages/generating";
 import DashboardHome from "@/pages/dashboard-home";
 import AIStudio from "@/pages/ai-studio";
 import Editors from "@/pages/editors";
+import Analytics from "@/pages/analytics";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/home" component={DashboardHome} />
             <Route path="/ai-studio" component={AIStudio} />
             <Route path="/editors" component={Editors} />
+            <Route path="/analytics" component={Analytics} />
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>
