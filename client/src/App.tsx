@@ -22,6 +22,8 @@ import AccountSettings from "@/pages/account-settings";
 import BrandingSettings from "@/pages/branding-settings";
 import NotificationSettings from "@/pages/notification-settings";
 import IntegrationSettings from "@/pages/integration-settings";
+import BillingSettings from "@/pages/billing-settings";
+import InvoiceDetails from "@/pages/invoice-details";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
             <Route path="/settings/brandings" component={BrandingSettings} />
             <Route path="/settings/notification" component={NotificationSettings} />
             <Route path="/settings/integrations" component={IntegrationSettings} />
+            <Route path="/settings/billings" component={BillingSettings} />
+            <Route path="/settings/billings/invoice" component={InvoiceDetails} />
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>
