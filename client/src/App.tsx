@@ -20,6 +20,8 @@ import Analytics from "@/pages/analytics";
 import Settings from "@/pages/settings";
 import AccountSettings from "@/pages/account-settings";
 import BrandingSettings from "@/pages/branding-settings";
+import NotificationSettings from "@/pages/notification-settings";
+import IntegrationSettings from "@/pages/integration-settings";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -44,6 +46,8 @@ function App() {
             <Route path="/settings" component={Settings} />
             <Route path="/settings/accounts" component={AccountSettings} />
             <Route path="/settings/brandings" component={BrandingSettings} />
+            <Route path="/settings/notification" component={NotificationSettings} />
+            <Route path="/settings/integrations" component={IntegrationSettings} />
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>
