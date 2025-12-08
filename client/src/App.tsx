@@ -19,6 +19,7 @@ import Editors from "@/pages/editors";
 import Analytics from "@/pages/analytics";
 import Settings from "@/pages/settings";
 import AccountSettings from "@/pages/account-settings";
+import BrandingSettings from "@/pages/branding-settings";
 import NotFound from "@/pages/not-found";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             <Route path="/analytics" component={Analytics} />
             <Route path="/settings" component={Settings} />
             <Route path="/settings/accounts" component={AccountSettings} />
+            <Route path="/settings/brandings" component={BrandingSettings} />
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>
