@@ -1,27 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, Check } from "lucide-react";
 import { AuthLayout } from "@/components/auth-layout";
-
-type GoalId = "more-clients" | "post-consistently" | "brand-awareness" | "grow-followers";
-
-interface Goal {
-  id: GoalId;
-  label: string;
-}
+import { onboardingAPI, type Goal as APIGoal } from "@/services/onboarding.api";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Goals() {
   const [, setLocation] = useLocation();
-  const [selectedGoals, setSelectedGoals] = useState<GoalId[]>([]);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [goals, setGoals] = useState<APIGoal[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ general?: string }>({});
+  const { toast } = useToast();
 
-  const goals: Goal[] = [
-    { id: "more-clients", label: "Get more clients" },
-    { id: "post-consistently", label: "Post consistently" },
-    { id: "brand-awareness", label: "Build brand awareness" },
-    { id: "grow-followers", label: "Grow followers" },
-  ];
+  // Fetch goals on mount
+  useEffect(() => {
+    const loadGoals = async () => {
+      try {
+        const data = await onboardingAPI.getGoals();
+        setGoals(data);
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Failed to load goals",
+          description: error.message,
+        });
+        // Fallback to hardcoded goals
+        setGoals([
+          { id: "1", name: "Get more clients" },
+          { id: "2", name: "Post consistently" },
+          { id: "3", name: "Build brand awareness" },
+          { id: "4", name: "Grow followers" },
+        ]);
+      }
+    };
+    loadGoals();
+  }, [toast]);
 
-  const toggleGoal = (goalId: GoalId) => {
+  const toggleGoal = (goalId: string) => {
     setSelectedGoals((prev) =>
       prev.includes(goalId)
         ? prev.filter((id) => id !== goalId)
@@ -33,10 +49,38 @@ export default function Goals() {
     setLocation("/business-type");
   };
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Selected goals:", selectedGoals);
-    setLocation("/brand-colors");
+
+    if (selectedGoals.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Please select at least one goal",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      await onboardingAPI.submitStep3({ goalIds: selectedGoals });
+      toast({
+        title: "Goals saved!",
+        description: "Let's customize your brand.",
+      });
+      setLocation("/brand-colors");
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to save goals. Please try again.";
+      setErrors({ general: errorMessage });
+      toast({
+        variant: "destructive",
+        title: "Failed to save",
+        description: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -134,7 +178,7 @@ export default function Goals() {
                       }}
                       data-testid={`text-${goal.id}`}
                     >
-                      {goal.label}
+                      {goal.name}
                     </span>
 
                     {/* Checkbox Circle Indicator */}
@@ -166,10 +210,34 @@ export default function Goals() {
               })}
             </div>
 
+            {/* General Error Message */}
+            {errors.general && (
+              <div
+                className="p-3 rounded"
+                style={{
+                  backgroundColor: '#FEF2F2',
+                  border: '1px solid #FECACA',
+                }}
+                data-testid="error-general"
+              >
+                <p
+                  style={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    color: '#DC2626',
+                    textAlign: 'center'
+                  }}
+                >
+                  {errors.general}
+                </p>
+              </div>
+            )}
+
             {/* Continue Button */}
             <button
               type="submit"
-              disabled={selectedGoals.length === 0}
+              disabled={selectedGoals.length === 0 || isLoading}
               className="w-full rounded text-white font-medium transition-opacity mt-4"
               style={{
                 height: "48px",
@@ -178,12 +246,12 @@ export default function Goals() {
                 fontFamily: "Inter, sans-serif",
                 fontSize: "14px",
                 fontWeight: 500,
-                opacity: selectedGoals.length === 0 ? 0.5 : 1,
-                cursor: selectedGoals.length === 0 ? "not-allowed" : "pointer",
+                opacity: selectedGoals.length === 0 || isLoading ? 0.5 : 1,
+                cursor: selectedGoals.length === 0 || isLoading ? "not-allowed" : "pointer",
               }}
               data-testid="button-continue"
             >
-              Continue
+              {isLoading ? 'Saving...' : 'Continue'}
             </button>
           </form>
         </div>

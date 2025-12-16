@@ -1,17 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { AuthLayout } from "@/components/auth-layout";
 import { Eye, EyeOff } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
+import { useToast } from "@/hooks/use-toast";
+import { onboardingAPI } from "@/services/onboarding.api";
 import googleIcon from "@assets/google_1763490580644.png";
 import facebookIcon from "@assets/facebook_1763490580645.png";
 
 export default function SignIn() {
   const [, setLocation] = useLocation();
-  const { signInUser } = useUser();
+  const { login, loginWithGoogle, loginWithFacebook, isAuthenticated, isLoading: userLoading } = useUser();
+  const { toast } = useToast();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    const checkAuthAndRedirect = async () => {
+      if (!userLoading && isAuthenticated) {
+        try {
+          const status = await onboardingAPI.getStatus();
+
+          // If onboarding is not complete, redirect to the current step
+          if (!status.isComplete) {
+            const stepRoutes: Record<number, string> = {
+              1: "/brand-profile",
+              2: "/business-type",
+              3: "/goals",
+              4: "/brand-colors",
+              5: "/social-media-focus",
+            };
+
+            const redirectRoute = stepRoutes[status.currentStep];
+            if (redirectRoute) {
+              setLocation(redirectRoute);
+            } else {
+              setLocation("/brand-profile");
+            }
+          } else {
+            // Onboarding complete, go to home
+            setLocation("/home");
+          }
+        } catch (error) {
+          console.error("Failed to check onboarding status:", error);
+          setLocation("/home");
+        }
+      }
+    };
+
+    checkAuthAndRedirect();
+  }, [isAuthenticated, userLoading, setLocation]);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
 
   const validateForm = () => {
@@ -27,34 +68,78 @@ export default function SignIn() {
     // Password validation
     if (!password) {
       newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
-      // Try to sign in with credentials
-      const result = signInUser(email, password);
-      
-      if (result.success) {
-        // Navigate to dashboard after successful sign-in
-        setLocation("/home");
-      } else {
-        // Show error message
-        setErrors({ ...errors, general: result.error });
+      setIsLoading(true);
+      setErrors({});
+
+      try {
+        await login({ email, password });
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
+
+        // Check onboarding status to determine where to redirect
+        try {
+          const status = await onboardingAPI.getStatus();
+
+          // If onboarding is not complete, redirect to the current step
+          if (!status.isComplete) {
+            const stepRoutes: Record<number, string> = {
+              1: "/brand-profile",
+              2: "/business-type",
+              3: "/goals",
+              4: "/brand-colors",
+              5: "/social-media-focus",
+            };
+
+            const redirectRoute = stepRoutes[status.currentStep];
+            if (redirectRoute) {
+              setLocation(redirectRoute);
+            } else {
+              // Fallback to first step if currentStep is invalid
+              setLocation("/brand-profile");
+            }
+          } else {
+            // Onboarding complete, go to home
+            setLocation("/home");
+          }
+        } catch (statusError) {
+          console.error("Failed to check onboarding status:", statusError);
+          // On error, default to home page
+          setLocation("/home");
+        }
+      } catch (error: any) {
+        const errorMessage = error.message || "Failed to sign in. Please try again.";
+        setErrors({ general: errorMessage });
+        toast({
+          variant: "destructive",
+          title: "Sign in failed",
+          description: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    // Handle social login logic
-    console.log("Social login:", provider);
+  const handleSocialLogin = (provider: 'google' | 'facebook') => {
+    if (provider === 'google') {
+      loginWithGoogle();
+    } else if (provider === 'facebook') {
+      loginWithFacebook();
+    }
   };
 
   return (
@@ -252,7 +337,8 @@ export default function SignIn() {
             {/* Sign In Button */}
             <button
               type="submit"
-              className="w-full rounded text-white font-medium hover:opacity-90 transition-opacity"
+              disabled={isLoading}
+              className="w-full rounded text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
                 height: '48px',
                 borderRadius: '4px',
@@ -263,7 +349,7 @@ export default function SignIn() {
               }}
               data-testid="button-signin"
             >
-              Sign In
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
 
             {/* Divider */}

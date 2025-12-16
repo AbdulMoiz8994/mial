@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Bell, Settings, Menu, X } from "lucide-react";
+import { Search, Bell, Settings, Menu, X, LogOut } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logoSvg from "@assets/Pasted--svg-width-92-height-52-viewBox-0-0-92-52-fill-none-xmlns-http-www-w3-org-2000-svg-xmlns-1763982229563_1763982229565.txt?raw";
@@ -40,9 +40,14 @@ function getInitials(name: string | null | undefined): string {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [location] = useLocation();
-  const { user } = useUser();
+  const [location, setLocation] = useLocation();
+  const { user, logout } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    setLocation("/sign-in");
+  };
 
   const menuItems = [
     { path: "/home", label: "Home", icon: editorsIconSvg },
@@ -245,6 +250,44 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 </span>
               </div>
             </Link>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="block w-full mt-2"
+              data-testid="button-logout"
+            >
+              <div
+                className="flex items-center gap-2 px-2 py-2 cursor-pointer rounded transition-colors"
+                style={{
+                  backgroundColor: "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
+              >
+                <LogOut
+                  size={17}
+                  style={{
+                    color: "rgba(255, 255, 255, 0.5)",
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "13px",
+                    fontWeight: 400,
+                    color: "rgba(255, 255, 255, 0.6)",
+                  }}
+                >
+                  Logout
+                </span>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -340,21 +383,25 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
 
             {/* Action Icons */}
-            <button
-              className="hidden sm:flex w-9 h-9 items-center justify-center rounded-lg border bg-white cursor-pointer shrink-0"
-              style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
-              data-testid="button-notifications"
-            >
-              <Bell size={18} style={{ color: "rgba(26, 26, 26, 0.6)" }} />
-            </button>
+            <Link href="/settings/notification">
+              <button
+                className="hidden sm:flex w-9 h-9 items-center justify-center rounded-lg border bg-white cursor-pointer shrink-0"
+                style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
+                data-testid="button-notifications"
+              >
+                <Bell size={18} style={{ color: "rgba(26, 26, 26, 0.6)" }} />
+              </button>
+            </Link>
 
-            <button
-              className="hidden sm:flex w-9 h-9 items-center justify-center rounded-lg border bg-white cursor-pointer shrink-0"
-              style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
-              data-testid="button-settings"
-            >
-              <Settings size={18} style={{ color: "rgba(26, 26, 26, 0.6)" }} />
-            </button>
+            <Link href="/settings">
+              <button
+                className="hidden sm:flex w-9 h-9 items-center justify-center rounded-lg border bg-white cursor-pointer shrink-0"
+                style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
+                data-testid="button-settings"
+              >
+                <Settings size={18} style={{ color: "rgba(26, 26, 26, 0.6)" }} />
+              </button>
+            </Link>
 
             {/* Avatar */}
             <Avatar className="w-9 h-9 shrink-0" data-testid="avatar-user">

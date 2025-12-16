@@ -2,18 +2,23 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { AuthLayout } from "@/components/auth-layout";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
+import { useToast } from "@/hooks/use-toast";
+import { onboardingAPI } from "@/services/onboarding.api";
 import { ArrowLeft } from "lucide-react";
 
 export default function BrandProfile() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const [brandName, setBrandName] = useState("");
   const [productsServices, setProductsServices] = useState("");
   const [customers, setCustomers] = useState("");
   const [location, setCustomerLocation] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{
     brandName?: string;
     customers?: string;
     location?: string;
+    general?: string;
   }>({});
 
   const validateForm = () => {
@@ -38,14 +43,38 @@ export default function BrandProfile() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Handle brand profile creation
-      console.log("Brand profile:", { brandName, productsServices, customers, location });
-      // Navigate to business type selection
-      setLocation("/business-type");
+      setIsLoading(true);
+      setErrors({});
+
+      try {
+        await onboardingAPI.submitStep1({
+          brandName,
+          productsOrServices: productsServices,
+          customerDescription: customers,
+          customerLocation: location,
+        });
+
+        toast({
+          title: "Brand profile saved!",
+          description: "Let's continue with your business type.",
+        });
+
+        setLocation("/business-type");
+      } catch (error: any) {
+        const errorMessage = error.message || "Failed to save brand profile. Please try again.";
+        setErrors({ general: errorMessage });
+        toast({
+          variant: "destructive",
+          title: "Failed to save",
+          description: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -167,10 +196,34 @@ export default function BrandProfile() {
             testId="input-location"
           />
 
+          {/* Error Message */}
+          {errors.general && (
+            <div
+              className="p-3 rounded"
+              style={{
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECACA',
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#DC2626',
+                  textAlign: 'center'
+                }}
+              >
+                {errors.general}
+              </p>
+            </div>
+          )}
+
           {/* Continue Button */}
           <button
             type="submit"
-            className="w-full rounded text-white font-medium hover:opacity-90 transition-opacity mt-2"
+            disabled={isLoading}
+            className="w-full rounded text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             style={{
               height: '48px',
               borderRadius: '4px',
@@ -181,7 +234,7 @@ export default function BrandProfile() {
             }}
             data-testid="button-continue"
           >
-            Continue
+            {isLoading ? 'Saving...' : 'Continue'}
           </button>
         </form>
       </div>

@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
-import { ChevronLeft, ShieldAlert, UserX } from "lucide-react";
+import { ChevronLeft, ShieldAlert, UserX, LogOut } from "lucide-react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/contexts/UserContext";
 
 export default function AccountSettings() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { logout } = useUser();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -31,6 +33,15 @@ export default function AccountSettings() {
       title: "Change Password",
       description: "Password change functionality coming soon",
     });
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged out successfully",
+      description: "You have been signed out of your account.",
+    });
+    setLocation("/sign-in");
   };
 
   const handleDeactivateAccount = () => {
@@ -341,6 +352,37 @@ export default function AccountSettings() {
               }}
             >
               Change Password
+            </span>
+          </button>
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 transition-all mb-3"
+            style={{
+              backgroundColor: "#FEF7ED",
+              border: "1px solid #CEA54F",
+              cursor: "pointer",
+              padding: "14px 16px",
+              borderRadius: "12px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#FDE8C8";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#FEF7ED";
+            }}
+          >
+            <LogOut size={18} color="#CEA54F" strokeWidth={2} />
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "15px",
+                fontWeight: 400,
+                color: "#CEA54F",
+              }}
+            >
+              Logout
             </span>
           </button>
 

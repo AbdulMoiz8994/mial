@@ -1,29 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { AuthLayout } from "@/components/auth-layout";
 import { ArrowLeft } from "lucide-react";
-
-type BusinessType = "hair-salon" | "nail-bar" | "barber" | "spa-other" | null;
+import { onboardingAPI, type BusinessType as APIBusinessType } from "@/services/onboarding.api";
+import { useToast } from "@/hooks/use-toast";
 
 export default function BusinessType() {
   const [, setLocation] = useLocation();
-  const [selectedType, setSelectedType] = useState<BusinessType>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [businessTypes, setBusinessTypes] = useState<APIBusinessType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ general?: string }>({});
+  const { toast } = useToast();
 
-  const handleContinue = (e: React.FormEvent) => {
+  // Fetch business types on mount
+  useEffect(() => {
+    const loadBusinessTypes = async () => {
+      try {
+        const types = await onboardingAPI.getBusinessTypes();
+        setBusinessTypes(types);
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Failed to load business types",
+          description: error.message,
+        });
+      }
+    };
+    loadBusinessTypes();
+  }, [toast]);
+
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (selectedType) {
-      console.log("Business type selected:", selectedType);
+
+    if (!selectedType) {
+      return;
+    }
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      await onboardingAPI.submitStep2({ businessTypeId: selectedType });
+      toast({
+        title: "Business type saved!",
+        description: "Let's continue with your goals.",
+      });
       setLocation("/goals");
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to save business type. Please try again.";
+      setErrors({ general: errorMessage });
+      toast({
+        variant: "destructive",
+        title: "Failed to save",
+        description: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const businessOptions = [
-    { id: "hair-salon" as const, emoji: "💇", label: "Hair Salon" },
-    { id: "nail-bar" as const, emoji: "💅", label: "Nail Bar" },
-    { id: "barber" as const, emoji: "💈", label: "Barber" },
-    { id: "spa-other" as const, emoji: "💆", label: "Spa / Other" },
-  ];
+  // Fallback to hardcoded options if API fails (for UI compatibility)
+  const businessOptions = businessTypes.length > 0
+    ? businessTypes.map(type => ({
+        id: type.id,
+        emoji: "📋", // Default emoji
+        label: type.name,
+      }))
+    : [
+        { id: "hair-salon", emoji: "💇", label: "Hair Salon" },
+        { id: "nail-bar", emoji: "💅", label: "Nail Bar" },
+        { id: "barber", emoji: "💈", label: "Barber" },
+        { id: "spa-other", emoji: "💆", label: "Spa / Other" },
+      ];
 
   return (
     <AuthLayout>
@@ -158,10 +207,34 @@ export default function BusinessType() {
             ))}
           </div>
 
+          {/* General Error Message */}
+          {errors.general && (
+            <div
+              className="p-3 rounded"
+              style={{
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECACA',
+              }}
+              data-testid="error-general"
+            >
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#DC2626',
+                  textAlign: 'center'
+                }}
+              >
+                {errors.general}
+              </p>
+            </div>
+          )}
+
           {/* Continue Button */}
           <button
             type="submit"
-            disabled={!selectedType}
+            disabled={!selectedType || isLoading}
             className="w-full rounded text-white font-medium transition-opacity mt-4"
             style={{
               height: '48px',
@@ -170,12 +243,12 @@ export default function BusinessType() {
               fontFamily: 'Inter, sans-serif',
               fontSize: '14px',
               fontWeight: 500,
-              opacity: selectedType ? 1 : 0.5,
-              cursor: selectedType ? 'pointer' : 'not-allowed'
+              opacity: selectedType && !isLoading ? 1 : 0.5,
+              cursor: selectedType && !isLoading ? 'pointer' : 'not-allowed'
             }}
             data-testid="button-continue"
           >
-            Continue
+            {isLoading ? 'Saving...' : 'Continue'}
           </button>
         </form>
       </div>

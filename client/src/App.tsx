@@ -4,8 +4,10 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { UserProvider } from "@/contexts/UserContext";
+import { ProtectedRoute } from "@/components/protected-route";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
+import AuthCallback from "@/pages/auth-callback";
 import BrandProfile from "@/pages/brand-profile";
 import BusinessType from "@/pages/business-type";
 import Goals from "@/pages/goals";
@@ -35,25 +37,64 @@ function App() {
           <Switch>
             <Route path="/sign-in" component={SignIn} />
             <Route path="/sign-up" component={SignUp} />
-            <Route path="/brand-profile" component={BrandProfile} />
-            <Route path="/business-type" component={BusinessType} />
-            <Route path="/goals" component={Goals} />
-            <Route path="/brand-colors" component={BrandColors} />
-            <Route path="/social-media-focus" component={SocialMediaFocus} />
-            <Route path="/pricing" component={Pricing} />
-            <Route path="/generating" component={Generating} />
-            <Route path="/home" component={DashboardHome} />
-            <Route path="/ai-studio" component={AIStudio} />
-            <Route path="/editors" component={Editors} />
-            <Route path="/calendars" component={Calendars} />
-            <Route path="/analytics" component={Analytics} />
-            <Route path="/settings" component={Settings} />
-            <Route path="/settings/accounts" component={AccountSettings} />
-            <Route path="/settings/brandings" component={BrandingSettings} />
-            <Route path="/settings/notification" component={NotificationSettings} />
-            <Route path="/settings/integrations" component={IntegrationSettings} />
-            <Route path="/settings/billings" component={BillingSettings} />
-            <Route path="/settings/billings/invoice" component={InvoiceDetails} />
+            <Route path="/auth/callback" component={AuthCallback} />
+            <Route path="/brand-profile">
+              <ProtectedRoute><BrandProfile /></ProtectedRoute>
+            </Route>
+            <Route path="/business-type">
+              <ProtectedRoute><BusinessType /></ProtectedRoute>
+            </Route>
+            <Route path="/goals">
+              <ProtectedRoute><Goals /></ProtectedRoute>
+            </Route>
+            <Route path="/brand-colors">
+              <ProtectedRoute><BrandColors /></ProtectedRoute>
+            </Route>
+            <Route path="/social-media-focus">
+              <ProtectedRoute><SocialMediaFocus /></ProtectedRoute>
+            </Route>
+            <Route path="/pricing">
+              <ProtectedRoute><Pricing /></ProtectedRoute>
+            </Route>
+            <Route path="/generating">
+              <ProtectedRoute><Generating /></ProtectedRoute>
+            </Route>
+            <Route path="/home">
+              <ProtectedRoute><DashboardHome /></ProtectedRoute>
+            </Route>
+            <Route path="/ai-studio">
+              <ProtectedRoute><AIStudio /></ProtectedRoute>
+            </Route>
+            <Route path="/editors">
+              <ProtectedRoute><Editors /></ProtectedRoute>
+            </Route>
+            <Route path="/calendars">
+              <ProtectedRoute><Calendars /></ProtectedRoute>
+            </Route>
+            <Route path="/analytics">
+              <ProtectedRoute><Analytics /></ProtectedRoute>
+            </Route>
+            <Route path="/settings">
+              <ProtectedRoute><Settings /></ProtectedRoute>
+            </Route>
+            <Route path="/settings/accounts">
+              <ProtectedRoute><AccountSettings /></ProtectedRoute>
+            </Route>
+            <Route path="/settings/brandings">
+              <ProtectedRoute><BrandingSettings /></ProtectedRoute>
+            </Route>
+            <Route path="/settings/notification">
+              <ProtectedRoute><NotificationSettings /></ProtectedRoute>
+            </Route>
+            <Route path="/settings/integrations">
+              <ProtectedRoute><IntegrationSettings /></ProtectedRoute>
+            </Route>
+            <Route path="/settings/billings">
+              <ProtectedRoute><BillingSettings /></ProtectedRoute>
+            </Route>
+            <Route path="/settings/billings/invoice">
+              <ProtectedRoute><InvoiceDetails /></ProtectedRoute>
+            </Route>
             <Route path="/" component={SignIn} />
             <Route component={NotFound} />
           </Switch>

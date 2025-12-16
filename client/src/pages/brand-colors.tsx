@@ -2,23 +2,20 @@ import { useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, Upload } from "lucide-react";
 import { AuthLayout } from "@/components/auth-layout";
-
-type BrandColor = "#D91818" | "#53BF00" | "#4F5ADA" | "#C31297" | "#040404" | "#CEA54F" | "#720A94";
-
-interface ColorOption {
-  id: string;
-  color: BrandColor;
-  name: string;
-}
+import { onboardingAPI } from "@/services/onboarding.api";
+import { useToast } from "@/hooks/use-toast";
 
 export default function BrandColors() {
   const [, setLocation] = useLocation();
-  const [selectedColor, setSelectedColor] = useState<BrandColor | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>("#CEA54F"); // Default to gold
   const [uploadedLogo, setUploadedLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ general?: string }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
-  const colorOptions: ColorOption[] = [
+  const colorOptions = [
     { id: "red", color: "#D91818", name: "Red" },
     { id: "green", color: "#53BF00", name: "Green" },
     { id: "blue", color: "#4F5ADA", name: "Blue" },
@@ -33,22 +30,30 @@ export default function BrandColors() {
   };
 
   const handleFileSelect = (file: File) => {
-    // Validate file type
-    const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+    // Validate file type - API accepts JPG, PNG, SVG
+    const validTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"];
     if (!validTypes.includes(file.type)) {
-      alert("Please upload a PNG or JPG file");
+      toast({
+        variant: "destructive",
+        title: "Invalid file type",
+        description: "Please upload a PNG, JPG, or SVG file",
+      });
       return;
     }
 
     // Validate file size (5MB)
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
     if (file.size > maxSize) {
-      alert("File size must be less than 5MB");
+      toast({
+        variant: "destructive",
+        title: "File too large",
+        description: "File size must be less than 5MB",
+      });
       return;
     }
 
     setUploadedLogo(file);
-    
+
     // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -80,13 +85,54 @@ export default function BrandColors() {
     fileInputRef.current?.click();
   };
 
-  const handleContinue = (e: React.FormEvent) => {
+  const validateColor = (color: string) => {
+    return /^#[0-9A-F]{6}$/i.test(color);
+  };
+
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Brand customization:", {
-      logo: uploadedLogo?.name,
-      color: selectedColor,
-    });
-    setLocation("/social-media-focus");
+
+    if (!uploadedLogo) {
+      toast({
+        variant: "destructive",
+        title: "Please upload a logo",
+      });
+      return;
+    }
+
+    if (!validateColor(selectedColor)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid color format",
+        description: "Color must be in #RRGGBB format",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      await onboardingAPI.submitStep4({
+        logo: uploadedLogo,
+        accentColor: selectedColor,
+      });
+      toast({
+        title: "Branding saved!",
+        description: "Let's choose your social media platforms.",
+      });
+      setLocation("/social-media-focus");
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to save branding. Please try again.";
+      setErrors({ general: errorMessage });
+      toast({
+        variant: "destructive",
+        title: "Failed to save",
+        description: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -286,10 +332,34 @@ export default function BrandColors() {
             </div>
           </div>
 
+          {/* General Error Message */}
+          {errors.general && (
+            <div
+              className="p-3 rounded"
+              style={{
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECACA',
+              }}
+              data-testid="error-general"
+            >
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#DC2626',
+                  textAlign: 'center'
+                }}
+              >
+                {errors.general}
+              </p>
+            </div>
+          )}
+
           {/* Continue Button */}
           <button
             type="submit"
-            disabled={!selectedColor}
+            disabled={!uploadedLogo || !selectedColor || isLoading}
             className="w-full rounded text-white font-medium transition-opacity mt-2"
             style={{
               height: "48px",
@@ -298,12 +368,12 @@ export default function BrandColors() {
               fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               fontWeight: 500,
-              opacity: selectedColor ? 1 : 0.5,
-              cursor: selectedColor ? "pointer" : "not-allowed",
+              opacity: uploadedLogo && selectedColor && !isLoading ? 1 : 0.5,
+              cursor: uploadedLogo && selectedColor && !isLoading ? "pointer" : "not-allowed",
             }}
             data-testid="button-continue"
           >
-            Continue
+            {isLoading ? 'Uploading...' : 'Continue'}
           </button>
         </form>
       </div>

@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, Instagram, Facebook, Linkedin, Music, Youtube, Twitter } from "lucide-react";
 import { AuthLayout } from "@/components/auth-layout";
-
-type SocialPlatform = "instagram" | "facebook" | "linkedin" | "tiktok" | "youtube" | "twitter";
+import { onboardingAPI, type Platform as APIPlatform } from "@/services/onboarding.api";
+import { useToast } from "@/hooks/use-toast";
 
 interface Platform {
-  id: SocialPlatform;
+  id: string;
   name: string;
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   color: string;
@@ -14,18 +14,60 @@ interface Platform {
 
 export default function SocialMediaFocus() {
   const [, setLocation] = useLocation();
-  const [selectedPlatforms, setSelectedPlatforms] = useState<SocialPlatform[]>([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [platforms, setPlatforms] = useState<Platform[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ general?: string }>({});
+  const { toast } = useToast();
 
-  const platforms: Platform[] = [
-    { id: "instagram", name: "Instagram", icon: Instagram, color: "#E4405F" },
-    { id: "facebook", name: "Facebook", icon: Facebook, color: "#1877F2" },
-    { id: "linkedin", name: "LinkedIn", icon: Linkedin, color: "#0A66C2" },
-    { id: "tiktok", name: "TikTok", icon: Music, color: "#000000" },
-    { id: "youtube", name: "YouTube", icon: Youtube, color: "#FF0000" },
-    { id: "twitter", name: "X/Twitter", icon: Twitter, color: "#000000" },
-  ];
+  // Icon mapping
+  const iconMap: Record<string, { icon: React.ComponentType<any>; color: string }> = {
+    instagram: { icon: Instagram, color: "#E4405F" },
+    facebook: { icon: Facebook, color: "#1877F2" },
+    linkedin: { icon: Linkedin, color: "#0A66C2" },
+    tiktok: { icon: Music, color: "#000000" },
+    youtube: { icon: Youtube, color: "#FF0000" },
+    twitter: { icon: Twitter, color: "#000000" },
+    x: { icon: Twitter, color: "#000000" },
+  };
 
-  const togglePlatform = (platformId: SocialPlatform) => {
+  // Fetch platforms on mount
+  useEffect(() => {
+    const loadPlatforms = async () => {
+      try {
+        const data = await onboardingAPI.getPlatforms();
+        const mappedPlatforms = data.map((platform: APIPlatform) => {
+          // Use slug from API for icon mapping
+          const iconData = iconMap[platform.slug] || iconMap['instagram'];
+          return {
+            id: platform.id,
+            name: platform.name,
+            icon: iconData.icon,
+            color: iconData.color,
+          };
+        });
+        setPlatforms(mappedPlatforms);
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Failed to load platforms",
+          description: error.message,
+        });
+        // Fallback to hardcoded platforms
+        setPlatforms([
+          { id: "1", name: "Instagram", icon: Instagram, color: "#E4405F" },
+          { id: "2", name: "Facebook", icon: Facebook, color: "#1877F2" },
+          { id: "3", name: "LinkedIn", icon: Linkedin, color: "#0A66C2" },
+          { id: "4", name: "TikTok", icon: Music, color: "#000000" },
+          { id: "5", name: "YouTube", icon: Youtube, color: "#FF0000" },
+          { id: "6", name: "X/Twitter", icon: Twitter, color: "#000000" },
+        ]);
+      }
+    };
+    loadPlatforms();
+  }, [toast]);
+
+  const togglePlatform = (platformId: string) => {
     setSelectedPlatforms((prev) =>
       prev.includes(platformId)
         ? prev.filter((id) => id !== platformId)
@@ -37,10 +79,38 @@ export default function SocialMediaFocus() {
     setLocation("/brand-colors");
   };
 
-  const handleGeneratePlan = (e: React.FormEvent) => {
+  const handleGeneratePlan = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Selected social media platforms:", selectedPlatforms);
-    setLocation("/pricing");
+
+    if (selectedPlatforms.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Please select at least one platform",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      await onboardingAPI.submitStep5({ platformIds: selectedPlatforms });
+      toast({
+        title: "Onboarding complete!",
+        description: "Welcome to your dashboard!",
+      });
+      setLocation("/pricing");
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to save platforms. Please try again.";
+      setErrors({ general: errorMessage });
+      toast({
+        variant: "destructive",
+        title: "Failed to save",
+        description: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -195,10 +265,34 @@ export default function SocialMediaFocus() {
             </div>
           </div>
 
+          {/* General Error Message */}
+          {errors.general && (
+            <div
+              className="p-3 rounded"
+              style={{
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECACA',
+              }}
+              data-testid="error-general"
+            >
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#DC2626',
+                  textAlign: 'center'
+                }}
+              >
+                {errors.general}
+              </p>
+            </div>
+          )}
+
           {/* Generate Button */}
           <button
             type="submit"
-            disabled={selectedPlatforms.length === 0}
+            disabled={selectedPlatforms.length === 0 || isLoading}
             className="w-full rounded text-white font-medium transition-opacity mt-2"
             style={{
               height: "48px",
@@ -207,12 +301,12 @@ export default function SocialMediaFocus() {
               fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               fontWeight: 500,
-              opacity: selectedPlatforms.length === 0 ? 0.5 : 1,
-              cursor: selectedPlatforms.length === 0 ? "not-allowed" : "pointer",
+              opacity: selectedPlatforms.length === 0 || isLoading ? 0.5 : 1,
+              cursor: selectedPlatforms.length === 0 || isLoading ? "not-allowed" : "pointer",
             }}
             data-testid="button-generate"
           >
-            Generate My Content Plan
+            {isLoading ? 'Completing...' : 'Generate My Content Plan'}
           </button>
         </form>
       </div>
