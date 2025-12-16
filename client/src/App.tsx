@@ -16,6 +16,7 @@ import Generating from "@/pages/generating";
 import DashboardHome from "@/pages/dashboard-home";
 import AIStudio from "@/pages/ai-studio";
 import Editors from "@/pages/editors";
+import Calendars from "@/pages/calendars";
 import Analytics from "@/pages/analytics";
 import Settings from "@/pages/settings";
 import AccountSettings from "@/pages/account-settings";
@@ -44,6 +45,7 @@ function App() {
             <Route path="/home" component={DashboardHome} />
             <Route path="/ai-studio" component={AIStudio} />
             <Route path="/editors" component={Editors} />
+            <Route path="/calendars" component={Calendars} />
             <Route path="/analytics" component={Analytics} />
             <Route path="/settings" component={Settings} />
             <Route path="/settings/accounts" component={AccountSettings} />
