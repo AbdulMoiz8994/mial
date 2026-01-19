@@ -4,7 +4,7 @@
 
 MIA is an AI-powered content creation platform designed specifically for hair stylists, beauty professionals, and barbers. The application helps users generate engaging social media content for platforms like Instagram, TikTok, and Reels using AI-driven templates and prompts. Users can browse pre-built templates, generate custom content, save their creations to a library, and manage favorites.
 
-## User Preferences
+## User Preferences 
 
 Preferred communication style: Simple, everyday language.
 User explicitly requested: Use emojis (💇💅💈💆) for business type selection options.
