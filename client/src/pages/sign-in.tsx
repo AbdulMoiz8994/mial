@@ -21,7 +21,7 @@ export default function SignIn() {
           const status = await onboardingAPI.getStatus();
 
           // If onboarding is not complete, redirect to the current step
-          if (!status.isComplete) {
+          if (!status.completed) {
             const stepRoutes: Record<number, string> = {
               1: "/brand-profile",
               2: "/business-type",
@@ -95,7 +95,7 @@ export default function SignIn() {
           const status = await onboardingAPI.getStatus();
 
           // If onboarding is not complete, redirect to the current step
-          if (!status.isComplete) {
+          if (!status.completed) {
             const stepRoutes: Record<number, string> = {
               1: "/brand-profile",
               2: "/business-type",
@@ -296,7 +296,7 @@ export default function SignIn() {
             <div className="mb-6 sm:mb-8">
               <button
                 type="button"
-                onClick={() => console.log('Forgot password - page not yet implemented')}
+                onClick={() => {}}
                 className="hover:underline cursor-pointer bg-transparent border-0 p-0"
                 style={{
                   fontFamily: 'Inter, sans-serif',

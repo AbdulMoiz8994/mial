@@ -44,6 +44,9 @@ export default function AuthCallback() {
             name: `${userData.firstName} ${userData.lastName}`,
           });
 
+          // Dispatch custom event to trigger subscription refresh
+          window.dispatchEvent(new Event('user-logged-in'));
+
           toast({
             title: "Welcome!",
             description: "You have successfully signed in.",
@@ -54,7 +57,7 @@ export default function AuthCallback() {
             const status = await onboardingAPI.getStatus();
 
             // If onboarding is not complete, redirect to the current step
-            if (!status.isComplete) {
+            if (!status.completed) {
               const stepRoutes: Record<number, string> = {
                 1: "/brand-profile",
                 2: "/business-type",

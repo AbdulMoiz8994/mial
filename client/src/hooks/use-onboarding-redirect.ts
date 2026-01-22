@@ -18,7 +18,7 @@ export function useOnboardingRedirect() {
           const status = await onboardingAPI.getStatus();
 
           // If onboarding is not complete, redirect to the current step
-          if (!status.isComplete) {
+          if (!status.completed) {
             const stepRoutes: Record<number, string> = {
               1: "/brand-profile",
               2: "/business-type",

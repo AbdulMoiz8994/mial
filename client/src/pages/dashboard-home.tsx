@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Plus, MoreHorizontal, TrendingUp, TrendingDown, Maximize2, ChevronDown, X, Minimize2 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 
 const monthlyData = [
   { name: "2 Jun", engagement: 1300, reach: 900 },
@@ -94,6 +97,32 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 export default function DashboardHome() {
   const [selectedPeriod, setSelectedPeriod] = useState<"Daily" | "Weekly" | "Monthly">("Monthly");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const { refreshSubscription } = useSubscription();
+  const { toast } = useToast();
+  const [, setLocation] = useLocation();
+
+  // Check for payment success on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paymentStatus = params.get('payment');
+
+    if (paymentStatus === 'success') {
+      // Show success toast
+      toast({
+        title: "Payment Successful!",
+        description: "Your subscription is now active. Welcome aboard!",
+      });
+
+      // Refresh subscription data to get the latest info
+      refreshSubscription();
+
+      // Clean up the URL by removing the query parameter after a short delay
+      setTimeout(() => {
+        window.history.replaceState({}, '', '/home');
+      }, 100);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getChartData = () => {
     switch (selectedPeriod) {
@@ -293,6 +322,7 @@ export default function DashboardHome() {
             </div>
 
             <button
+              onClick={() => setLocation('/ai-studio')}
               className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 rounded-lg transition-all text-sm md:text-base w-full sm:w-auto"
               style={{
                 height: "40px",
@@ -666,6 +696,7 @@ export default function DashboardHome() {
               </p>
 
               <button
+                onClick={() => setLocation('/ai-studio')}
                 className="w-full flex items-center justify-center gap-2 rounded-lg transition-all"
                 style={{
                   height: "32px",

@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://api.miayouragent.com';
 
 export interface OnboardingStatus {
   currentStep: number;
-  isComplete: boolean;
+  completed: boolean;
   completedSteps: number[];
 }
 

@@ -1,22 +1,61 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { AuthLayout } from "@/components/auth-layout";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { useToast } from "@/hooks/use-toast";
 
 type PlanType = "basic" | "pro" | null;
 
 export default function Pricing() {
   const [, setLocation] = useLocation();
   const [selectedPlan, setSelectedPlan] = useState<PlanType>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { createCheckout, subscription } = useSubscription();
+  const { toast } = useToast();
 
   const handleBack = () => {
     setLocation("/social-media-focus");
   };
 
-  const handleSelectPlan = (planId: PlanType) => {
+  const handleSelectPlan = async (planId: PlanType, billingPeriod: 'monthly' | 'yearly' = 'monthly') => {
+    if (!planId) return;
+
+    // Check if user already has a subscription
+    if (subscription) {
+      toast({
+        variant: "destructive",
+        title: "Already Subscribed",
+        description: "You already have an active subscription. Please manage it in Billing Settings.",
+      });
+      setLocation("/settings/billings");
+      return;
+    }
+
     setSelectedPlan(planId);
-    console.log("Selected plan:", planId);
-    setLocation("/generating");
+    setIsLoading(true);
+
+    try {
+      // Create Stripe checkout session
+      const checkoutUrl = await createCheckout(planId, billingPeriod);
+
+      toast({
+        title: "Redirecting to Checkout",
+        description: "Please complete your payment to activate your subscription.",
+      });
+
+      // Redirect to Stripe Checkout
+      window.location.href = checkoutUrl;
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      toast({
+        variant: "destructive",
+        title: "Checkout Failed",
+        description: error.message || "Failed to create checkout session. Please try again.",
+      });
+      setIsLoading(false);
+      setSelectedPlan(null);
+    }
   };
 
   return (
@@ -120,7 +159,7 @@ export default function Pricing() {
                     }}
                     data-testid="price-basic"
                   >
-                    $10
+                    $25
                   </span>
                   <span
                     style={{
@@ -219,8 +258,9 @@ export default function Pricing() {
             {/* CTA Button - Full Width */}
             <button
               type="button"
-              onClick={() => handleSelectPlan("basic")}
-              className="w-full rounded-lg font-semibold transition-opacity hover:opacity-90"
+              onClick={() => handleSelectPlan("basic", "monthly")}
+              disabled={isLoading && selectedPlan === "basic"}
+              className="w-full rounded-lg font-semibold transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               style={{
                 height: "44px",
                 borderRadius: "8px",
@@ -232,7 +272,14 @@ export default function Pricing() {
               }}
               data-testid="button-select-basic"
             >
-              Start for free
+              {isLoading && selectedPlan === "basic" ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Processing...</span>
+                </>
+              ) : (
+                "Choose Plan"
+              )}
             </button>
           </div>
 
@@ -286,7 +333,7 @@ export default function Pricing() {
                       }}
                       data-testid="price-pro"
                     >
-                      $49
+                      $40
                     </span>
                     <span
                       style={{
@@ -384,8 +431,9 @@ export default function Pricing() {
               {/* CTA Button - Full Width */}
               <button
                 type="button"
-                onClick={() => handleSelectPlan("pro")}
-                className="w-full rounded-lg font-semibold transition-all hover:bg-gray-50"
+                onClick={() => handleSelectPlan("pro", "monthly")}
+                disabled={isLoading && selectedPlan === "pro"}
+                className="w-full rounded-lg font-semibold transition-all hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 style={{
                   height: "44px",
                   borderRadius: "8px",
@@ -398,7 +446,14 @@ export default function Pricing() {
                 }}
                 data-testid="button-select-pro"
               >
-                Choose Plan
+                {isLoading && selectedPlan === "pro" ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  "Choose Plan"
+                )}
               </button>
             </div>
           </div>

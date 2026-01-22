@@ -449,7 +449,7 @@ export default function SignUp() {
                 By clicking Create account, I agree that I have read and accepted the{' '}
                 <button
                   type="button"
-                  onClick={() => console.log('Terms - page not yet implemented')}
+                  onClick={() => {}}
                   className="hover:underline cursor-pointer bg-transparent border-0 p-0"
                   style={{ color: '#CEA54F' }}
                   data-testid="link-terms"
@@ -459,7 +459,7 @@ export default function SignUp() {
                 and{' '}
                 <button
                   type="button"
-                  onClick={() => console.log('Privacy - page not yet implemented')}
+                  onClick={() => {}}
                   className="hover:underline cursor-pointer bg-transparent border-0 p-0"
                   style={{ color: '#CEA54F' }}
                   data-testid="link-privacy"

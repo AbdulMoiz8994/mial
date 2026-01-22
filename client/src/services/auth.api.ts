@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'https://api.miayouragent.com';
+export const API_URL = import.meta.env.VITE_API_URL || 'https://api.miayouragent.com';
 
 export interface RegisterData {
   email: string;

@@ -4,6 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { UserProvider } from "@/contexts/UserContext";
+import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
+import { AIStudioProvider } from "@/contexts/AIStudioContext";
 import { ProtectedRoute } from "@/components/protected-route";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
@@ -33,8 +35,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <UserProvider>
-        <TooltipProvider>
-          <Switch>
+        <SubscriptionProvider>
+          <AIStudioProvider>
+            <TooltipProvider>
+            <Switch>
             <Route path="/sign-in" component={SignIn} />
             <Route path="/sign-up" component={SignUp} />
             <Route path="/auth/callback" component={AuthCallback} />
@@ -99,7 +103,9 @@ function App() {
             <Route component={NotFound} />
           </Switch>
           <Toaster />
-        </TooltipProvider>
+          </TooltipProvider>
+          </AIStudioProvider>
+        </SubscriptionProvider>
       </UserProvider>
     </QueryClientProvider>
   );

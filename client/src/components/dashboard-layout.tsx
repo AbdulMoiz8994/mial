@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Bell, Settings, Menu, X, LogOut } from "lucide-react";
+import { Search, Bell, Settings, Menu, X, LogOut, Zap } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
+import { useSubscription } from "@/contexts/SubscriptionContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logoSvg from "@assets/Pasted--svg-width-92-height-52-viewBox-0-0-92-52-fill-none-xmlns-http-www-w3-org-2000-svg-xmlns-1763982229563_1763982229565.txt?raw";
 import homeIconSvg from "@assets/Pasted--svg-width-19-height-19-viewBox-0-0-19-19-fill-none-xmlns-http-www-w3-org-2000-svg-pat-1763982268297_1763982268297.txt?raw";
@@ -42,6 +43,7 @@ function getInitials(name: string | null | undefined): string {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [location, setLocation] = useLocation();
   const { user, logout } = useUser();
+  const { creditBalance, subscription } = useSubscription();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -381,6 +383,29 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 ⌘
               </span>
             </div>
+
+            {/* Credit Balance Indicator */}
+            {subscription && (
+              <Link href="/settings/billings">
+                <div
+                  className="hidden sm:flex items-center gap-2 px-3 h-9 rounded-lg border bg-white cursor-pointer shrink-0 hover:bg-gray-50 transition-colors"
+                  style={{ borderColor: "rgba(26, 26, 26, 0.1)" }}
+                  data-testid="credit-balance"
+                >
+                  <Zap size={16} fill="#CEA54F" color="#CEA54F" />
+                  <span
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "#1A1A1A",
+                    }}
+                  >
+                    {creditBalance}
+                  </span>
+                </div>
+              </Link>
+            )}
 
             {/* Action Icons */}
             <Link href="/settings/notification">

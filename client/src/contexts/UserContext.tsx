@@ -68,6 +68,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
       };
 
       setUser(mappedUser);
+
+      // Dispatch custom event to trigger subscription refresh
+      window.dispatchEvent(new Event('user-logged-in'));
     } catch (error) {
       throw error;
     }
@@ -87,6 +90,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
       };
 
       setUser(mappedUser);
+
+      // Dispatch custom event to trigger subscription refresh
+      window.dispatchEvent(new Event('user-logged-in'));
     } catch (error) {
       throw error;
     }

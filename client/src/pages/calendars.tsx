@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { ChevronDown } from "lucide-react";
+import { useAIStudio } from "@/contexts/AIStudioContext";
+import { useLocation } from "wouter";
+import { format, parseISO, isToday } from "date-fns";
 
-// Mock data for Instagram posts grouped by date
+// Mock data for Instagram posts grouped by date (fallback)
 const mockPostsByDate = [
   {
     date: "Oct 6 Mon",
@@ -161,13 +164,53 @@ const mockPostsByDate = [
 ];
 
 export default function Calendars() {
-  const [selectedMonth] = useState("October 2025");
+  const [, setLocation] = useLocation();
+  const { posts, refreshPosts, isLoadingPosts, loadMorePosts, hasMorePosts } = useAIStudio();
+
+  const [selectedMonth] = useState(format(new Date(), "MMMM yyyy"));
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
-  const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
-  const [savedPosts, setSavedPosts] = useState<Set<number>>(new Set());
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+  const [savedPosts, setSavedPosts] = useState<Set<string>>(new Set());
+
+  // Load posts on mount
+  useEffect(() => {
+    refreshPosts();
+  }, [refreshPosts]);
+
+  // Group posts by date
+  const postsByDate = posts.reduce((acc, post) => {
+    const dateKey = format(parseISO(post.createdAt), "MMM d EEE");
+    if (!acc[dateKey]) {
+      acc[dateKey] = [];
+    }
+    acc[dateKey].push({
+      id: post.id,
+      time: format(parseISO(post.createdAt), "HH:mm"),
+      title: post.title || "Untitled Post",
+      account: "mia_art",
+      verified: true,
+      image: post.imageUrl || "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=400&fit=crop",
+      caption: post.caption,
+      hashtags: post.hashtags,
+      platform: post.platform,
+      status: post.status,
+      createdAt: post.createdAt,
+    });
+    return acc;
+  }, {} as Record<string, any[]>);
+
+  // Convert to array and sort by date
+  const groupedPosts = Object.entries(postsByDate).map(([date, posts]) => ({
+    date,
+    isHighlighted: posts.some(p => isToday(parseISO(p.createdAt))),
+    posts,
+  }));
+
+  // Use real data if available, otherwise fallback to mock
+  const dataToDisplay = groupedPosts.length > 0 ? groupedPosts : mockPostsByDate;
 
   // Handle like button
-  const handleLike = (postId: number) => {
+  const handleLike = (postId: string) => {
     setLikedPosts((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(postId)) {
@@ -180,7 +223,7 @@ export default function Calendars() {
   };
 
   // Handle save/bookmark button
-  const handleSave = (postId: number) => {
+  const handleSave = (postId: string) => {
     setSavedPosts((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(postId)) {
@@ -193,27 +236,23 @@ export default function Calendars() {
   };
 
   // Handle comment button
-  const handleComment = (postId: number) => {
-    console.log("Comment on post:", postId);
-    // You can implement a modal or redirect to comment section
+  const handleComment = (_postId: string) => {
+    // TODO: Implement comment functionality
   };
 
   // Handle share button
-  const handleShare = (postId: number) => {
-    console.log("Share post:", postId);
-    // You can implement share functionality
+  const handleShare = (_postId: string) => {
+    // TODO: Implement share functionality
   };
 
-  // Handle menu actions
-  const handleMenuClick = (postId: number) => {
-    console.log("Menu clicked for post:", postId);
-    // You can implement a dropdown menu
+  // Handle menu actions (edit post)
+  const handleMenuClick = (postId: string) => {
+    setLocation(`/editors?postId=${postId}`);
   };
 
   // Handle more info button
-  const handleMoreInfo = (postId: number) => {
-    console.log("More info for post:", postId);
-    // You can implement expanding the post or showing a modal
+  const handleMoreInfo = (postId: string) => {
+    setLocation(`/editors?postId=${postId}`);
   };
 
   return (
@@ -326,16 +365,33 @@ export default function Calendars() {
             </div>
           </div>
 
+          {/* Loading State */}
+          {isLoadingPosts && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <p style={{ color: "#6B7280", fontSize: "14px" }}>Loading posts...</p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoadingPosts && dataToDisplay.length === 0 && (
+            <div style={{ textAlign: "center", padding: "40px" }}>
+              <p style={{ color: "#6B7280", fontSize: "14px" }}>
+                No posts yet. Generate your first post in AI Studio!
+              </p>
+            </div>
+          )}
+
           {/* Calendar Grid - Date Columns */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "0",
-              alignItems: "start",
-            }}
-          >
-            {mockPostsByDate.map((dateGroup, index) => (
+          {!isLoadingPosts && dataToDisplay.length > 0 && (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "0",
+                alignItems: "start",
+              }}
+            >
+              {dataToDisplay.map((dateGroup, index) => (
               <div
                 key={dateGroup.date}
                 className="flex flex-col gap-4"
@@ -722,7 +778,39 @@ export default function Calendars() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
+
+          {/* Load More Button */}
+          {!isLoadingPosts && dataToDisplay.length > 0 && hasMorePosts && (
+            <div style={{ textAlign: "center", padding: "32px 0" }}>
+              <button
+                onClick={() => loadMorePosts()}
+                className="transition-all hover:opacity-90"
+                style={{
+                  padding: "12px 32px",
+                  borderRadius: "8px",
+                  background: "linear-gradient(135deg, #CEA54F 0%, #D4AF6A 100%)",
+                  border: "none",
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#FFFFFF",
+                  cursor: "pointer",
+                  boxShadow: "0 2px 8px rgba(206, 165, 79, 0.3)",
+                }}
+              >
+                Load More Posts
+              </button>
+            </div>
+          )}
+
+          {/* Loading More Indicator */}
+          {isLoadingPosts && dataToDisplay.length > 0 && (
+            <div style={{ textAlign: "center", padding: "20px" }}>
+              <p style={{ color: "#6B7280", fontSize: "14px" }}>Loading more posts...</p>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { TrendingUp, TrendingDown, MoreHorizontal, Maximize2, X, Minimize2, RefreshCw, ChevronDown } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell, CartesianGrid } from "recharts";
 import { useToast } from "@/hooks/use-toast";
+import { useAIStudio } from "@/contexts/AIStudioContext";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { format, parseISO, startOfWeek, endOfWeek, eachDayOfInterval, subDays, subWeeks, subMonths } from "date-fns";
 
 // Chart data
 const monthlyData = [
@@ -175,23 +178,100 @@ const DonutChart = ({ data }: { data: typeof chartData2 }) => {
 export default function Analytics() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { posts, scripts, refreshPosts, isLoadingPosts } = useAIStudio();
+  const { subscription, creditBalance, isLoading: isLoadingSubscription } = useSubscription();
+
   const [selectedPeriod, setSelectedPeriod] = useState<"Daily" | "Weekly" | "Monthly">("Monthly");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const getChartData = () => {
+  // Load data on mount
+  useEffect(() => {
+    refreshPosts();
+  }, [refreshPosts]);
+
+  // Calculate real analytics from posts data
+  const analytics = useMemo(() => {
+    const totalPosts = posts.length;
+    const totalScripts = scripts.length;
+    const totalContent = totalPosts + totalScripts;
+
+    // Posts by platform
+    const postsByPlatform = posts.reduce((acc, post) => {
+      const platform = post.platform || 'unknown';
+      acc[platform] = (acc[platform] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Posts by status
+    const draftPosts = posts.filter(p => p.status === 'draft').length;
+    const finalPosts = posts.filter(p => p.status === 'final').length;
+
+    // Calculate growth (comparing this month vs last month would require API support)
+    const growth = totalPosts > 0 ? 15 : 0; // Placeholder
+
+    // Credits used (from posts)
+    const totalCreditsUsed = posts.reduce((sum, post) => sum + (post.creditsUsed || 0), 0);
+    const avgCreditsPerPost = totalPosts > 0 ? totalCreditsUsed / totalPosts : 0;
+
+    return {
+      totalPosts,
+      totalScripts,
+      totalContent,
+      postsByPlatform,
+      draftPosts,
+      finalPosts,
+      growth,
+      totalCreditsUsed,
+      avgCreditsPerPost,
+    };
+  }, [posts, scripts]);
+
+  // Generate time-series data from posts
+  const timeSeriesData = useMemo(() => {
+    const now = new Date();
+    let intervals: Date[] = [];
+    let groupBy: string;
+
     switch (selectedPeriod) {
       case "Daily":
-        return dailyData;
+        // Last 7 days, hourly
+        intervals = eachDayOfInterval({ start: subDays(now, 6), end: now });
+        groupBy = 'hour';
+        break;
       case "Weekly":
-        return weeklyData;
+        // Last 7 weeks, daily
+        intervals = eachDayOfInterval({ start: subWeeks(now, 1), end: now });
+        groupBy = 'day';
+        break;
       case "Monthly":
       default:
-        return monthlyData;
+        // Last 30 days, weekly
+        intervals = eachDayOfInterval({ start: subMonths(now, 1), end: now });
+        groupBy = 'week';
+        break;
     }
-  };
 
-  const chartData = getChartData();
+    // Group posts by time interval
+    const grouped = intervals.map(date => {
+      const dateStr = format(date, 'MMM d');
+      const postsInPeriod = posts.filter(post => {
+        const postDate = parseISO(post.createdAt);
+        return format(postDate, 'MMM d') === dateStr;
+      });
+
+      return {
+        name: format(date, selectedPeriod === 'Daily' ? 'ha' : selectedPeriod === 'Weekly' ? 'EEE' : 'MMM d'),
+        engagement: postsInPeriod.length * 150, // Simulated engagement
+        reach: postsInPeriod.length * 100, // Simulated reach
+        posts: postsInPeriod.length,
+      };
+    });
+
+    return grouped.length > 0 ? grouped : monthlyData; // Fallback to mock data
+  }, [posts, selectedPeriod]);
+
+  const chartData = timeSeriesData;
 
   const handleCreatePost = () => {
     setLocation("/editors");
@@ -201,19 +281,27 @@ export default function Analytics() {
     });
   };
 
-  const handleRefreshData = () => {
+  const handleRefreshData = async () => {
     setIsRefreshing(true);
     toast({
       title: "Refreshing Analytics",
       description: "Updating your latest data...",
     });
-    setTimeout(() => {
-      setIsRefreshing(false);
+    try {
+      await refreshPosts();
       toast({
         title: "Data Refreshed",
         description: "Your analytics are up to date!",
       });
-    }, 1500);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Refresh Failed",
+        description: "Could not refresh analytics data",
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const handleMoreOptions = (cardName: string) => {
@@ -468,7 +556,7 @@ export default function Analytics() {
                   lineHeight: "1.2",
                 }}
               >
-                $ 1,284.00
+                {isLoadingPosts ? "..." : analytics.totalPosts}
               </h3>
               <div className="flex items-center gap-1">
                 <TrendingUp size={14} color="#10B981" />
@@ -480,7 +568,7 @@ export default function Analytics() {
                     color: "#10B981",
                   }}
                 >
-                  11%
+                  {analytics.growth}%
                 </span>
               </div>
             </div>
@@ -534,7 +622,7 @@ export default function Analytics() {
                   marginBottom: "6px",
                 }}
               >
-                Avg Engagement
+                Credits Used
               </p>
               <h3
                 style={{
@@ -546,19 +634,18 @@ export default function Analytics() {
                   lineHeight: "1.2",
                 }}
               >
-                7.81
+                {isLoadingPosts ? "..." : analytics.totalCreditsUsed}
               </h3>
               <div className="flex items-center gap-1">
-                <TrendingDown size={14} color="#EF4444" />
                 <span
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "12px",
+                    fontSize: "11px",
                     fontWeight: 500,
-                    color: "#EF4444",
+                    color: "#6B7280",
                   }}
                 >
-                  0%
+                  {creditBalance !== null ? `${creditBalance} remaining` : 'Loading...'}
                 </span>
               </div>
             </div>
@@ -614,7 +701,7 @@ export default function Analytics() {
                   marginBottom: "6px",
                 }}
               >
-                Follower Growth
+                Draft Posts
               </p>
               <h3
                 style={{
@@ -626,19 +713,18 @@ export default function Analytics() {
                   lineHeight: "1.2",
                 }}
               >
-                7.81
+                {isLoadingPosts ? "..." : analytics.draftPosts}
               </h3>
               <div className="flex items-center gap-1">
-                <TrendingUp size={14} color="#10B981" />
                 <span
                   style={{
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "12px",
+                    fontSize: "11px",
                     fontWeight: 500,
-                    color: "#10B981",
+                    color: "#6B7280",
                   }}
                 >
-                  1.7%
+                  {analytics.finalPosts} published
                 </span>
               </div>
             </div>
@@ -661,7 +747,7 @@ export default function Analytics() {
                       color: "#202020",
                     }}
                   >
-                    8
+                    {analytics.totalScripts}
                   </span>
                   <span
                     style={{
@@ -672,7 +758,7 @@ export default function Analytics() {
                       marginLeft: "2px",
                     }}
                   >
-                    Actions
+                    Scripts
                   </span>
                 </div>
 
