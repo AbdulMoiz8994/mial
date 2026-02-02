@@ -223,7 +223,7 @@ class SubscriptionsAPI {
 
     // Transform API response to normalized Subscription object
     const planNameMap: Record<string, string> = {
-      'starter': 'Basic',
+      'starter': 'Starter',
       'professional': 'Professional',
       'agency': 'Agency'
     };

@@ -426,6 +426,65 @@ class AIStudioAPI {
   }
 
   /**
+   * Create a post from an uploaded image with AI
+   *
+   * This endpoint allows users to upload their own image and AI will generate
+   * a post design based on that image with appropriate styling.
+   * The generation job is queued and returns immediately.
+   * Use WebSocket service or getPostStatus() to track progress.
+   *
+   * @param data - Image file and post parameters
+   * @returns Post ID and status (queued)
+   * @throws {Error} If insufficient credits, invalid image, or API error
+   *
+   * @example
+   * const formData = {
+   *   image: fileFromInput,
+   *   platform: 'instagram',
+   *   style: 'modern',
+   *   additionalContext: 'Hair transformation showcase'
+   * };
+   * const { id } = await aiStudioAPI.createPostFromImage(formData);
+   */
+  async createPostFromImage(data: {
+    image: File;
+    platform: 'instagram' | 'instagram-story' | 'facebook' | 'twitter';
+    style: 'professional' | 'modern' | 'elegant' | 'playful' | 'natural';
+    additionalContext?: string;
+  }): Promise<GenerateResponse> {
+    const formData = new FormData();
+    formData.append('image', data.image);
+    formData.append('platform', data.platform);
+    formData.append('style', data.style);
+    if (data.additionalContext) {
+      formData.append('additionalContext', data.additionalContext);
+    }
+
+    const response = await fetch(`${API_URL}/api/ai-studio/create-post-from-image`, {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeader(),
+        // Don't set Content-Type, browser will set it with boundary for FormData
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to create post from image');
+    }
+
+    const apiResponse: GeneratePostResponse = await response.json();
+
+    // Map API response to normalized format
+    return {
+      id: apiResponse.postId,
+      status: apiResponse.status as any,
+      message: apiResponse.message,
+    };
+  }
+
+  /**
    * Generate a video script with AI
    *
    * This endpoint queues the generation job and returns immediately.

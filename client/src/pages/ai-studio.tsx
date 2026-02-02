@@ -7,6 +7,7 @@ import { GenerationProgressModal } from "@/components/generation-progress-modal"
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { aiStudioAPI } from "@/services/ai-studio.api";
+import Masonry from "react-masonry-css";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -1767,31 +1768,17 @@ export default function AIStudio() {
 
           {/* Content Cards Grid - Only show for AI Ideas tab */}
           {activeTab === "ai-ideas" && (
-            <div
-              className="my-8 mx-6"
-              style={
-                posts.length >= 4
-                  ? {
-                      columns: "350px auto",
-                      columnGap: "24px",
-                    }
-                  : {
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "24px",
-                    }
-              }
-            >
+            <>
               {/* Show loading state only when no posts exist yet */}
               {isLoadingPosts && posts.length === 0 && (
-                <div className="col-span-full flex items-center justify-center py-12">
+                <div className="my-8 mx-6 flex items-center justify-center py-12">
                   <p className="text-gray-500">Loading your posts...</p>
                 </div>
               )}
 
               {/* Show empty state only when not loading and no posts */}
               {!isLoadingPosts && posts.length === 0 && (
-                <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                <div className="my-8 mx-6 flex flex-col items-center justify-center py-12 text-center">
                   <Sparkles className="h-12 w-12 text-gray-300 mb-4" />
                   <p className="text-gray-500 mb-2">No posts yet</p>
                   <p className="text-sm text-gray-400">Generate your first post above to get started!</p>
@@ -1799,33 +1786,31 @@ export default function AIStudio() {
               )}
 
               {/* Render real posts from API - Always show posts if they exist, even while loading more */}
-              {posts.map((post) => (
-                <div
-                  key={post.id}
-                  className="overflow-hidden flex flex-col"
-                  style={
-                    posts.length >= 4
-                      ? {
-                          backgroundColor: "#F5F3F0",
-                          borderRadius: "12px",
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                          border: "1px solid #E8E5E0",
-                          breakInside: "avoid",
-                          marginBottom: "24px",
-                          display: "inline-block",
-                          width: "100%",
-                        }
-                      : {
-                          backgroundColor: "#F5F3F0",
-                          borderRadius: "12px",
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-                          border: "1px solid #E8E5E0",
-                          width: "350px",
-                          flexShrink: 0,
-                        }
-                  }
-                  data-testid={`card-content-${post.id}`}
+              {posts.length > 0 && (
+                <Masonry
+                  breakpointCols={{
+                    default: 4,
+                    1536: 3,
+                    1280: 3,
+                    1024: 3,
+                    768: 2,
+                    640: 1,
+                  }}
+                  className="my-masonry-grid my-8 mx-6"
+                  columnClassName="my-masonry-grid_column"
                 >
+                  {posts.map((post) => (
+                    <div
+                      key={post.id}
+                      className="overflow-hidden flex flex-col"
+                      style={{
+                        backgroundColor: "#F5F3F0",
+                        borderRadius: "12px",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                        border: "1px solid #E8E5E0",
+                      }}
+                      data-testid={`card-content-${post.id}`}
+                    >
                   {/* Card Image - With padding */}
                   <div style={{ padding: "12px 12px 0 12px", position: "relative" }}>
                     <div
@@ -2031,7 +2016,9 @@ export default function AIStudio() {
                   </div>
                 </div>
               ))}
-            </div>
+                </Masonry>
+              )}
+            </>
           )}
 
           {/* Load More Button for Posts - Show below the grid */}

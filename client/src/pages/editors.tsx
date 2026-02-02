@@ -22,6 +22,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { UploadImageModal } from "@/components/upload-image-modal";
+import { GenerationProgressModal } from "@/components/generation-progress-modal";
 
 type LeftTabType = "templates" | "drafts";
 type EditorPanelType = "templates" | "elements" | "text";
@@ -64,7 +66,7 @@ const ElementsIcon = () => (
 export default function Editors() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const { updatePost } = useAIStudio();
+  const { updatePost, createPostFromImage, activeJobs } = useAIStudio();
 
   // URL and Post State
   const [currentPost, setCurrentPost] = useState<Post | null>(null);
@@ -143,6 +145,12 @@ export default function Editors() {
 
   // Image Preview State
   const [showImagePreview, setShowImagePreview] = useState(false);
+
+  // Upload Image Modal State
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadJobId, setUploadJobId] = useState<string | null>(null);
+  const [showProgressModal, setShowProgressModal] = useState(false);
 
   // Extract postId from URL
   const getPostIdFromUrl = (): string | null => {
@@ -899,8 +907,68 @@ export default function Editors() {
     }
   };
 
+  /**
+   * Handle upload button click - check for unsaved changes first
+   */
   const handleUploadClick = () => {
-    fileInputRef.current?.click();
+    const openUploadModal = () => {
+      setShowUploadModal(true);
+    };
+
+    if (hasUnsavedChanges && currentPost) {
+      setPendingAction(() => openUploadModal);
+      setShowSaveDialog(true);
+    } else {
+      openUploadModal();
+    }
+  };
+
+  /**
+   * Handle image upload submission
+   */
+  const handleUploadImageSubmit = async (data: {
+    image: File;
+    platform: 'instagram' | 'instagram-story' | 'facebook' | 'twitter';
+    style: 'professional' | 'modern' | 'elegant' | 'playful' | 'natural';
+    additionalContext?: string;
+  }) => {
+    try {
+      setIsUploadingImage(true);
+
+      // Call API to create post from image
+      const postId = await createPostFromImage(data);
+
+      // Store the job ID and show progress modal
+      setUploadJobId(postId);
+      setShowUploadModal(false);
+      setShowProgressModal(true);
+
+      toast({
+        title: "Upload Started!",
+        description: "Your image is being processed. This may take a moment...",
+      });
+
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast({
+        variant: "destructive",
+        title: "Upload Failed",
+        description: error.message || "Failed to upload image. Please try again.",
+      });
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  /**
+   * Handle generation completion - navigate to the new post
+   */
+  const handleGenerationComplete = () => {
+    if (uploadJobId) {
+      setLocation(`/editors?postId=${uploadJobId}`);
+      loadPost(uploadJobId);
+      setUploadJobId(null);
+    }
   };
 
   const handleRemoveElement = (id: string, e: React.MouseEvent) => {
@@ -2164,6 +2232,28 @@ export default function Editors() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Upload Image Modal */}
+      <UploadImageModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onSubmit={handleUploadImageSubmit}
+        isLoading={isUploadingImage}
+      />
+
+      {/* Generation Progress Modal */}
+      {uploadJobId && (
+        <GenerationProgressModal
+          isOpen={showProgressModal}
+          onClose={() => setShowProgressModal(false)}
+          type="post"
+          status={activeJobs.find(job => job.id === uploadJobId)?.status || 'queued'}
+          progress={activeJobs.find(job => job.id === uploadJobId)?.progress || 0}
+          message={activeJobs.find(job => job.id === uploadJobId)?.message}
+          error={activeJobs.find(job => job.id === uploadJobId)?.error}
+          onComplete={handleGenerationComplete}
+        />
+      )}
     </DashboardLayout>
   );
 }

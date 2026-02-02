@@ -93,6 +93,12 @@ interface AIStudioContextType {
 
   // Methods
   generatePost: (data: GeneratePostDto) => Promise<string>;
+  createPostFromImage: (data: {
+    image: File;
+    platform: 'instagram' | 'instagram-story' | 'facebook' | 'twitter';
+    style: 'professional' | 'modern' | 'elegant' | 'playful' | 'natural';
+    additionalContext?: string;
+  }) => Promise<string>;
   generateScript: (data: GenerateScriptDto) => Promise<string>;
   refreshPosts: (status?: 'draft' | 'final') => Promise<void>;
   loadMorePosts: (status?: 'draft' | 'final') => Promise<void>;
@@ -306,20 +312,36 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
         attempts++;
         const status = await aiStudioAPI.getPostStatus(postId);
 
+        // Check if the response has isReady/isFailed flags (newer API format)
+        const hasFlags = 'isReady' in status || 'isFailed' in status;
+
         // Map backend status to frontend status
-        // Backend: "generating" → "processing", "ready" → "completed"
-        const mappedStatus: 'queued' | 'processing' | 'completed' | 'failed' =
-          status.status === 'generating' ? 'processing' :
-          status.status === 'ready' ? 'completed' :
-          status.status as 'queued' | 'processing' | 'completed' | 'failed';
+        let mappedStatus: 'queued' | 'processing' | 'completed' | 'failed';
+
+        if (hasFlags) {
+          // Use flags if available (newer API)
+          if ((status as any).isFailed) {
+            mappedStatus = 'failed';
+          } else if ((status as any).isReady) {
+            mappedStatus = 'completed';
+          } else if (status.status === 'generating') {
+            mappedStatus = 'processing';
+          } else {
+            mappedStatus = status.status as any;
+          }
+        } else {
+          // Fallback to status string (older API)
+          mappedStatus = status.status === 'generating' ? 'processing' :
+                        status.status === 'ready' ? 'completed' :
+                        status.status as 'queued' | 'processing' | 'completed' | 'failed';
+        }
 
         // Simulate progress if backend doesn't provide it
-        // During "generating" status, show incremental progress based on polling attempts
         let calculatedProgress = status.progress;
-        if (!calculatedProgress && status.status === 'generating') {
+        if (!calculatedProgress && mappedStatus === 'processing') {
           // Show progress from 10% to 90% over ~30 seconds (6 polls at 5s each)
           calculatedProgress = Math.min(10 + (attempts * 13), 90);
-        } else if (status.status === 'ready' || status.status === 'completed') {
+        } else if (mappedStatus === 'completed') {
           calculatedProgress = 100;
         }
 
@@ -331,8 +353,8 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
                   ...job,
                   status: mappedStatus,
                   progress: calculatedProgress ?? job.progress ?? 0,
-                  message: status.message || (status.status === 'generating' ? 'AI is creating your post...' : undefined),
-                  error: status.error,
+                  message: status.message || (mappedStatus === 'processing' ? 'AI is creating your post...' : undefined),
+                  error: status.error || ((status as any).isFailed ? 'Generation failed. Please try again.' : undefined),
                   result: status.result,
                 }
               : job
@@ -340,17 +362,15 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
         );
 
         // If completed or failed, stop polling
-        // Backend uses "ready" instead of "completed"
-        if (status.status === 'completed' || status.status === 'ready') {
+        if (mappedStatus === 'completed') {
           refreshPosts();
           return;
-        } else if (status.status === 'failed') {
+        } else if (mappedStatus === 'failed') {
           return;
         }
 
         // Continue polling if not maxed out
-        // Include "generating" status for backend compatibility
-        if (attempts < maxAttempts && (status.status === 'queued' || status.status === 'processing' || status.status === 'generating')) {
+        if (attempts < maxAttempts && (mappedStatus === 'queued' || mappedStatus === 'processing')) {
           setTimeout(poll, 5000); // Poll every 5 seconds
         } else if (attempts >= maxAttempts) {
           setActiveJobs((prev) =>
@@ -421,6 +441,43 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
   }, [pollPostStatus]);
 
   /**
+   * Create a post from an uploaded image
+   */
+  const createPostFromImage = useCallback(async (data: {
+    image: File;
+    platform: 'instagram' | 'instagram-story' | 'facebook' | 'twitter';
+    style: 'professional' | 'modern' | 'elegant' | 'playful' | 'natural';
+    additionalContext?: string;
+  }): Promise<string> => {
+    try {
+      const { id } = await aiStudioAPI.createPostFromImage(data);
+
+      // Add to active jobs
+      setActiveJobs((prev) => [
+        ...prev,
+        {
+          id,
+          type: 'post',
+          status: 'queued',
+          progress: 0,
+          message: 'Processing your image...',
+        },
+      ]);
+
+      // Subscribe to WebSocket updates for real-time progress
+      webSocketService.subscribe(id, 'post');
+
+      // Start polling as fallback (in case WebSocket fails)
+      setTimeout(() => pollPostStatus(id), 3000);
+
+      return id;
+    } catch (err: any) {
+      console.error('Failed to create post from image:', err);
+      throw err;
+    }
+  }, [pollPostStatus]);
+
+  /**
    * Poll for script generation status (primary method since WebSocket is not available)
    */
   const pollScriptStatus = useCallback(async (scriptId: string) => {
@@ -432,20 +489,36 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
         attempts++;
         const status = await aiStudioAPI.getScriptStatus(scriptId);
 
+        // Check if the response has isReady/isFailed flags (newer API format)
+        const hasFlags = 'isReady' in status || 'isFailed' in status;
+
         // Map backend status to frontend status
-        // Backend: "generating" → "processing", "ready" → "completed"
-        const mappedStatus: 'queued' | 'processing' | 'completed' | 'failed' =
-          status.status === 'generating' ? 'processing' :
-          status.status === 'ready' ? 'completed' :
-          status.status as 'queued' | 'processing' | 'completed' | 'failed';
+        let mappedStatus: 'queued' | 'processing' | 'completed' | 'failed';
+
+        if (hasFlags) {
+          // Use flags if available (newer API)
+          if ((status as any).isFailed) {
+            mappedStatus = 'failed';
+          } else if ((status as any).isReady) {
+            mappedStatus = 'completed';
+          } else if (status.status === 'generating') {
+            mappedStatus = 'processing';
+          } else {
+            mappedStatus = status.status as any;
+          }
+        } else {
+          // Fallback to status string (older API)
+          mappedStatus = status.status === 'generating' ? 'processing' :
+                        status.status === 'ready' ? 'completed' :
+                        status.status as 'queued' | 'processing' | 'completed' | 'failed';
+        }
 
         // Simulate progress if backend doesn't provide it
-        // During "generating" status, show incremental progress based on polling attempts
         let calculatedProgress = status.progress;
-        if (!calculatedProgress && status.status === 'generating') {
+        if (!calculatedProgress && mappedStatus === 'processing') {
           // Show progress from 10% to 90% over ~30 seconds (6 polls at 5s each)
           calculatedProgress = Math.min(10 + (attempts * 13), 90);
-        } else if (status.status === 'ready' || status.status === 'completed') {
+        } else if (mappedStatus === 'completed') {
           calculatedProgress = 100;
         }
 
@@ -457,8 +530,8 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
                   ...job,
                   status: mappedStatus,
                   progress: calculatedProgress ?? job.progress ?? 0,
-                  message: status.message || (status.status === 'generating' ? 'AI is creating your script...' : undefined),
-                  error: status.error,
+                  message: status.message || (mappedStatus === 'processing' ? 'AI is creating your script...' : undefined),
+                  error: status.error || ((status as any).isFailed ? 'Generation failed. Please try again.' : undefined),
                   result: status.result,
                 }
               : job
@@ -466,17 +539,15 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
         );
 
         // If completed or failed, stop polling
-        // Backend uses "ready" instead of "completed"
-        if (status.status === 'completed' || status.status === 'ready') {
+        if (mappedStatus === 'completed') {
           refreshScripts();
           return;
-        } else if (status.status === 'failed') {
+        } else if (mappedStatus === 'failed') {
           return;
         }
 
         // Continue polling if not maxed out
-        // Include "generating" status for backend compatibility
-        if (attempts < maxAttempts && (status.status === 'queued' || status.status === 'processing' || status.status === 'generating')) {
+        if (attempts < maxAttempts && (mappedStatus === 'queued' || mappedStatus === 'processing')) {
           setTimeout(poll, 5000); // Poll every 5 seconds
         } else if (attempts >= maxAttempts) {
           setActiveJobs((prev) =>
@@ -844,6 +915,7 @@ export function AIStudioProvider({ children }: AIStudioProviderProps) {
     shapesError,
     isConnected,
     generatePost,
+    createPostFromImage,
     generateScript,
     refreshPosts,
     loadMorePosts,
