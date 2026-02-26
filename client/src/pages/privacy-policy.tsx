@@ -1,4 +1,5 @@
 import { useLocation } from "wouter";
+import logoImage from "@assets/MIA logo_1763490424237.png";
 
 export default function PrivacyPolicy() {
   const [, setLocation] = useLocation();
@@ -8,6 +9,17 @@ export default function PrivacyPolicy() {
       <div className="mx-auto w-full max-w-4xl rounded-xl border border-[#E8E8E8] bg-white p-6 sm:p-10">
         <div className="mb-8 flex items-center justify-between gap-4">
           <div>
+            <div
+              className="mb-3 inline-flex items-center rounded-md px-3 py-2"
+              style={{ backgroundColor: "#1A1A1A" }}
+            >
+              <img
+                src={logoImage}
+                alt="MIA logo"
+                className="h-8 w-auto"
+                data-testid="img-privacy-logo"
+              />
+            </div>
             <p
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -76,7 +88,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="mb-2 text-lg font-semibold">2. Data Controller</h2>
             <p>The Data Controller responsible for your personal data is:</p>
-            <p className="mt-2">MIA Media<br />Spain<br />Email: support@</p>
+            <p className="mt-2">MIA Media<br />Spain<br />Email: support@miaagent.com</p>
           </section>
 
           <section>
@@ -165,7 +177,7 @@ export default function PrivacyPolicy() {
               <li>Data portability</li>
               <li>Withdraw consent at any time</li>
             </ul>
-            <p className="mt-2">To exercise these rights, contact: support@</p>
+            <p className="mt-2">To exercise these rights, contact: support@miaagent.com</p>
           </section>
 
           <section>
@@ -194,7 +206,7 @@ export default function PrivacyPolicy() {
 
           <section>
             <h2 className="mb-2 text-lg font-semibold">12. Contact</h2>
-            <p>MIA Media<br />Spain<br />Email: support@</p>
+            <p>MIA Media<br />Spain<br />Email: support@miaagent.com</p>
           </section>
         </div>
       </div>
