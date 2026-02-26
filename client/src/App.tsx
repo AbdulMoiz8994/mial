@@ -30,6 +30,7 @@ import IntegrationSettings from "@/pages/integration-settings";
 import BillingSettings from "@/pages/billing-settings";
 import InvoiceDetails from "@/pages/invoice-details";
 import NotFound from "@/pages/not-found";
+import PrivacyPolicy from "@/pages/privacy-policy";
 
 function App() {
   return (
@@ -38,72 +39,73 @@ function App() {
         <SubscriptionProvider>
           <AIStudioProvider>
             <TooltipProvider>
-            <Switch>
-            <Route path="/sign-in" component={SignIn} />
-            <Route path="/sign-up" component={SignUp} />
-            <Route path="/auth/callback" component={AuthCallback} />
-            <Route path="/brand-profile">
-              <ProtectedRoute><BrandProfile /></ProtectedRoute>
-            </Route>
-            <Route path="/business-type">
-              <ProtectedRoute><BusinessType /></ProtectedRoute>
-            </Route>
-            <Route path="/goals">
-              <ProtectedRoute><Goals /></ProtectedRoute>
-            </Route>
-            <Route path="/brand-colors">
-              <ProtectedRoute><BrandColors /></ProtectedRoute>
-            </Route>
-            <Route path="/social-media-focus">
-              <ProtectedRoute><SocialMediaFocus /></ProtectedRoute>
-            </Route>
-            <Route path="/pricing">
-              <ProtectedRoute><Pricing /></ProtectedRoute>
-            </Route>
-            <Route path="/generating">
-              <ProtectedRoute><Generating /></ProtectedRoute>
-            </Route>
-            <Route path="/home">
-              <ProtectedRoute><DashboardHome /></ProtectedRoute>
-            </Route>
-            <Route path="/ai-studio">
-              <ProtectedRoute><AIStudio /></ProtectedRoute>
-            </Route>
-            <Route path="/editors">
-              <ProtectedRoute><Editors /></ProtectedRoute>
-            </Route>
-            <Route path="/calendars">
-              <ProtectedRoute><Calendars /></ProtectedRoute>
-            </Route>
-            <Route path="/analytics">
-              <ProtectedRoute><Analytics /></ProtectedRoute>
-            </Route>
-            <Route path="/settings">
-              <ProtectedRoute><Settings /></ProtectedRoute>
-            </Route>
-            <Route path="/settings/accounts">
-              <ProtectedRoute><AccountSettings /></ProtectedRoute>
-            </Route>
-            <Route path="/settings/brandings">
-              <ProtectedRoute><BrandingSettings /></ProtectedRoute>
-            </Route>
-            <Route path="/settings/notification">
-              <ProtectedRoute><NotificationSettings /></ProtectedRoute>
-            </Route>
-            <Route path="/settings/integrations">
-              <ProtectedRoute><IntegrationSettings /></ProtectedRoute>
-            </Route>
-            <Route path="/settings/billings">
-              <ProtectedRoute><BillingSettings /></ProtectedRoute>
-            </Route>
-            <Route path="/settings/billings/invoice">
-              <ProtectedRoute><InvoiceDetails /></ProtectedRoute>
-            </Route>
-            <Route path="/" component={SignIn} />
-            <Route component={NotFound} />
-          </Switch>
-          <Toaster />
-          </TooltipProvider>
+              <Switch>
+                <Route path="/sign-in" component={SignIn} />
+                <Route path="/sign-up" component={SignUp} />
+                <Route path="/auth/callback" component={AuthCallback} />
+                <Route path="/privacy-policy" component={PrivacyPolicy} />
+                <Route path="/brand-profile">
+                  <ProtectedRoute><BrandProfile /></ProtectedRoute>
+                </Route>
+                <Route path="/business-type">
+                  <ProtectedRoute><BusinessType /></ProtectedRoute>
+                </Route>
+                <Route path="/goals">
+                  <ProtectedRoute><Goals /></ProtectedRoute>
+                </Route>
+                <Route path="/brand-colors">
+                  <ProtectedRoute><BrandColors /></ProtectedRoute>
+                </Route>
+                <Route path="/social-media-focus">
+                  <ProtectedRoute><SocialMediaFocus /></ProtectedRoute>
+                </Route>
+                <Route path="/pricing">
+                  <ProtectedRoute><Pricing /></ProtectedRoute>
+                </Route>
+                <Route path="/generating">
+                  <ProtectedRoute><Generating /></ProtectedRoute>
+                </Route>
+                <Route path="/home">
+                  <ProtectedRoute><DashboardHome /></ProtectedRoute>
+                </Route>
+                <Route path="/ai-studio">
+                  <ProtectedRoute><AIStudio /></ProtectedRoute>
+                </Route>
+                <Route path="/editors">
+                  <ProtectedRoute><Editors /></ProtectedRoute>
+                </Route>
+                <Route path="/calendars">
+                  <ProtectedRoute><Calendars /></ProtectedRoute>
+                </Route>
+                <Route path="/analytics">
+                  <ProtectedRoute><Analytics /></ProtectedRoute>
+                </Route>
+                <Route path="/settings">
+                  <ProtectedRoute><Settings /></ProtectedRoute>
+                </Route>
+                <Route path="/settings/accounts">
+                  <ProtectedRoute><AccountSettings /></ProtectedRoute>
+                </Route>
+                <Route path="/settings/brandings">
+                  <ProtectedRoute><BrandingSettings /></ProtectedRoute>
+                </Route>
+                <Route path="/settings/notification">
+                  <ProtectedRoute><NotificationSettings /></ProtectedRoute>
+                </Route>
+                <Route path="/settings/integrations">
+                  <ProtectedRoute><IntegrationSettings /></ProtectedRoute>
+                </Route>
+                <Route path="/settings/billings">
+                  <ProtectedRoute><BillingSettings /></ProtectedRoute>
+                </Route>
+                <Route path="/settings/billings/invoice">
+                  <ProtectedRoute><InvoiceDetails /></ProtectedRoute>
+                </Route>
+                <Route path="/" component={SignIn} />
+                <Route component={NotFound} />
+              </Switch>
+              <Toaster />
+            </TooltipProvider>
           </AIStudioProvider>
         </SubscriptionProvider>
       </UserProvider>

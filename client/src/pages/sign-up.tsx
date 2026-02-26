@@ -459,7 +459,7 @@ export default function SignUp() {
                 and{' '}
                 <button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => setLocation("/privacy-policy")}
                   className="hover:underline cursor-pointer bg-transparent border-0 p-0"
                   style={{ color: '#CEA54F' }}
                   data-testid="link-privacy"
