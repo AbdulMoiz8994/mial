@@ -31,6 +31,7 @@ import BillingSettings from "@/pages/billing-settings";
 import InvoiceDetails from "@/pages/invoice-details";
 import NotFound from "@/pages/not-found";
 import PrivacyPolicy from "@/pages/privacy-policy";
+import Waitlist from "@/pages/waitlist";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/sign-up" component={SignUp} />
                 <Route path="/auth/callback" component={AuthCallback} />
                 <Route path="/privacy-policy" component={PrivacyPolicy} />
+                <Route path="/waitlist" component={Waitlist} />
                 <Route path="/brand-profile">
                   <ProtectedRoute><BrandProfile /></ProtectedRoute>
                 </Route>

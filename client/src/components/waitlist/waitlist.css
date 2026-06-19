@@ -1,0 +1,72 @@
+/*
+ * MIA waitlist landing — theme ported from the standalone Next.js repo.
+ * Everything is scoped under .mia-waitlist so these variables, fonts and
+ * helper classes never leak into the rest of the (mial) app.
+ */
+.mia-waitlist {
+  /* ---- MIA color theme (exact from Figma) ---- */
+  --color-ink: #0b0908;
+  --color-ink-soft: #100d0b;
+  --color-card: #15110f;
+  --color-card-2: #1a1512;
+  --color-border-faint: rgba(201, 161, 130, 0.14);
+  --color-border-soft: rgba(255, 255, 255, 0.06);
+
+  /* peach / rose-gold accent */
+  --color-accent: #e0a886;
+  --color-accent-strong: #d99873;
+  --color-gold: #c99a7e;
+  --color-gold-light: #e9cbb2;
+
+  /* text */
+  --color-body: #98908a;
+  --color-body-dim: #7c736d;
+  --color-label: #b3a89f;
+
+  /* fonts (override the app defaults only within the waitlist scope) */
+  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: "Montserrat", system-ui, -apple-system, sans-serif;
+
+  min-height: 100vh;
+  background-color: var(--color-ink);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.mia-waitlist * {
+  box-sizing: border-box;
+}
+
+/* gold gradient text used on serif display headings */
+.mia-waitlist .text-gold-gradient {
+  background: linear-gradient(180deg, #f0d3ba 0%, #d6a888 55%, #c2906f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* short underline accent under section titles */
+.mia-waitlist .title-rule {
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.mia-waitlist ::placeholder {
+  color: #6f6760;
+}
+
+.mia-waitlist ::selection {
+  background: rgba(224, 168, 134, 0.3);
+  color: #fff;
+}
+
+.mia-waitlist *:focus {
+  outline: none;
+}
+.mia-waitlist *:focus-visible {
+  outline: 1px solid rgba(224, 168, 134, 0.45);
+  outline-offset: 2px;
+}
