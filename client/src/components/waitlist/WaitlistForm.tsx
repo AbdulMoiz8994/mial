@@ -115,7 +115,7 @@ export default function WaitlistForm() {
 
             <input
               className={inputClass}
-              placeholder="Business Type"
+              placeholder="Business"
               value={form.business}
               onChange={(e) => setForm({ ...form, business: e.target.value })}
             />
