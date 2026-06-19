@@ -6,3 +6,4 @@ vite.config.ts.*
 *.tar.gz
 setup_ssh.sh
 .env
+.vercel

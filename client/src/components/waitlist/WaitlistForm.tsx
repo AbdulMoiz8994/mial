@@ -7,8 +7,13 @@ const badges = [
   "Limited Member Gifts",
 ];
 
+// Google Apps Script Web App URL. Set via VITE_WAITLIST_URL on Vercel.
+const WAITLIST_ENDPOINT = import.meta.env.VITE_WAITLIST_URL || "";
+
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm font-light text-white outline-none backdrop-blur-sm transition-colors duration-300 placeholder:text-[#6f6760] focus:border-[rgba(224,168,134,0.5)]";
+
+type Status = "idle" | "loading" | "success" | "error";
 
 export default function WaitlistForm() {
   const [form, setForm] = useState({
@@ -16,11 +21,46 @@ export default function WaitlistForm() {
     email: "",
     business: "",
   });
+  const [status, setStatus] = useState<Status>("idle");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // hook up to your API / waitlist provider here
-    console.log("waitlist submit", form);
+
+    if (!form.phone.trim() || !form.email.trim() || !form.business.trim()) {
+      setStatus("error");
+      setMessage("Please fill in all fields.");
+      return;
+    }
+
+    if (!WAITLIST_ENDPOINT) {
+      setStatus("error");
+      setMessage("Waitlist is not configured yet. Please try again later.");
+      return;
+    }
+
+    try {
+      setStatus("loading");
+      setMessage("");
+
+      await fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        // text/plain keeps it a "simple" request (no CORS preflight) for Apps Script
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          business: form.business.trim(),
+        }),
+      });
+
+      setStatus("success");
+      setMessage("You're on the list! We'll be in touch soon.");
+      setForm({ phone: "", email: "", business: "" });
+    } catch (err) {
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -82,14 +122,27 @@ export default function WaitlistForm() {
 
             <button
               type="submit"
-              className="w-full rounded-md py-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#2a1c14] transition-opacity duration-300 hover:opacity-90"
+              disabled={status === "loading"}
+              className="w-full rounded-md py-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#2a1c14] transition-opacity duration-300 hover:opacity-90 disabled:opacity-60"
               style={{
                 background:
                   "linear-gradient(180deg, var(--color-accent) 0%, var(--color-accent-strong) 100%)",
               }}
             >
-              Join the Waitlist
+              {status === "loading" ? "Joining…" : "Join the Waitlist"}
             </button>
+
+            {message && (
+              <p
+                className={`text-center text-xs font-light ${
+                  status === "success"
+                    ? "text-[var(--color-accent)]"
+                    : "text-red-400"
+                }`}
+              >
+                {message}
+              </p>
+            )}
           </form>
 
           <p className="mt-6 text-center text-[9px] font-medium uppercase tracking-[0.22em] text-[var(--color-body-dim)]">
