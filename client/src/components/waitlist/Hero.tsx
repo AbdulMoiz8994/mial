@@ -6,9 +6,9 @@ export default function Hero() {
       {/* right-side model image */}
       <div className="pointer-events-none absolute inset-y-0 right-0 w-full lg:w-[62%]">
         <div
-          className="h-full w-full bg-cover bg-[center_top]"
+          className="h-full w-full bg-cover bg-[right_top] lg:bg-[center_top]"
           style={{
-            backgroundImage: "url('/hero.png')",
+            backgroundImage: "url('/hero.jpg')",
           }}
         />
         {/* soft fade only on the left edge so the model stays fully visible */}
