@@ -40,8 +40,9 @@ export default function Hero() {
           </h1>
 
           <p className="mt-7 max-w-md text-sm font-light leading-relaxed text-[var(--color-body)]">
-            MIA is redefining beauty standards. Creating a new era of beauty
-            experiences. Designed for those who expect more.
+            MIA is your intelligent content partner, built for hair, beauty and
+            barbering businesses. Create better content, plan your social media
+            and grow your brand, all in one place.
           </p>
 
           <a
