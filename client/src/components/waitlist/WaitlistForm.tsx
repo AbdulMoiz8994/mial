@@ -13,6 +13,8 @@ const WAITLIST_ENDPOINT = import.meta.env.VITE_WAITLIST_URL || "";
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm font-light text-white outline-none backdrop-blur-sm transition-colors duration-300 placeholder:text-[#6f6760] focus:border-[rgba(224,168,134,0.5)]";
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function WaitlistForm() {
@@ -33,6 +35,12 @@ export default function WaitlistForm() {
       return;
     }
 
+    if (!EMAIL_PATTERN.test(form.email.trim())) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
     if (!WAITLIST_ENDPOINT) {
       setStatus("error");
       setMessage("Waitlist is not configured yet. Please try again later.");
@@ -43,7 +51,7 @@ export default function WaitlistForm() {
       setStatus("loading");
       setMessage("");
 
-      await fetch(WAITLIST_ENDPOINT, {
+      const res = await fetch(WAITLIST_ENDPOINT, {
         method: "POST",
         // text/plain keeps it a "simple" request (no CORS preflight) for Apps Script
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -53,6 +61,16 @@ export default function WaitlistForm() {
           business: form.business.trim(),
         }),
       });
+
+      if (!res.ok) {
+        throw new Error(`Request failed with status ${res.status}`);
+      }
+
+      // The Apps Script replies { ok: true } once the row is written.
+      const result = await res.json().catch(() => null);
+      if (result && result.ok === false) {
+        throw new Error(result.error || "The waitlist rejected the submission.");
+      }
 
       setStatus("success");
       setMessage("You're on the list! We'll be in touch soon.");
@@ -99,6 +117,10 @@ export default function WaitlistForm() {
           {/* form */}
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <input
+              type="tel"
+              name="phone"
+              autoComplete="tel"
+              aria-label="Phone Number"
               className={inputClass}
               placeholder="Phone Number"
               value={form.phone}
@@ -107,6 +129,9 @@ export default function WaitlistForm() {
 
             <input
               type="email"
+              name="email"
+              autoComplete="email"
+              aria-label="Email Address"
               className={inputClass}
               placeholder="Email Address"
               value={form.email}
@@ -114,6 +139,10 @@ export default function WaitlistForm() {
             />
 
             <input
+              type="text"
+              name="business"
+              autoComplete="organization"
+              aria-label="Business"
               className={inputClass}
               placeholder="Business"
               value={form.business}
