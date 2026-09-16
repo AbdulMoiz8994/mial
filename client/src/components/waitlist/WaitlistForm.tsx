@@ -11,7 +11,7 @@ const badges = [
 const WAITLIST_ENDPOINT = import.meta.env.VITE_WAITLIST_URL || "";
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm font-light text-white outline-none backdrop-blur-sm transition-colors duration-300 placeholder:text-[#6f6760] focus:border-[rgba(224,168,134,0.5)]";
+  "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-[15px] font-medium text-white outline-none backdrop-blur-sm transition-colors duration-300 placeholder:font-medium placeholder:text-[var(--color-label)] focus:border-[rgba(224,168,134,0.5)]";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -142,9 +142,9 @@ export default function WaitlistForm() {
               type="text"
               name="business"
               autoComplete="organization"
-              aria-label="Business"
+              aria-label="Business Name"
               className={inputClass}
-              placeholder="Business"
+              placeholder="Business Name"
               value={form.business}
               onChange={(e) => setForm({ ...form, business: e.target.value })}
             />

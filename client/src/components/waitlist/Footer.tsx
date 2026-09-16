@@ -1,10 +1,22 @@
-import { InstagramIcon, TiktokIcon, PinterestIcon } from "./icons";
+import { InstagramIcon, FacebookIcon, TiktokIcon } from "./icons";
 
 const socials = [
-  { icon: InstagramIcon, label: "Instagram" },
-  { icon: TiktokIcon, label: "TikTok" },
-  { icon: PinterestIcon, label: "Pinterest" },
+  {
+    icon: InstagramIcon,
+    label: "Instagram",
+    href: "https://www.instagram.com/myintelligentagent/",
+  },
+  {
+    icon: FacebookIcon,
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61586707512619",
+  },
+  // TODO: add the href once the MIA TikTok handle is supplied
+  { icon: TiktokIcon, label: "TikTok", href: "" },
 ];
+
+const socialClass =
+  "group flex flex-col items-center gap-2 text-[var(--color-body)] transition-colors duration-300 hover:text-[var(--color-accent)]";
 
 export default function Footer() {
   return (
@@ -21,18 +33,33 @@ export default function Footer() {
         </div>
 
         <div className="flex items-start gap-10">
-          {socials.map(({ icon: Icon, label }) => (
-            <a
-              key={label}
-              href="#"
-              className="group flex flex-col items-center gap-2 text-[var(--color-body)] transition-colors duration-300 hover:text-[var(--color-accent)]"
-            >
-              <Icon className="h-5 w-5" />
-              <span className="text-[9px] font-medium uppercase tracking-[0.18em]">
-                {label}
+          {socials.map(({ icon: Icon, label, href }) => {
+            const content = (
+              <>
+                <Icon className="h-5 w-5" />
+                <span className="text-[9px] font-medium uppercase tracking-[0.18em]">
+                  {label}
+                </span>
+              </>
+            );
+
+            return href ? (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`MIA on ${label}`}
+                className={socialClass}
+              >
+                {content}
+              </a>
+            ) : (
+              <span key={label} className={socialClass}>
+                {content}
               </span>
-            </a>
-          ))}
+            );
+          })}
         </div>
       </div>
     </footer>

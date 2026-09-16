@@ -17,8 +17,8 @@ export default function StatsQuote() {
             <h3 className="font-serif text-2xl font-medium uppercase leading-tight tracking-[0.08em] text-white">
               People Have Already Joined
             </h3>
-            <p className="mt-4 max-w-xs text-sm font-light leading-relaxed text-[var(--color-body)]">
-              Join beauty enthusiasts and early members preparing for launch.
+            <p className="mt-4 max-w-sm text-sm font-light leading-relaxed text-[var(--color-body)]">
+             Join hair, beauty and barbering professionals getting early access to a simpler way to manage social media. MIA is being built for busy businesses, not tech experts.  Helping you create better content, stay visible and turn more empty chairs into bookings.
             </p>
           </div>
 
@@ -26,7 +26,7 @@ export default function StatsQuote() {
           <div className="relative md:border-l md:border-[var(--color-border-faint)] md:pl-12">
             <QuoteMark className="h-9 w-9 text-[#3a2f28]" />
             <p className="mt-3 font-serif text-3xl font-medium italic leading-snug text-[var(--color-gold-light)]">
-              Beauty should never follow standards. It should define them.
+              Creative industries should never follow standards. They should define them. Join us
             </p>
             <p className="mt-5 font-serif text-lg tracking-[0.3em] text-[var(--color-gold)]">
               — MIA

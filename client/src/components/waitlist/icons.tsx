@@ -89,20 +89,21 @@ export function InstagramIcon(props: IconProps) {
   );
 }
 
+export function FacebookIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...base} {...props}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+      <path d="M14.8 8.2h-1.4a1.9 1.9 0 0 0-1.9 1.9v10.4" />
+      <path d="M9.6 13.2h4.6" />
+    </svg>
+  );
+}
+
 export function TiktokIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...base} {...props}>
       <path d="M13.5 3v11.5a3.5 3.5 0 1 1-3.5-3.5" />
       <path d="M13.5 3c.4 2.6 2.2 4.4 4.8 4.7" />
-    </svg>
-  );
-}
-
-export function PinterestIcon(props: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" {...base} {...props}>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M11 16.5l1.2-5M9.7 10.3c0-1.6 1.3-2.8 3-2.8 1.6 0 2.8 1 2.8 2.6 0 1.8-1 3.1-2.4 3.1-.8 0-1.4-.6-1.2-1.4" />
     </svg>
   );
 }

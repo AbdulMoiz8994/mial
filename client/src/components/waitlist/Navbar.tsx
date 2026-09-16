@@ -4,7 +4,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 sm:px-10">
         <a
           href="#"
-          className="font-serif text-2xl tracking-[0.35em]"
+          className="font-serif text-4xl tracking-[0.35em]"
           style={{ color: "var(--color-gold-light)" }}
         >
           MIA
